@@ -1,803 +1,1209 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>从“心理关怀”到“音乐疗愈”——AI智能体融入高校心理健康教育实践探索</title>
-  <meta name="description" content="高校思想政治工作案例专题官网：展示AI智能体融入高校心理健康教育与音乐疗愈实践成果，并提供音乐疗愈学习伙伴入口。" />
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --text: #1f2a44;
-      --muted: #61708d;
-      --line: #dce3ef;
-      --brand: #9f1d2d;
-      --brand-2: #153d73;
-      --brand-3: #1f7d82;
-      --brand-4: #e9eff8;
-      --gold: #c99b2b;
-      --shadow: 0 18px 50px rgba(20, 42, 80, 0.10);
-      --radius: 22px;
-      --max: 1200px;
-      --body-text: #42526e;
-      --card-border: 1px solid rgba(21,61,115,0.08);
-      --radius-sm: 16px;
-      --hover-shadow: 0 24px 56px rgba(20, 42, 80, 0.15);
-      --ease: cubic-bezier(.4,0,.2,1);
-    }
- 
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>悦音智语 · AI智能体融入高校心理健康教育</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --crimson: #9B1A2F;
+  --crimson-deep: #6D0E1E;
+  --crimson-light: #C73A52;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --ink: #1A1212;
+  --paper: #FAF7F2;
+  --mist: #F0EBE3;
+  --sage: #5A7A6A;
+  --sage-light: #8BAF9B;
+  --sky: #4A6E8C;
+  --sky-light: #7AA3C0;
+  --text-main: #2A1F1F;
+  --text-muted: #7A6A6A;
+  --white: #FFFFFF;
+}
 
-Expand 67 hidden lines
-      font-size: 14px;
-      color: var(--muted);
-    }
-    .nav-links a {
-      transition: color .2s ease;
-      position: relative;
-      padding-bottom: 4px;
-    }
-    .nav-links a:hover { color: var(--brand); }
-    .nav-links a.active {
-      color: var(--brand);
-      font-weight: 700;
-    }
-    .nav-links a.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--brand);
-      border-radius: 1px;
-    }
- 
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 54px 18px 28px;
-      background: linear-gradient(-45deg,
-        rgba(21,61,115,0.06),
-        rgba(31,125,130,0.08),
-        rgba(159,29,45,0.06),
-        rgba(21,61,115,0.04));
-      background-size: 400% 400%;
-      animation: heroGradient 12s ease infinite;
-    }
-    @keyframes heroGradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .hero::before,
-    .hero::after {
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-Expand 8 hidden lines
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(31,125,130,0.16), transparent 65%);
-      animation: floatOrb 8s ease-in-out infinite;
-    }
-    .hero::after {
-      left: -140px;
+html { scroll-behavior: smooth; }
 
-Expand 1 hidden line
-      width: 360px;
-      height: 360px;
-      background: radial-gradient(circle, rgba(159,29,45,0.14), transparent 68%);
-      animation: floatOrb 10s ease-in-out infinite reverse;
-    }
-    @keyframes floatOrb {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(20px, -15px); }
-    }
- 
-    .hero-inner {
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--paper);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
 
-Expand 7 hidden lines
- 
-    .hero-card, .panel, .section-card, .stat-card, .timeline-item, .path-card, .team-card, .diagram-card, .gallery-card, .mini-card {
-      background: rgba(255,255,255,0.92);
-      border: 1px solid rgba(21,61,115,0.08);
-      border: var(--card-border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .section-card, .path-card, .team-card, .diagram-card, .stat-card, .mini-card {
-      transition: transform .35s var(--ease), box-shadow .35s var(--ease);
-    }
-    .section-card:hover, .path-card:hover, .team-card:hover, .diagram-card:hover, .mini-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--hover-shadow);
-    }
-    .stat-card:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: var(--hover-shadow);
-    }
- 
-    .hero-card {
-      padding: 34px;
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250,247,242,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(155,26,47,0.12);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw;
+  height: 60px;
+}
+.nav-brand {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--crimson);
+  letter-spacing: .06em;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: .82rem; font-weight: 500;
+  color: var(--text-muted); text-decoration: none;
+  letter-spacing: .04em;
+  transition: color .25s;
+}
+.nav-links a:hover { color: var(--crimson); }
 
-Expand 16 hidden lines
-      line-height: 1.18;
-      margin: 20px 0 14px;
-      letter-spacing: .01em;
-      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 60%, var(--brand-3) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero h1 .subline {
-      display: block;
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  position: relative;
+  background: var(--ink);
+  overflow: hidden;
+  padding-top: 60px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(155,26,47,0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 70% at 80% 30%, rgba(74,110,140,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 60% 80%, rgba(90,122,106,0.18) 0%, transparent 55%);
+}
+.hero-noise {
+  position: absolute; inset: 0;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+/* decorative circles */
+.hero-circle {
+  position: absolute; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.2);
+  animation: pulse-ring 6s ease-in-out infinite;
+}
+.hero-circle:nth-child(1) { width: 380px; height: 380px; top: 10%; left: -8%; animation-delay: 0s; }
+.hero-circle:nth-child(2) { width: 260px; height: 260px; bottom: 15%; right: 5%; animation-delay: 2s; }
+.hero-circle:nth-child(3) { width: 140px; height: 140px; top: 30%; right: 20%; animation-delay: 4s; }
+@keyframes pulse-ring {
+  0%,100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.06); opacity: 0.6; }
+}
 
-Expand 36 hidden lines
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-weight: 700;
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-      transition: transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity .4s;
-    }
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active::after { opacity: 1; transition: opacity 0s; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--brand), #bf3d4d);
-      color: #fff;
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: 0 5vw;
+  max-width: 900px;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: .75rem; font-weight: 500; letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.4);
+  padding: .35em 1.2em;
+  border-radius: 2em;
+  margin-bottom: 2rem;
+  animation: fade-up .8s ease both;
+}
+.hero-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 900; line-height: 1.15;
+  color: var(--white);
+  margin-bottom: 1rem;
+  animation: fade-up .9s .15s ease both;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  color: rgba(255,255,255,0.55);
+  font-weight: 300; letter-spacing: .04em;
+  margin-bottom: 2.5rem;
+  animation: fade-up 1s .3s ease both;
+}
+.hero-tagline {
+  font-size: .95rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: .08em;
+  margin-bottom: 3rem;
+  animation: fade-up 1s .45s ease both;
+}
+.hero-cta-row {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  animation: fade-up 1s .6s ease both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: var(--crimson);
+  color: white; font-weight: 600; font-size: .9rem;
+  padding: .75rem 2rem; border-radius: .4rem;
+  text-decoration: none;
+  border: none; cursor: pointer;
+  transition: background .25s, transform .2s, box-shadow .25s;
+  box-shadow: 0 4px 20px rgba(155,26,47,0.4);
+}
+.btn-primary:hover { background: var(--crimson-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(155,26,47,0.5); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: transparent;
+  color: rgba(255,255,255,0.8); font-weight: 500; font-size: .9rem;
+  padding: .75rem 2rem; border-radius: .4rem;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: border-color .25s, color .25s, transform .2s;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
 
-Expand 61 hidden lines
-    }
- 
-    section {
-      padding: 24px 18px 18px;
-      padding: 48px 18px 36px;
-    }
-    section + section {
-      border-top: 1px solid rgba(21,61,115,0.05);
-    }
-    .container {
-      max-width: var(--max);
+.hero-scroll {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  color: rgba(255,255,255,0.3); font-size: .7rem; letter-spacing: .15em;
+  animation: fade-up 1s .9s ease both;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+  animation: scroll-drop 2s ease-in-out infinite;
+}
+@keyframes scroll-drop {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
 
-Expand 4 hidden lines
-      justify-content: space-between;
-      gap: 20px;
-      align-items: end;
-      margin-bottom: 20px;
-      margin-bottom: 32px;
-    }
-    .section-kicker {
-      display: inline-flex;
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-Expand 147 hidden lines
-    .timeline-list {
-      display: grid;
-      gap: 16px;
-      position: relative;
-      padding-left: 28px;
-    }
-    .timeline-list::before {
-      content: '';
-      position: absolute;
-      left: 14px;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(180deg, var(--brand), var(--brand-3), transparent);
-      border-radius: 2px;
-    }
-    .timeline-item {
-      padding: 20px 20px 20px 24px;
+/* ── STATS STRIP ── */
+.stats-strip {
+  background: var(--crimson-deep);
+  padding: 2.5rem 5vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 2rem;
+}
+.stat-item { text-align: center; }
+.stat-number {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 2.2rem; font-weight: 900;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.stat-label {
+  font-size: .78rem; color: rgba(255,255,255,0.6);
+  margin-top: .4rem; letter-spacing: .06em;
+}
 
-Expand 3 hidden lines
-      align-items: start;
-      position: relative;
-    }
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: 18px;
-      top: 22px;
-      bottom: 22px;
-      width: 3px;
-      background: linear-gradient(180deg, rgba(159,29,45,0.20), rgba(21,61,115,0.10));
-      border-radius: 999px;
-    }
-    .timeline-date {
-      position: relative;
-      padding-left: 18px;
+/* ── SECTION GENERIC ── */
+section { padding: 6rem 5vw; scroll-margin-top: 60px; }
+.section-label {
+  font-size: .72rem; font-weight: 600; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--crimson);
+  margin-bottom: .8rem;
+}
+.section-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 800; line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 1.2rem;
+}
+.section-body {
+  font-size: .95rem; line-height: 1.9;
+  color: var(--text-muted);
+  max-width: 680px;
+}
 
-Expand 12 hidden lines
-      border-radius: 50%;
-      background: var(--brand);
-      box-shadow: 0 0 0 6px rgba(159,29,45,0.10);
-      animation: pulse 2.5s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 6px rgba(159,29,45,0.10); }
-      50% { box-shadow: 0 0 0 10px rgba(159,29,45,0.04); }
-    }
-    .timeline-item h4 {
-      margin: 0 0 8px;
+/* ── ABOUT ── */
+#about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  background: var(--paper);
+}
+.about-visual {
+  position: relative;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.about-card {
+  background: var(--white);
+  border-radius: .8rem;
+  padding: 1.5rem 2rem;
+  border: 1px solid rgba(155,26,47,0.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+}
+.about-card-icon { font-size: 1.6rem; margin-bottom: .6rem; }
+.about-card-title { font-weight: 700; font-size: .95rem; color: var(--ink); margin-bottom: .3rem; }
+.about-card-text { font-size: .82rem; color: var(--text-muted); line-height: 1.7; }
+.about-card.accent {
+  background: var(--crimson);
+  border-color: transparent;
+}
+.about-card.accent .about-card-title,
+.about-card.accent .about-card-text { color: rgba(255,255,255,0.9); }
 
-Expand 46 hidden lines
-      width: 100%;
-      height: auto;
-      cursor: zoom-in;
-      transition: opacity .4s var(--ease);
-    }
-    .gallery-caption {
-      display: flex;
+/* ── CONCEPT ── */
+#concept { background: var(--mist); }
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+.concept-item {
+  background: var(--white);
+  border-radius: .8rem;
+  padding: 2rem;
+  border-top: 3px solid var(--crimson);
+  transition: transform .25s, box-shadow .25s;
+}
+.concept-item:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+.concept-item:nth-child(2) { border-color: var(--sky); }
+.concept-item:nth-child(3) { border-color: var(--sage); }
+.concept-icon { font-size: 2rem; margin-bottom: 1rem; }
+.concept-name {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.1rem; font-weight: 700; color: var(--ink);
+  margin-bottom: .6rem;
+}
+.concept-desc { font-size: .85rem; color: var(--text-muted); line-height: 1.8; }
 
-Expand 85 hidden lines
-      padding: 12px;
-    }
-    .diagram-media img {
-      border-radius: 16px;
-      border: 1px solid rgba(21,61,115,0.08);
-      border-radius: var(--radius-sm);
-      border: var(--card-border);
-      cursor: zoom-in;
-      transition: transform .5s var(--ease);
-    }
-    .diagram-card:hover .diagram-media img {
-      transform: scale(1.04);
-    }
-    .diagram-body {
-      padding: 18px 18px 20px;
+/* ── SYSTEM ARCH ── */
+#system { background: var(--ink); }
+#system .section-title { color: var(--white); }
+#system .section-label { color: var(--gold); }
+#system .section-body { color: rgba(255,255,255,0.55); }
+.arch-layers {
+  display: flex; flex-direction: column; gap: 1rem;
+  margin-top: 3rem;
+}
+.arch-layer {
+  border-radius: .8rem;
+  padding: 1.5rem 2rem;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+.arch-layer.content { background: rgba(74,110,140,0.15); border: 1px solid rgba(74,110,140,0.3); }
+.arch-layer.app { background: rgba(90,122,106,0.15); border: 1px solid rgba(90,122,106,0.3); }
+.arch-layer.gov { background: rgba(155,26,47,0.15); border: 1px solid rgba(155,26,47,0.3); }
+.arch-layer-label {
+  font-family: 'Noto Serif SC', serif;
+  font-size: .9rem; font-weight: 700; color: rgba(255,255,255,0.9);
+  display: flex; align-items: center; gap: .5rem;
+}
+.arch-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.arch-tag {
+  font-size: .75rem; padding: .3em .8em;
+  border-radius: 2em;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.arch-tag.hl { background: rgba(201,168,76,0.18); color: var(--gold-light); border-color: rgba(201,168,76,0.3); }
+.scenarios {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1rem; margin-top: 2rem;
+}
+.scenario-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: .7rem; padding: 1.2rem;
+  text-align: center;
+}
+.scenario-icon { font-size: 1.6rem; margin-bottom: .5rem; }
+.scenario-title { font-size: .85rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: .3rem; }
+.scenario-items { font-size: .75rem; color: rgba(255,255,255,0.4); line-height: 1.7; }
 
-Expand 239 hidden lines
-      backdrop-filter: blur(10px);
-    }
- 
-    /* Scroll reveal animation */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity .7s var(--ease), transform .7s var(--ease);
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: .1s; }
-    .reveal-delay-2 { transition-delay: .2s; }
-    .reveal-delay-3 { transition-delay: .25s; }
-    .reveal-delay-4 { transition-delay: .3s; }
-    .reveal-delay-5 { transition-delay: .35s; }
-    .reveal-delay-6 { transition-delay: .4s; }
- 
-    /* Topbar scroll state */
-    .topbar.scrolled {
-      box-shadow: 0 4px 24px rgba(20,42,80,0.10);
-    }
- 
-    /* Hamburger menu */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      z-index: 1002;
-    }
-    .hamburger span {
-      width: 24px;
-      height: 2.5px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: transform .3s var(--ease), opacity .3s var(--ease);
-      transform-origin: center;
-    }
-    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5.5px); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5.5px); }
- 
-    /* Back to top button */
-    .back-to-top {
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: none;
-      background: linear-gradient(135deg, var(--brand), #bf3d4d);
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(159,29,45,0.25);
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
-      z-index: 999;
-      pointer-events: none;
-    }
-    .back-to-top.show {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .back-to-top:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(159,29,45,0.35);
-    }
- 
-    /* Iframe loading state */
-    .frame-loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      height: 100%;
-      color: var(--muted);
-      font-size: 14px;
-      position: absolute;
-      inset: 0;
-      background: #f3f6fb;
-      border-radius: 20px;
-      z-index: 1;
-    }
-    .frame-loading.hidden { display: none; }
-    .frame-spinner {
-      width: 36px;
-      height: 36px;
-      border: 3px solid var(--line);
-      border-top-color: var(--brand);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
- 
-    @media (max-width: 1100px) {
-      .hero-inner,
-      .timeline-block,
+/* ── RISK FLOW ── */
+#risk { background: var(--paper); }
+.risk-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+.risk-card {
+  border-radius: .8rem; padding: 2rem;
+  position: relative; overflow: hidden;
+}
+.risk-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+}
+.risk-card.low { background: #F0FBF4; }
+.risk-card.low::before { background: #22C55E; }
+.risk-card.mid { background: #FFFBEB; }
+.risk-card.mid::before { background: #F59E0B; }
+.risk-card.high { background: #FEF2F2; }
+.risk-card.high::before { background: #EF4444; }
+.risk-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+  padding: .25em .8em; border-radius: 2em; margin-bottom: 1rem;
+}
+.risk-card.low .risk-badge { background: rgba(34,197,94,0.12); color: #16A34A; }
+.risk-card.mid .risk-badge { background: rgba(245,158,11,0.12); color: #D97706; }
+.risk-card.high .risk-badge { background: rgba(239,68,68,0.12); color: #DC2626; }
+.risk-level-title { font-weight: 700; font-size: .95rem; color: var(--ink); margin-bottom: .8rem; }
+.risk-triggers { font-size: .8rem; color: var(--text-muted); line-height: 1.9; }
+.risk-actions { margin-top: 1rem; }
+.risk-action-item {
+  display: flex; align-items: flex-start; gap: .4rem;
+  font-size: .78rem; color: var(--text-muted);
+  line-height: 1.7; margin-bottom: .2rem;
+}
+.risk-num {
+  background: var(--crimson); color: white;
+  border-radius: 50%; width: 16px; height: 16px; min-width: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .6rem; font-weight: 700; margin-top: .15rem;
+}
+.risk-card.low .risk-num { background: #22C55E; }
+.risk-card.mid .risk-num { background: #F59E0B; }
+.risk-card.high .risk-num { background: #EF4444; }
+.risk-footer {
+  font-size: .72rem; font-weight: 600; letter-spacing: .05em;
+  padding: .5rem .8rem; border-radius: .4rem; margin-top: 1rem;
+  display: inline-block;
+}
+.risk-card.low .risk-footer { background: rgba(34,197,94,0.1); color: #16A34A; }
+.risk-card.mid .risk-footer { background: rgba(245,158,11,0.1); color: #D97706; }
+.risk-card.high .risk-footer { background: rgba(239,68,68,0.1); color: #DC2626; }
 
-Expand 10 hidden lines
-    }
- 
-    @media (max-width: 760px) {
-      .nav { align-items: flex-start; }
-      .nav-links { display: none; }
-      section { padding: 32px 14px 24px; }
-      .nav { align-items: center; }
-      .hamburger { display: flex; }
-      .nav-links {
-        position: fixed;
-        inset: 0;
-        background: rgba(255,255,255,0.97);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 28px;
-        font-size: 18px;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity .3s var(--ease);
-        z-index: 1001;
-      }
-      .nav-links.open {
-        opacity: 1;
-        pointer-events: auto;
-      }
-      .nav-links a.active::after { display: none; }
-      .hero { padding-top: 24px; }
-      .hero-card { padding: 24px; }
-      .mini-grid,
+/* ── ACTIVITIES ── */
+#activities { background: var(--mist); }
+.act-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap: 1.2rem; margin-top: 3rem;
+}
+.act-card {
+  background: var(--white);
+  border-radius: .8rem; padding: 1.8rem;
+  border: 1px solid rgba(0,0,0,0.05);
+  transition: transform .25s, box-shadow .25s;
+  position: relative; overflow: hidden;
+}
+.act-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.07); }
+.act-category {
+  font-size: .68rem; font-weight: 700; letter-spacing: .15em;
+  text-transform: uppercase; padding: .25em .7em; border-radius: 2em;
+  display: inline-block; margin-bottom: 1rem;
+}
+.act-category.skill { background: rgba(74,110,140,0.1); color: var(--sky); }
+.act-category.heal { background: rgba(90,122,106,0.1); color: var(--sage); }
+.act-name { font-weight: 700; font-size: 1rem; color: var(--ink); margin-bottom: .5rem; }
+.act-date { font-size: .75rem; color: var(--text-muted); margin-bottom: .5rem; }
+.act-desc { font-size: .82rem; color: var(--text-muted); line-height: 1.75; }
+.act-count {
+  position: absolute; top: 1.4rem; right: 1.4rem;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.6rem; font-weight: 900;
+  color: rgba(155,26,47,0.08);
+}
 
-Expand 41 hidden lines
-        <a href="#agent">智能体入口</a>
-        <a href="#team">项目团队</a>
-      </div>
-      <button class="hamburger" id="hamburger" aria-label="菜单">
-        <span></span><span></span><span></span>
-      </button>
+/* ── TIMELINE ── */
+#timeline { background: var(--paper); }
+.timeline {
+  position: relative; margin-top: 3rem;
+  padding-left: 2rem;
+}
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--crimson), var(--gold), var(--sage));
+}
+.tl-item { position: relative; padding: 0 0 3rem 2.5rem; }
+.tl-dot {
+  position: absolute; left: -9px; top: .3rem;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--white); border: 3px solid var(--crimson);
+  transition: transform .25s;
+}
+.tl-item:hover .tl-dot { transform: scale(1.4); }
+.tl-item:nth-child(2) .tl-dot { border-color: var(--gold); }
+.tl-item:nth-child(3) .tl-dot { border-color: var(--sky); }
+.tl-item:nth-child(4) .tl-dot { border-color: var(--sage); }
+.tl-item:nth-child(5) .tl-dot { border-color: var(--crimson-deep); }
+.tl-year {
+  font-size: .72rem; font-weight: 700; letter-spacing: .15em;
+  color: var(--crimson); text-transform: uppercase; margin-bottom: .4rem;
+}
+.tl-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.1rem; font-weight: 700; color: var(--ink);
+  margin-bottom: .6rem;
+}
+.tl-body { font-size: .85rem; color: var(--text-muted); line-height: 1.8; max-width: 600px; }
+
+/* ── ACHIEVEMENTS ── */
+#achievements { background: var(--mist); }
+.ach-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+  gap: 1rem; margin-top: 3rem;
+}
+.ach-card {
+  background: var(--white); border-radius: .7rem;
+  padding: 1.5rem; border: 1px solid rgba(0,0,0,0.05);
+  display: flex; gap: 1rem; align-items: flex-start;
+}
+.ach-icon-box {
+  width: 42px; height: 42px; border-radius: .5rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+  background: rgba(155,26,47,0.08);
+}
+.ach-text-title { font-size: .88rem; font-weight: 700; color: var(--ink); margin-bottom: .3rem; }
+.ach-text-sub { font-size: .78rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ── AI ENTRY ── */
+#ai-entry {
+  background: linear-gradient(135deg, var(--crimson-deep) 0%, #2A1F1F 60%, var(--ink) 100%);
+  padding: 6rem 5vw;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+#ai-entry::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,0.08) 0%, transparent 70%);
+}
+#ai-entry .section-title { color: var(--white); }
+#ai-entry .section-label { color: var(--gold); }
+#ai-entry .section-body { color: rgba(255,255,255,0.55); margin: 0 auto 3rem; }
+.ai-entry-cards {
+  display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+  margin-top: 3rem; position: relative; z-index: 1;
+}
+.ai-entry-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 1rem; padding: 2rem 2.2rem;
+  text-align: center; width: 220px;
+  position: relative;
+  transition: background .25s, transform .25s, border-color .25s;
+}
+.ai-entry-card:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.4); transform: translateY(-4px); }
+.ai-entry-card-badge {
+  position: absolute; top: 1rem; right: 1rem;
+  font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+  background: rgba(201,168,76,0.18); color: var(--gold-light);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: .2em .65em; border-radius: 2em;
+}
+.ai-entry-card-icon { font-size: 2.2rem; margin-bottom: .8rem; }
+.ai-entry-card-title { font-weight: 700; font-size: .95rem; color: rgba(255,255,255,0.9); margin-bottom: .4rem; }
+.ai-entry-card-sub { font-size: .78rem; color: rgba(255,255,255,0.4); line-height: 1.7; margin-bottom: 1.2rem; }
+.ai-entry-card-btn {
+  display: inline-block;
+  background: var(--crimson); color: white;
+  font-size: .8rem; font-weight: 600;
+  padding: .45rem 1.2rem; border-radius: 2em;
+  text-decoration: none;
+  transition: background .2s;
+}
+.ai-entry-card-btn:hover { background: var(--crimson-light); }
+.ai-bubble-hint {
+  margin-top: 2.5rem; position: relative; z-index: 1;
+  font-size: .82rem; color: rgba(255,255,255,0.35);
+  letter-spacing: .06em;
+}
+.ai-bubble-hint span {
+  display: inline-flex; align-items: center; gap: .5rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: .4rem 1rem; border-radius: 2em;
+}
+
+/* ── SUPPORT GRID ── */
+#support { background: var(--paper); }
+.support-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1.2rem; margin-top: 3rem;
+}
+.support-col { }
+.support-col-head {
+  font-weight: 700; font-size: .88rem;
+  padding: .6rem 1rem; border-radius: .5rem .5rem 0 0;
+  color: var(--white);
+  margin-bottom: 0;
+}
+.support-col:nth-child(1) .support-col-head { background: var(--sky); }
+.support-col:nth-child(2) .support-col-head { background: var(--crimson); }
+.support-col:nth-child(3) .support-col-head { background: var(--sage); }
+.support-col:nth-child(4) .support-col-head { background: #8B6914; }
+.support-items {
+  background: var(--white); border-radius: 0 0 .5rem .5rem;
+  border: 1px solid rgba(0,0,0,0.06); border-top: none;
+  padding: 1rem;
+}
+.support-item {
+  font-size: .8rem; color: var(--text-muted);
+  padding: .4rem 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+  line-height: 1.6;
+  display: flex; align-items: flex-start; gap: .4rem;
+}
+.support-item:last-child { border-bottom: none; }
+.support-item::before { content: '›'; color: var(--crimson); font-weight: 700; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--crimson-deep);
+  color: rgba(255,255,255,0.55);
+  padding: 3rem 5vw;
+  display: flex; flex-wrap: wrap; gap: 1.5rem;
+  justify-content: space-between; align-items: center;
+}
+.footer-brand {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.9);
+}
+.footer-sub { font-size: .78rem; margin-top: .3rem; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-size: .8rem; color: rgba(255,255,255,0.4);
+  text-decoration: none; transition: color .2s;
+}
+.footer-links a:hover { color: var(--gold-light); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  #about { grid-template-columns: 1fr; gap: 3rem; }
+  .concept-grid { grid-template-columns: 1fr 1fr; }
+  .arch-layer { grid-template-columns: 1fr; gap: .8rem; }
+  .scenarios { grid-template-columns: repeat(2,1fr); }
+  .risk-grid { grid-template-columns: 1fr; }
+  .support-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  nav { padding: 0 4vw; }
+  .nav-links { display: none; }
+  .concept-grid { grid-template-columns: 1fr; }
+  .scenarios { grid-template-columns: 1fr 1fr; }
+  .act-grid { grid-template-columns: 1fr; }
+  .ach-grid { grid-template-columns: 1fr; }
+  .support-grid { grid-template-columns: 1fr; }
+  .ai-chat-frame { height: 480px; }
+}
+
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">悦音智语</div>
+  <ul class="nav-links">
+    <li><a href="javascript:void(0)" onclick="scrollTo('about')">项目简介</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollTo('concept')">核心理念</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollTo('system')">智能体系统</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollTo('risk')">风险机制</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollTo('activities')">活动体系</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollTo('achievements')">成果荣誉</a></li>
+    <li><a href="javascript:void(0)" onclick="scrollTo('ai-entry')">进入平台</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-noise"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-circle"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">高校思想政治工作精品案例</div>
+    <h1 class="hero-title">
+      从"心理关怀"<br>到<span>"音乐疗愈"</span>
+    </h1>
+    <p class="hero-subtitle">AI 智能体融入高校心理健康教育实践探索</p>
+    <p class="hero-tagline">以美育润心 · 以音乐疗愈 · 以 AI 赋能</p>
+    <div class="hero-cta-row">
+      <a href="javascript:void(0)" onclick="scrollTo('ai-entry')" class="btn-primary">🎵 进入音乐疗愈伙伴</a>
+      <a href="javascript:void(0)" onclick="scrollTo('about')" class="btn-outline">了解项目详情 →</a>
     </div>
   </div>
- 
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
 
-Expand 59 hidden lines
+<!-- STATS -->
+<div class="stats-strip reveal">
+  <div class="stat-item">
+    <div class="stat-number">1159</div>
+    <div class="stat-label">有效问卷份数</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">72+</div>
+    <div class="stat-label">累计活动场次</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">2000+</div>
+    <div class="stat-label">师生受益人次</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">30</div>
+    <div class="stat-label">骨干学生培养</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">5</div>
+    <div class="stat-label">省级荣誉奖项</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">9</div>
+    <div class="stat-label">发表相关论文</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <div class="section-label">项目背景与定位</div>
+    <h2 class="section-title">一套经过三年迭代的<br>心理育人数智化方案</h2>
+    <p class="section-body">
+      立足师范院校音乐专业优势，依托人工智能技术，构建"AI智能体＋音乐疗愈＋实践育人"三位一体的心理育人新格局。历经 2023—2025 年三年探索，已形成线上 AI 支持与线下音乐疗愈相结合的可运行工作机制。
+    </p>
+    <br>
+    <p class="section-body">
+      调研发现，全校日均上网超四小时的学生占比 <strong>70.7%</strong>，而 <strong>88.4%</strong> 的学生没有线上心理支持经历，说明数字化情绪支持渠道存在严重空白。本案例正是填补这一空白的系统性回应。
+    </p>
+  </div>
+  <div class="about-visual reveal">
+    <div class="about-card accent">
+      <div class="about-card-icon">🎵</div>
+      <div class="about-card-title">核心定位</div>
+      <div class="about-card-text">将音乐疗愈通过 AI 嵌入日常数字场景，实现从"有问题才求助"向"日常陪伴式支持"的育人模式转变。</div>
     </div>
-  </header>
- 
-  <section id="overview">
-  <section id="overview" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <div>
+    <div class="about-card">
+      <div class="about-card-icon">🔴</div>
+      <div class="about-card-title">两大痛点</div>
+      <div class="about-card-text">① 数字生活密集但积极心理支持渠道严重不足；② 音乐疗愈资源丰富但长期停留在散点式活动，缺乏系统化路径。</div>
+    </div>
+    <div class="about-card">
+      <div class="about-card-icon">🏆</div>
+      <div class="about-card-title">阶段成果</div>
+      <div class="about-card-text">广东省高校思政优秀案例奖、"新师范"建设优秀案例、省级评价改革征文三等奖等共 5 项省级荣誉。</div>
+    </div>
+  </div>
+</section>
 
-Expand 5 hidden lines
+<!-- CONCEPT -->
+<section id="concept">
+  <div class="reveal">
+    <div class="section-label">品牌核心理念</div>
+    <h2 class="section-title">三大支柱，构建<br>心理育人新生态</h2>
+  </div>
+  <div class="concept-grid reveal">
+    <div class="concept-item">
+      <div class="concept-icon">🎨</div>
+      <div class="concept-name">美育 ＋ 心育</div>
+      <div class="concept-desc">音乐疗愈与心理健康深度融合，以"放松—表达—创造"三阶段疗愈模型为主轴，推动心理育人从外在干预向内在赋能转变。开设《舞蹈与身心疗愈》公选课，打通课内外实践链路。</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-icon">🤖</div>
+      <div class="concept-name">AI ＋ 赋能</div>
+      <div class="concept-desc">基于 FastGPT 构建"悦音智语"智能体平台，实现 24 小时全时段可达的情绪支持，根据情绪状态智能推荐音乐与疗愈内容，将"一对多"分发升级为个性化深度服务体验。</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-icon">🤝</div>
+      <div class="concept-name">协同育人</div>
+      <div class="concept-desc">师生共创、跨院联动、全员参与。学院支持—专业教师协同—心理工作站配合—校外专家指导四方联动，构建可追溯的全过程管理台账。</div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM -->
+<section id="system">
+  <div class="reveal">
+    <div class="section-label">智能体系统架构</div>
+    <h2 class="section-title">悦音智语 · 三层架构</h2>
+    <p class="section-body">FastGPT 商业版驱动，RAG 检索增强 · 语义匹配 · 引用溯源，覆盖四大应用场景，全程风险信号上报与隐私保护。</p>
+  </div>
+  <div class="arch-layers reveal">
+    <div class="arch-layer content">
+      <div class="arch-layer-label">📚 内容供给层<br><small style="font-weight:300;font-size:.75rem;color:rgba(255,255,255,0.5)">Content Layer</small></div>
+      <div>
+        <div class="arch-tags">
+          <span class="arch-tag hl">音乐疗愈资源库</span>
+          <span class="arch-tag hl">心理健康知识库</span>
+          <span class="arch-tag hl">典型案例库</span>
+          <span class="arch-tag">放松冥想曲目</span>
+          <span class="arch-tag">情绪表达音乐</span>
+          <span class="arch-tag">三阶段配套资源</span>
+          <span class="arch-tag">国家政策文件</span>
+          <span class="arch-tag">危机识别指南</span>
+          <span class="arch-tag">舞蹈疗愈课程包</span>
+          <span class="arch-tag">DeepSeek · 豆包 · 国产 LLM</span>
+          <span class="arch-tag">自动降权机制</span>
         </div>
       </div>
- 
-      <div class="overview-grid">
-        <article class="section-card">
-      <div class=”overview-grid”>
-        <article class=”section-card reveal reveal-delay-1”>
-          <h3>项目背景</h3>
-          <p>
-            以国家“重视心理健康和精神卫生”“以美润心”和“人工智能+教育”政策导向为背景，将心理健康教育纳入“三全育人”体系，在高校场景中探索可持续、可复制、可推广的数智化育人路径。
-            以国家”重视心理健康和精神卫生””以美润心”和”人工智能+教育”政策导向为背景，将心理健康教育纳入”三全育人”体系，在高校场景中探索可持续、可复制、可推广的数智化育人路径。
-          </p>
-        </article>
-        <article class="section-card">
-        <article class=”section-card reveal reveal-delay-2”>
-          <h3>核心理念</h3>
-          <p>
-            以美育润心、以音乐疗愈、以AI赋能，通过艺术表达、情绪调适与智能陪伴的协同作用，把传统“有问题才求助”的模式，转变为“日常可达、持续支持、过程陪伴”的育人模式。
-            以美育润心、以音乐疗愈、以AI赋能，通过艺术表达、情绪调适与智能陪伴的协同作用，把传统”有问题才求助”的模式，转变为”日常可达、持续支持、过程陪伴”的育人模式。
-          </p>
-        </article>
-        <article class="section-card">
-        <article class=”section-card reveal reveal-delay-3”>
-          <h3>实践定位</h3>
-          <ul>
-            <li>面向学生日常情绪支持与心理健康教育需求</li>
-
-Expand 4 hidden lines
-      </div>
- 
-      <div class="stats-wrap">
-        <div class="stat-card">
-          <div class="stat-value">1159</div>
-        <div class="stat-card reveal reveal-delay-1">
-          <div class="stat-value" data-target="1159">0</div>
-          <div class="stat-label">网络行为调研有效问卷</div>
+    </div>
+    <div class="arch-layer app">
+      <div class="arch-layer-label">⚙️ 应用层<br><small style="font-weight:300;font-size:.75rem;color:rgba(255,255,255,0.5)">Application</small></div>
+      <div>
+        <div class="arch-tags">
+          <span class="arch-tag hl">工作流引擎（FastGPT）</span>
+          <span class="arch-tag hl">多用户管理（商业版）</span>
+          <span class="arch-tag hl">全院学生开放</span>
+          <span class="arch-tag">多轮对话管理</span>
+          <span class="arch-tag">意图识别</span>
+          <span class="arch-tag">情绪状态分析</span>
+          <span class="arch-tag">个性化推荐</span>
+          <span class="arch-tag">网页链接</span>
+          <span class="arch-tag">易班嵌入</span>
+          <span class="arch-tag">QR 码入口</span>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">10 次</div>
-        <div class="stat-card reveal reveal-delay-2">
-          <div class="stat-value" data-target="10" data-suffix=" 次">0</div>
-          <div class="stat-label">专题推进与心理育人研判会议</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">27 名</div>
-        <div class="stat-card reveal reveal-delay-3">
-          <div class="stat-value" data-target="27" data-suffix=" 名">0</div>
-          <div class="stat-label">协同参与的院系心理委员</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">30+</div>
-        <div class="stat-card reveal reveal-delay-4">
-          <div class="stat-value" data-target="30" data-suffix="+">0</div>
-          <div class="stat-label">培养的骨干学生规模</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">400+</div>
-        <div class="stat-card reveal reveal-delay-5">
-          <div class="stat-value" data-target="400" data-suffix="+">0</div>
-          <div class="stat-label">累计培训师生人次</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">72 场</div>
-        <div class="stat-card reveal reveal-delay-6">
-          <div class="stat-value" data-target="72" data-suffix=" 场">0</div>
-          <div class="stat-label">前期品牌活动沉淀与生态基础</div>
+        <div style="margin-top:.8rem;font-size:.75rem;color:rgba(255,255,255,0.35);letter-spacing:.06em;">
+          对话链路：用户输入 → 情绪识别 → 内容检索 → 个性化推荐 → 引用溯源 → 后续推荐 → 风险判断
         </div>
       </div>
     </div>
-  </section>
- 
-  <section id="paths">
-  <section id="paths" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <div>
-
-Expand 6 hidden lines
-      </div>
- 
-      <div class="path-grid">
-        <article class="path-card">
-        <article class="path-card reveal reveal-delay-1">
-          <div class="path-icon">💬</div>
-          <h3>路径一：FastGPT智能体平台</h3>
-          <p>
-
-Expand 7 hidden lines
-          </div>
-        </article>
- 
-        <article class="path-card">
-        <article class="path-card reveal reveal-delay-2">
-          <div class="path-icon">🎵</div>
-          <h3>路径二：音乐疗愈课程与工作坊</h3>
-          <p>
-
-Expand 7 hidden lines
-          </div>
-        </article>
- 
-        <article class="path-card">
-        <article class="path-card reveal reveal-delay-3">
-          <div class="path-icon">🌱</div>
-          <h3>路径三：前期品牌与协同育人</h3>
-          <p>
-
-Expand 10 hidden lines
-    </div>
-  </section>
- 
-  <section id="timeline">
-  <section id="timeline" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <div>
-
-Expand 65 hidden lines
+    <div class="arch-layer gov">
+      <div class="arch-layer-label">🛡 治理层<br><small style="font-weight:300;font-size:.75rem;color:rgba(255,255,255,0.5)">Governance</small></div>
+      <div>
+        <div class="arch-tags">
+          <span class="arch-tag hl">风险分级处置</span>
+          <span class="arch-tag hl">内容治理</span>
+          <span class="arch-tag hl">隐私与合规</span>
+          <span class="arch-tag">低风险：疗愈推荐</span>
+          <span class="arch-tag">中风险：提示建议</span>
+          <span class="arch-tag">高风险：人工接管</span>
+          <span class="arch-tag">匿名/邀请码访问</span>
+          <span class="arch-tag">数据最小化</span>
+          <span class="arch-tag">全量审计日志</span>
+          <span class="arch-tag">本地化部署</span>
         </div>
- 
-        <aside class="timeline-side">
-          <img src="assets/milestone-roadmap.png" alt="项目阶段目标与里程碑图" data-caption="项目阶段目标与里程碑图：展示从 2023 项目立项，到 2024 平台可用、课程体系落地，再到 2025 打造精品项目的阶段推进逻辑。" />
-          <img src="assets/milestone-roadmap.png" alt="项目阶段目标与里程碑图" loading="lazy" data-caption="项目阶段目标与里程碑图：展示从 2023 项目立项，到 2024 平台可用、课程体系落地，再到 2025 打造精品项目的阶段推进逻辑。" />
-          <div class="caption">
-            <strong>阶段目标图</strong><br />
-            从项目立项、行动计划、具体要求到总体目标与精品项目打造，清晰呈现阶段性建设任务，适合作为页面中的汇报型视觉锚点。
-
-Expand 3 hidden lines
-    </div>
-  </section>
- 
-  <section id="gallery">
-  <section id="gallery" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <div>
-
-Expand 27 hidden lines
-    </div>
-  </section>
- 
-  <section id="system">
-  <section id="system" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <div>
-
-Expand 6 hidden lines
       </div>
- 
-      <div class="diagram-grid">
-        <article class="diagram-card">
-        <article class="diagram-card reveal reveal-delay-1">
-          <div class="diagram-media">
-            <img src="assets/system-architecture.png" alt="系统总体架构图" data-caption="系统总体架构图：内容供给层、应用层与治理层三层协同，支撑四大应用场景。" />
-            <img src="assets/system-architecture.png" alt="系统总体架构图" loading="lazy" data-caption="系统总体架构图：内容供给层、应用层与治理层三层协同，支撑四大应用场景。" />
-          </div>
-          <div class="diagram-body">
-            <h3>系统总体架构图</h3>
-
-Expand 1 hidden line
-          </div>
-        </article>
- 
-        <article class="diagram-card">
-        <article class="diagram-card reveal reveal-delay-2">
-          <div class="diagram-media">
-            <img src="assets/risk-flow.png" alt="风险分级与转介流程图" data-caption="风险分级与转介流程图：明确低风险、中风险、高风险的处置动作与人工接管机制。" />
-            <img src="assets/risk-flow.png" alt="风险分级与转介流程图" loading="lazy" data-caption="风险分级与转介流程图：明确低风险、中风险、高风险的处置动作与人工接管机制。" />
-          </div>
-          <div class="diagram-body">
-            <h3>风险分级与转介流程图</h3>
-
-Expand 1 hidden line
-          </div>
-        </article>
- 
-        <article class="diagram-card">
-        <article class="diagram-card reveal reveal-delay-3">
-          <div class="diagram-media">
-            <img src="assets/access-entry.png" alt="网站接入智能体示意图" data-caption="网站接入智能体示意图：展示从网页、二维码、公众号等方式进入智能助手的场景。" />
-            <img src="assets/access-entry.png" alt="网站接入智能体示意图" loading="lazy" data-caption="网站接入智能体示意图：展示从网页、二维码、公众号等方式进入智能助手的场景。" />
-          </div>
-          <div class="diagram-body">
-            <h3>网站接入示意图</h3>
-
-Expand 4 hidden lines
     </div>
-  </section>
- 
-  <section id="agent">
-  <section id="agent" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <div>
+  </div>
 
-Expand 39 hidden lines
-              <div class="frame-note">若当前浏览环境限制第三方嵌入，可使用左侧按钮新窗口打开。</div>
-            </div>
-          </div>
-          <div class="frame-shell">
-          <div class="frame-shell" style="position:relative;">
-            <div class="frame-loading" id="frame-loading">
-              <div class="frame-spinner"></div>
-              <span>智能体加载中...</span>
-            </div>
-            <iframe
-              id="agent-iframe"
-              src="https://cloud.fastgpt.io/chat/share?shareId=yxYBy0xzKReJQgoPY4iJhyQ7"
-              style="width: 100%; height: 100%;"
-              frameborder="0"
-              allow="microphone *; *"
-              title="音乐疗愈学习伙伴"
-              loading="lazy"
-            ></iframe>
-          </div>
-        </div>
-
-Expand 1 hidden line
-    </div>
-  </section>
- 
-  <section id="team">
-  <section id="team" class="reveal">
-    <div class="container">
-      <div class="section-head">
-        <div>
-
-Expand 6 hidden lines
+  <div style="margin-top:2.5rem;" class="reveal">
+    <div style="font-size:.78rem;color:rgba(255,255,255,0.35);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;">四大应用场景</div>
+    <div class="scenarios">
+      <div class="scenario-card">
+        <div class="scenario-icon">💬</div>
+        <div class="scenario-title">心理求助指引</div>
+        <div class="scenario-items">情绪疏导入口<br>分级转介指引<br>危机识别响应</div>
       </div>
- 
-      <div class="team-grid">
-        <article class="team-card">
-        <article class="team-card reveal reveal-delay-1">
-          <div class="team-label">建设单位</div>
-          <h3>音乐学院</h3>
-          <p>围绕高校心理健康教育、音乐疗愈实践与美育育人场景，统筹课程、活动、平台与成果展示的整体推进。</p>
-        </article>
- 
-        <article class="team-card">
-        <article class="team-card reveal reveal-delay-2">
-          <div class="team-label">项目团队</div>
-          <h3>“悦音智语”项目组</h3>
-          <ul>
-
-Expand 3 hidden lines
-          </ul>
-        </article>
- 
-        <article class="team-card">
-        <article class="team-card reveal reveal-delay-3">
-          <div class="team-label">服务对象</div>
-          <h3>学院师生与扩展场景</h3>
-          <p>覆盖学生日常情绪支持、课程伴学、心理健康活动、乡村支教资源下沉与跨学院交流展示等多种场景。</p>
-        </article>
- 
-        <article class="team-card">
-        <article class="team-card reveal reveal-delay-4">
-          <div class="team-label">推广方向</div>
-          <h3>校内示范 · 校际辐射</h3>
-          <p>适合在案例申报、校内汇报、项目答辩、专题宣传和数字思政成果展示中使用，并可持续扩展为学院专题项目官网。</p>
-
-Expand 21 hidden lines
+      <div class="scenario-card">
+        <div class="scenario-icon">🎵</div>
+        <div class="scenario-title">处方式疗愈推荐</div>
+        <div class="scenario-items">情绪匹配音乐<br>三阶段资源包<br>个性化推荐</div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-icon">📖</div>
+        <div class="scenario-title">课程伴学助手</div>
+        <div class="scenario-items">舞蹈疗愈课答疑<br>作业辅助引导<br>学习进度跟踪</div>
+      </div>
+      <div class="scenario-card">
+        <div class="scenario-icon">🌿</div>
+        <div class="scenario-title">实践育人下沉</div>
+        <div class="scenario-items">乡村支教资源包<br>微课程推送<br>志愿活动支撑</div>
+      </div>
     </div>
-  </footer>
- 
-  <button class="back-to-top" id="back-to-top" aria-label="回到顶部">&#8593;</button>
- 
-  <div class="modal" id="image-modal" aria-hidden="true">
-    <div class="modal-inner">
-      <button class="modal-close" id="modal-close" aria-label="关闭">×</button>
+  </div>
+</section>
 
-Expand 53 hidden lines
- 
-    function updateGallery() {
-      const item = galleryItems[galleryIndex];
-      galleryMainImage.src = item.src;
-      galleryMainImage.alt = item.alt;
-      galleryMainImage.dataset.caption = item.title + '：' + item.desc;
-      galleryMainImage.style.opacity = '0';
-      setTimeout(() => {
-        galleryMainImage.src = item.src;
-        galleryMainImage.alt = item.alt;
-        galleryMainImage.dataset.caption = item.title + '：' + item.desc;
-        galleryMainImage.style.opacity = '1';
-      }, 200);
-      galleryTitle.textContent = item.title;
-      galleryDesc.textContent = item.desc;
-      renderThumbs();
+<!-- RISK -->
+<section id="risk">
+  <div class="reveal">
+    <div class="section-label">风险分级与转介机制</div>
+    <h2 class="section-title">三级风险响应<br>守护学生心理安全</h2>
+    <p class="section-body">AI 只做支持与导流，不做诊断与治疗。高风险强制人工接管，响应时效 ≤ 5 分钟，全程对话审计留存。</p>
+  </div>
+  <div class="risk-grid reveal">
+    <div class="risk-card low">
+      <div class="risk-badge">🟢 低风险</div>
+      <div class="risk-level-title">一般情绪困扰</div>
+      <div class="risk-triggers">
+        日常压力 · 轻度焦虑 · 情绪波动<br>
+        • 表达感到压力/疲惫/不开心<br>
+        • 询问放松方法或音乐推荐<br>
+        • 一般性学业/人际困惑
+      </div>
+      <div class="risk-actions">
+        <div class="risk-action-item"><div class="risk-num">1</div>情绪确认 ＋ 正念引导语</div>
+        <div class="risk-action-item"><div class="risk-num">2</div>匹配三阶段音乐疗愈资源</div>
+        <div class="risk-action-item"><div class="risk-num">3</div>推荐线下工作坊/课程参与</div>
+        <div class="risk-action-item"><div class="risk-num">4</div>引用编号 ＋ 来源核验链接</div>
+      </div>
+      <div class="risk-footer">✅ AI 全程自主处置 · 审计日志留存</div>
+    </div>
+    <div class="risk-card mid">
+      <div class="risk-badge">🟡 中风险</div>
+      <div class="risk-level-title">明显情绪低落</div>
+      <div class="risk-triggers">
+        "灰色地带" · 持续低落 · 人际困境<br>
+        • 表达"没意思""格格不入"等<br>
+        • 明显睡眠障碍或食欲问题描述<br>
+        • 孤独感强烈/主动回避社交
+      </div>
+      <div class="risk-actions">
+        <div class="risk-action-item"><div class="risk-num">1</div>情绪确认 ＋ 非评判性回应</div>
+        <div class="risk-action-item"><div class="risk-num">2</div>深度音乐疗愈资源推荐 ＋ 正念练习</div>
+        <div class="risk-action-item"><div class="risk-num">3</div>明确建议：联系辅导员/参加工作坊</div>
+        <div class="risk-action-item"><div class="risk-num">4</div>标注风险记录，自动推送辅导员日报</div>
+      </div>
+      <div class="risk-footer">⚠️ AI 处置 ＋ 辅导员后台预警通知</div>
+    </div>
+    <div class="risk-card high">
+      <div class="risk-badge">🔴 高风险</div>
+      <div class="risk-level-title">危机信号</div>
+      <div class="risk-triggers">
+        强制人工接管 · 即时响应<br>
+        • 出现自伤/自杀相关语义表达<br>
+        • "不想活了""消失"等高危词汇<br>
+        • 描述具体伤害计划或工具
+      </div>
+      <div class="risk-actions">
+        <div class="risk-action-item"><div class="risk-num">1</div>🚨 立即停止 AI 自动回复</div>
+        <div class="risk-action-item"><div class="risk-num">2</div>弹出强制提示窗：显示心理中心热线</div>
+        <div class="risk-action-item"><div class="risk-num">3</div>系统自动推送告警至辅导员＋心理中心</div>
+        <div class="risk-action-item"><div class="risk-num">4</div>全程对话存档 · 人工接管处置记录</div>
+      </div>
+      <div class="risk-footer">🚨 强制人工接管 · AI 完全退出响应</div>
+    </div>
+  </div>
+</section>
 
-Expand 43 hidden lines
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-    });
- 
-    /* ── Scroll Reveal ── */
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          revealObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
- 
-    /* ── Nav Scroll Spy ── */
-    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-    const spySections = [...navLinks].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(a => a.classList.remove('active'));
-          const link = document.querySelector('.nav-links a[href="#' + entry.target.id + '"]');
-          if (link) link.classList.add('active');
-        }
-      });
-    }, { threshold: 0.25, rootMargin: '-80px 0px -50% 0px' });
-    spySections.forEach(s => navObserver.observe(s));
- 
-    /* ── Topbar Shadow on Scroll ── */
-    const topbar = document.querySelector('.topbar');
-    const backToTop = document.getElementById('back-to-top');
-    window.addEventListener('scroll', () => {
-      topbar.classList.toggle('scrolled', window.scrollY > 20);
-      backToTop.classList.toggle('show', window.scrollY > 600);
-    }, { passive: true });
- 
-    /* ── Back to Top ── */
-    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
- 
-    /* ── Hamburger Menu ── */
-    const hamburger = document.getElementById('hamburger');
-    const navLinksEl = document.querySelector('.nav-links');
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinksEl.classList.toggle('open');
-    });
-    navLinksEl.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        hamburger.classList.remove('open');
-        navLinksEl.classList.remove('open');
-      });
-    });
- 
-    /* ── Stat Counter Animation ── */
-    function animateCounter(el) {
-      const target = parseInt(el.dataset.target);
-      const suffix = el.dataset.suffix || '';
-      const duration = 1600;
-      const start = performance.now();
-      function tick(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(eased * target) + suffix;
-        if (progress < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="reveal">
+    <div class="section-label">2025 年度活动体系</div>
+    <h2 class="section-title">7 场活动 · 244 人次参与</h2>
+    <p class="section-body">技能提升类与疗愈体验类双轨并行，形成从情绪觉察到主动创作的完整育人链路。</p>
+  </div>
+  <div class="act-grid reveal">
+    <div class="act-card">
+      <div class="act-count">50</div>
+      <div class="act-category skill">技能提升</div>
+      <div class="act-name">"心韵启航"技能提升工作坊</div>
+      <div class="act-date">📅 3 月 26 日 · 50 人</div>
+      <div class="act-desc">心理健康周启动暨心理委员培训，提升心理委员心理素质与社会责任感。</div>
+    </div>
+    <div class="act-card">
+      <div class="act-count">100</div>
+      <div class="act-category skill">技能提升</div>
+      <div class="act-name">"心赋能"心理育人活动</div>
+      <div class="act-date">📅 9 月 29 日 · 100 人</div>
+      <div class="act-desc">校级心理健康教育培训（承办），提升心理委员专业素养与实务能力。</div>
+    </div>
+    <div class="act-card">
+      <div class="act-count">20</div>
+      <div class="act-category skill">技能提升</div>
+      <div class="act-name">"AI 心声"创作工作坊</div>
+      <div class="act-date">📅 6 月 12 日 · 20 人</div>
+      <div class="act-desc">歌曲创作"AI 创响·乐动心声"，用 Suno 等 AI 工具将内心情绪转化为原创音乐作品，提升美育素养与创新能力。</div>
+    </div>
+    <div class="act-card">
+      <div class="act-category skill">技能提升</div>
+      <div class="act-name">"美润心田"实践创新工作坊</div>
+      <div class="act-date">📅 全年持续</div>
+      <div class="act-desc">融合 AIGC 创作与情绪表达，增强学生审美素养与情绪调节能力的综合实践项目。</div>
+    </div>
+    <div class="act-card">
+      <div class="act-count">30</div>
+      <div class="act-category heal">疗愈体验</div>
+      <div class="act-name">"舞动身心"疗愈工作坊</div>
+      <div class="act-date">📅 校级 · 30 人</div>
+      <div class="act-desc">校级心理健康教育实践，音乐律动促进身心协调，将舞蹈疗愈引入高校心理育人场景。</div>
+    </div>
+    <div class="act-card">
+      <div class="act-count">24</div>
+      <div class="act-category heal">疗愈体验</div>
+      <div class="act-name">"音乐之声"心理疗愈工作坊</div>
+      <div class="act-date">📅 24 人</div>
+      <div class="act-desc">音乐疗愈育人活动，音乐冥想释放压力，引导学生在聆听中觉察情绪、完成情绪自我整合。</div>
+    </div>
+    <div class="act-card">
+      <div class="act-count">15</div>
+      <div class="act-category heal">疗愈体验</div>
+      <div class="act-name">"声愈手作"音乐疗愈手工坊</div>
+      <div class="act-date">📅 15 人</div>
+      <div class="act-desc">手工创作实践活动，融合音乐与手工创作，让学生在动手过程中体验多感官疗愈。</div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="reveal">
+    <div class="section-label">项目发展历程</div>
+    <h2 class="section-title">三年迭代<br>从立项到精品项目</h2>
+  </div>
+  <div class="timeline reveal">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2023 · 项目立项</div>
+      <div class="tl-title">打造一体化心理育人平台的愿景启航</div>
+      <div class="tl-body">旨在打造集音乐疗愈、美育实践、思政教育、创新创业、心理人才交流于一体的心理育人平台。立足音乐学院专业优势，融合跨学科资源，通过数字化、智能化方式为师生提供个性化、专业化的音乐疗愈服务。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2023 · 行动计划</div>
+      <div class="tl-title">组建团队，制定计划，树立典范</div>
+      <div class="tl-body">组建由学生、音乐学院等组成的指导小组，制定项目工作计划表，明确各阶段具体任务和时限，举办活动展示工作坊、音乐疗愈优秀学生骨干评选等活动，初步形成"以老带新"人才传承机制。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2024 · 具体要求</div>
+      <div class="tl-title">资源建设、品牌打造、骨干培养全面推进</div>
+      <div class="tl-body">编写音乐疗愈实践指导手册，申报省级科研课题（2023WQNCX055），打造校园音乐疗愈特色品牌活动，培养音乐疗愈学生骨干 ≥30 人，提升参与师生音乐疗愈能力和数字素养。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2024—2025 · 总体目标</div>
+      <div class="tl-title">AI 音乐疗愈平台上线，课程体系落地</div>
+      <div class="tl-body">"悦音智语" AI 智能体平台完成搭建并稳定运行，涵盖知识库构建、工作流调试、风险预警和对话日志监控全链路，支持情绪识别、疗愈推荐和引导式对话四项核心功能，师生骨干梯队成型。</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-year">2025 · 精品项目</div>
+      <div class="tl-title">凝练成果，打造广东省思政精品项目</div>
+      <div class="tl-body">获广东省高校思想政治工作优秀案例奖、"新师范"建设优秀案例等省级荣誉 5 项，发表相关论文 9 篇，获省级及校院级科研课题 8 项，形成可向同类高校展示和迁移的推广方案。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="reveal">
+    <div class="section-label">成果与荣誉</div>
+    <h2 class="section-title">有平台 · 有数据 · 有荣誉</h2>
+    <p class="section-body">区别于停留在方案和设想层面的申报材料，本案例具有"有平台可用、有数据可查、有荣誉可证"的鲜明特征。</p>
+  </div>
+  <div class="ach-grid reveal">
+    <div class="ach-card">
+      <div class="ach-icon-box">🏅</div>
+      <div>
+        <div class="ach-text-title">省高校思政优秀案例奖</div>
+        <div class="ach-text-sub">"悦音智语"心理实践工作坊获广东省高校思想政治工作优秀案例奖</div>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon-box">⭐</div>
+      <div>
+        <div class="ach-text-title">"新师范"建设优秀案例</div>
+        <div class="ach-text-sub">"234心理素养提升模式"入选广东省"新师范"建设优秀案例</div>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon-box">📜</div>
+      <div>
+        <div class="ach-text-title">省级评价改革征文三等奖</div>
+        <div class="ach-text-sub">广东省教育评价改革征文三等奖</div>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon-box">🎓</div>
+      <div>
+        <div class="ach-text-title">数字思政创新论文三等奖</div>
+        <div class="ach-text-sub">数字思政创新发展论坛论文三等奖</div>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon-box">🎵</div>
+      <div>
+        <div class="ach-text-title">广州日报 AIGC 比赛三等奖</div>
+        <div class="ach-text-sub">"AI 心声"工作坊学生用 AIGC 创作的原创音乐作品获奖</div>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon-box">📄</div>
+      <div>
+        <div class="ach-text-title">9 篇相关论文</div>
+        <div class="ach-text-sub">期刊 4 篇、全国性会议论文 4 篇、报刊 1 篇，涵盖音乐师范生心理育人、AI 心理育人模式等方向</div>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon-box">🔬</div>
+      <div>
+        <div class="ach-text-title">省级科研课题 2 项</div>
+        <div class="ach-text-sub">2023WQNCX055、2024GXJK152，校院级课题 6 项，合计 8 项在研及结题课题支撑</div>
+      </div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon-box">📊</div>
+      <div>
+        <div class="ach-text-title">大规模调研数据</div>
+        <div class="ach-text-sub">全校大规模网络行为调研有效问卷 1159 份，27 张统计图表，为项目必要性提供实证支撑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <div class="reveal">
+    <div class="section-label">四大支撑体系</div>
+    <h2 class="section-title">组织 · 技术 · 课程 · 前期<br>全链条保障</h2>
+  </div>
+  <div class="support-grid reveal">
+    <div class="support-col">
+      <div class="support-col-head">🏢 组织保障</div>
+      <div class="support-items">
+        <div class="support-item">10 次专题会议</div>
+        <div class="support-item">跨学科教师团队</div>
+        <div class="support-item">27 名心理委员协同参与</div>
+        <div class="support-item">学院—教师—心理站—专家四方联动</div>
+        <div class="support-item">全过程管理台账，过程可追溯</div>
+      </div>
+    </div>
+    <div class="support-col">
+      <div class="support-col-head">⚙️ 技术支撑</div>
+      <div class="support-items">
+        <div class="support-item">"悦音智语"智能体（FastGPT）</div>
+        <div class="support-item">AI 情绪识别系统</div>
+        <div class="support-item">心理干预与追踪</div>
+        <div class="support-item">DeepSeek/豆包等底层大模型</div>
+        <div class="support-item">风险预警与对话日志看板</div>
+      </div>
+    </div>
+    <div class="support-col">
+      <div class="support-col-head">📚 课程体系</div>
+      <div class="support-items">
+        <div class="support-item">《舞蹈与身心疗愈》公选课</div>
+        <div class="support-item">音乐疗愈工作坊系列</div>
+        <div class="support-item">师生骨干培训（400+ 人次）</div>
+        <div class="support-item">三阶段疗愈模型：放松—表达—创造</div>
+        <div class="support-item">课程资源包：大纲、脚本、练习单</div>
+      </div>
+    </div>
+    <div class="support-col">
+      <div class="support-col-head">🌱 前期基础</div>
+      <div class="support-items">
+        <div class="support-item">沁润师德·艺美培元前期积累</div>
+        <div class="support-item">72 场活动 / 2000+ 人次</div>
+        <div class="support-item">42 名朋辈小老师队伍</div>
+        <div class="support-item">乡村延伸：花都/阳西支教实践</div>
+        <div class="support-item">师者网络文化工作室支撑</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI ENTRY -->
+<section id="ai-entry">
+  <div class="section-label" style="position:relative;z-index:1;">立即体验</div>
+  <h2 class="section-title reveal" style="position:relative;z-index:1;">四大 AI 助手<br>随时为你服务</h2>
+  <p class="section-body reveal" style="position:relative;z-index:1;">
+    所有助手均无需注册，点击即可直接对话。点击右下角 <strong style="color:var(--gold-light);">蓝色气泡按钮</strong> 可随时唤出音乐疗愈伙伴。
+  </p>
+
+  <div class="ai-entry-cards reveal">
+
+    <div class="ai-entry-card">
+      <div class="ai-entry-card-badge">核心</div>
+      <div class="ai-entry-card-icon">🎵</div>
+      <div class="ai-entry-card-title">音乐疗愈学习伙伴</div>
+      <div class="ai-entry-card-sub">根据情绪状态智能推荐音乐，三阶段疗愈资源，24 小时陪伴支持，分级响应风险预警</div>
+      <a href="https://cloud.fastgpt.io/chat/share?shareId=yxYBy0xzKReJQgoPY4iJhyQ7" target="_blank" class="ai-entry-card-btn">立即对话 →</a>
+    </div>
+
+    <div class="ai-entry-card">
+      <div class="ai-entry-card-badge">学工</div>
+      <div class="ai-entry-card-icon">🎓</div>
+      <div class="ai-entry-card-title">二师小导</div>
+      <div class="ai-entry-card-sub">数字辅导员，解答学生事务、政策咨询、校园生活等各类问题，随时提供专业引导</div>
+      <a href="https://cloud.fastgpt.io/chat/share?shareId=g6GMMm7qTYnlhZklKTkXy0js" target="_blank" class="ai-entry-card-btn">立即对话 →</a>
+    </div>
+
+    <div class="ai-entry-card">
+      <div class="ai-entry-card-badge">教学</div>
+      <div class="ai-entry-card-icon">📝</div>
+      <div class="ai-entry-card-title">智能出题助手</div>
+      <div class="ai-entry-card-sub">一键生成各类题型，支持自定义难度与知识点，助力教师高效备课与学生自测</div>
+      <a href="https://cloud.fastgpt.io/chat/share?shareId=g3ZrevaEjSQluTlOswuhbdbF" target="_blank" class="ai-entry-card-btn">立即对话 →</a>
+    </div>
+
+    <div class="ai-entry-card">
+      <div class="ai-entry-card-badge">AI 赋能</div>
+      <div class="ai-entry-card-icon">🤖</div>
+      <div class="ai-entry-card-title">AI 赋能教学设计助手</div>
+      <div class="ai-entry-card-sub">以 AI 工具辅助教学设计全流程，生成教案框架、活动方案与评价量规，提升教学效能</div>
+      <a href="https://cloud.fastgpt.io/chat/share?shareId=vDtNf3XnE9s3VBOYfhwXALW0" target="_blank" class="ai-entry-card-btn">立即对话 →</a>
+    </div>
+
+  </div>
+
+  <div class="ai-bubble-hint reveal">
+    <span>💡 页面右下角蓝色闪电图标 · 点击随时唤出音乐疗愈学习伙伴</span>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">悦音智语 · AI 智能体融入高校心理健康教育</div>
+    <div class="footer-sub">广东第二师范学院音乐学院 · 2023—2025 年度高校思想政治工作案例</div>
+  </div>
+  <div class="footer-links">
+    <a href="javascript:void(0)" onclick="scrollTo('about')">项目简介</a>
+    <a href="javascript:void(0)" onclick="scrollTo('system')">系统架构</a>
+    <a href="javascript:void(0)" onclick="scrollTo('activities')">活动体系</a>
+    <a href="javascript:void(0)" onclick="scrollTo('ai-entry')">进入平台</a>
+  </div>
+</footer>
+
+<script>
+// Smooth scroll helper (bypasses sandbox anchor redirect)
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.pageYOffset - 64;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
     }
-    const statObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          animateCounter(e.target);
-          statObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.stat-value[data-target]').forEach(el => statObserver.observe(el));
- 
-    /* ── Iframe Loading State ── */
-    const agentIframe = document.getElementById('agent-iframe');
-    const frameLoading = document.getElementById('frame-loading');
-    if (agentIframe && frameLoading) {
-      agentIframe.addEventListener('load', () => frameLoading.classList.add('hidden'));
-      setTimeout(() => frameLoading.classList.add('hidden'), 8000);
-    }
-  </script>
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav active
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 60) {
+    nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
+  } else {
+    nav.style.boxShadow = 'none';
+  }
+});
+</script>
+
+<!-- FastGPT 悬浮气泡入口 -->
+<script
+  type="text/javascript"
+  src="https://cloud.fastgpt.io/js/iframe.js"
+  id="chatbot-iframe"
+  data-bot-src="https://cloud.fastgpt.io/chat/share?shareId=yxYBy0xzKReJQgoPY4iJhyQ7"
+  data-default-open="false"
+  data-drag="false"
+  data-open-icon="data:image/svg+xml;base64,PHN2ZyB0PSIxNjkwNTMyNzg1NjY0IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjQxMzIiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEyIDMyQzI0Ny4wNCAzMiAzMiAyMjQgMzIgNDY0QTQxMC4yNCA0MTAuMjQgMCAwIDAgMTcyLjQ4IDc2OEwxNjAgOTY1LjEyYTI1LjI4IDI1LjI4IDAgMCAwIDM5LjA0IDIyLjRsMTY4LTExMkE1MjguNjQgNTI4LjY0IDAgMCAwIDUxMiA4OTZjMjY0Ljk2IDAgNDgwLTE5MiA0ODAtNDMyUzc3Ni45NiAzMiA1MTIgMzJ6IG0yNDQuOCA0MTZsLTM2MS42IDMwMS43NmExMi40OCAxMi40OCAwIDAgMS0xOS44NC0xMi40OGw1OS4yLTIzMy45MmgtMTYwYTEyLjQ4IDEyLjQ4IDAgMCAxLTcuMzYtMjMuMzZsMzYxLjYtMzAxLjc2YTEyLjQ4IDEyLjQ4IDAgMCAxIDE5Ljg0IDEyLjQ4bC01OS4yIDIzMy45MmgxNjBhMTIuNDggMTIuNDggMCAwIDEgOCAyMi4wOHoiIGZpbGw9IiM0ZTgzZmQiIHAtaWQ9IjQxMzMiPjwvcGF0aD48L3N2Zz4="
+  data-close-icon="data:image/svg+xml;base64,PHN2ZyB0PSIxNjkwNTM1NDQxNTI2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjYzNjciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBkPSJNNTEyIDEwMjRBNTEyIDUxMiAwIDEgMSA1MTIgMGE1MTIgNTEyIDAgMCAxIDAgMTAyNHpNMzA1Ljk1NjU3MSAzNzAuMzk1NDI5TDQ0Ny40ODggNTEyIDMwNS45NTY1NzEgNjUzLjYwNDU3MWE0NS41NjggNDUuNTY4IDAgMSAwIDY0LjQzODg1OCA2NC40Mzg4NThMNTEyIDU3Ni41MTJsMTQxLjYwNDU3MSAxNDEuNTMxNDI5YTQ1LjU2OCA0NS41NjggMCAwIDAgNjQuNDM4ODU4LTY0LjQzODg1OEw1NzYuNTEyIDUxMmwxNDEuNTMxNDI5LTE0MS42MDQ1NzFhNDUuNTY4IDQ1LjU2OCAwIDEgMC02NC40Mzg4NTgtNjQuNDM4ODU4TDUxMiA0NDcuNDg4IDM3MC4zOTU0MjkgMzA1Ljk1NjU3MWE0NS41NjggNDUuNTY4IDAgMCAwLTY0LjQzODg1OCA2NC40Mzg4NTh6IiBmaWxsPSIjNGU4M2ZkIiBwLWlkPSI2MzY4Ij48L3BhdGg+PC9zdmc+"
+  defer
+></script>
 </body>
 </html>
