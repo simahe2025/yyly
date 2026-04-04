@@ -687,6 +687,27 @@ footer {
 .ap-track-btn-label { font-size: .75rem; color: rgba(255,255,255,0.65); }
 .ap-track-btn.active .ap-track-btn-label { color: var(--gold-light); }
 
+/* category tabs */
+.ap-cats {
+  display: flex; gap: .3rem; margin-bottom: .5rem;
+}
+.ap-cat-btn {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: .4rem; padding: .3rem .2rem;
+  cursor: pointer; font-size: .68rem; color: rgba(255,255,255,0.45);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.ap-cat-btn:hover { background: rgba(201,168,76,0.08); color: rgba(255,255,255,0.7); }
+.ap-cat-btn.active {
+  background: rgba(201,168,76,0.14); color: var(--gold-light);
+  border-color: rgba(201,168,76,0.35);
+}
+.ap-tracks { max-height: 165px; overflow-y: auto; }
+.ap-tracks::-webkit-scrollbar { width: 3px; }
+.ap-tracks::-webkit-scrollbar-track { background: transparent; }
+.ap-tracks::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+
 /* toggle pill */
 #audio-toggle {
   position: fixed; bottom: 90px; left: 24px; z-index: 201;
@@ -891,19 +912,13 @@ footer {
         oninput="setVolume(this.value)">
     </div>
   </div>
-  <div class="ap-tracks">
-    <button class="ap-track-btn active" onclick="switchTrack(0)" id="track-btn-0">
-      <span class="ap-track-btn-icon">🔔</span>
-      <span class="ap-track-btn-label">颂钵冥想音乐</span>
-    </button>
-    <button class="ap-track-btn" onclick="switchTrack(1)" id="track-btn-1">
-      <span class="ap-track-btn-icon">🌿</span>
-      <span class="ap-track-btn-label">自然雨林音景</span>
-    </button>
-    <button class="ap-track-btn" onclick="switchTrack(2)" id="track-btn-2">
-      <span class="ap-track-btn-icon">🎹</span>
-      <span class="ap-track-btn-label">古典钢琴疗愈</span>
-    </button>
+  <div class="ap-cats">
+    <button class="ap-cat-btn active" id="cat-btn-0" onclick="switchCat(0)">🔔 颂钵</button>
+    <button class="ap-cat-btn" id="cat-btn-1" onclick="switchCat(1)">🌿 自然</button>
+    <button class="ap-cat-btn" id="cat-btn-2" onclick="switchCat(2)">🎹 钢琴</button>
+  </div>
+  <div class="ap-tracks" id="ap-track-list">
+    <!-- populated by JS -->
   </div>
 </div>
 
@@ -1496,397 +1511,176 @@ window.addEventListener('scroll', () => {
 });
 </script>
 
+
+
 <!-- ══ AUDIO ENGINE ══ -->
 <script>
 /* ─── State ─── */
-let audioCtx = null;
-let masterGain = null;
-let currentTrack = 0;
-let isPlaying = false;
-let activeNodes = [];
-let volumeLevel = 0.45;
+let audioCtx=null,masterGain=null,currentTrack=0,currentCat=0,isPlaying=false,activeNodes=[],volumeLevel=0.45,autoNextTimer=null;
 
-const tracks = [
-  { icon: '🔔', name: '颂钵冥想音乐' },
-  { icon: '🌿', name: '自然雨林音景' },
-  { icon: '🎹', name: '古典钢琴疗愈' },
+const tracks=[
+  {cat:0,icon:'🔔',name:'西藏颂钵 · 432Hz', sub:'基频432Hz · 深沉泛音列',   dur:18 },
+  {cat:0,icon:'🫧',name:'水晶颂钵 · 528Hz', sub:'爱的频率 · 明亮纯净泛音',  dur:16 },
+  {cat:0,icon:'🌌',name:'OM 宇宙嗡鸣',       sub:'136Hz 地球音 · 冥想引导',   dur:999},
+  {cat:0,icon:'🪘',name:'铜锣低频共鸣',       sub:'深沉低频 · 宽频泛音',       dur:15 },
+  {cat:0,icon:'🔕',name:'双钵拍频冥想',       sub:'两钵交替 · 缓慢拍频',       dur:22 },
+  {cat:1,icon:'🌧',name:'夏日林中细雨',       sub:'带通雨声 · 鸟鸣',           dur:999},
+  {cat:1,icon:'🌊',name:'海浪礁石',           sub:'慢涌浪 · 白噪泡沫',         dur:999},
+  {cat:1,icon:'🌲',name:'深林溪流',           sub:'高频流水 · 虫鸣 · 蛙声',    dur:999},
+  {cat:1,icon:'🌬',name:'高原山风',           sub:'宽频风噪 · LFO 调制',       dur:999},
+  {cat:1,icon:'🌙',name:'夏夜虫鸣',           sub:'蟋蟀 · 蛙声 · 夜间低频',   dur:999},
+  {cat:2,icon:'🌅',name:'五声晨曲',           sub:'C五声 · 清晨空间感',        dur:55 },
+  {cat:2,icon:'🎵',name:'夜曲 · 降E大调',     sub:'Eb大调 · 肖邦风格',         dur:52 },
+  {cat:2,icon:'🍂',name:'秋日慢板',           sub:'F大调 · 暖色和声',          dur:50 },
+  {cat:2,icon:'💧',name:'雨滴练习曲',         sub:'A小调 · 三连音型',           dur:48 },
+  {cat:2,icon:'🕊',name:'黎明冥想和弦',       sub:'G大调 · 极慢 · 长延音',     dur:65 },
 ];
 
-/* ─── Init AudioContext (must be after user gesture) ─── */
-function initCtx() {
-  if (audioCtx) return;
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  masterGain = audioCtx.createGain();
-  masterGain.gain.value = volumeLevel;
-  masterGain.connect(audioCtx.destination);
+/* helpers */
+let _nb=null;
+function getNBuf(){if(_nb)return _nb;const l=audioCtx.sampleRate*4,b=audioCtx.createBuffer(1,l,audioCtx.sampleRate),d=b.getChannelData(0);for(let i=0;i<l;i++)d[i]=Math.random()*2-1;return(_nb=b);}
+function mkRv(dur,dc){dur=dur||3;dc=dc||2;const l=audioCtx.sampleRate*dur,b=audioCtx.createBuffer(2,l,audioCtx.sampleRate);for(let c=0;c<2;c++){const d=b.getChannelData(c);for(let i=0;i<l;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/l,dc);}const cv=audioCtx.createConvolver();cv.buffer=b;return cv;}
+function fNoise(type,freq,q,vol){const s=audioCtx.createBufferSource(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();s.buffer=getNBuf();s.loop=true;f.type=type;f.frequency.value=freq;if(q)f.Q.value=q;g.gain.value=vol;s.connect(f);f.connect(g);g.connect(masterGain);s.start();activeNodes.push(s);return{src:s,filt:f,gain:g};}
+function osc(freq,vol,t0,t1){const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.value=vol;o.connect(g);g.connect(masterGain);o.start(t0||0);if(t1)o.stop(t1);activeNodes.push(o);return{osc:o,gain:g};}
+
+/* CAT 0 BOWLS */
+function playBowl432(){
+  const ps=[216,432,648,1080,1944,3456],as=[0.22,0.18,0.09,0.055,0.025,0.010];
+  function strike(t){ps.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(as[i],t);g.gain.exponentialRampToValueAtTime(0.0001,t+15);o.connect(g);g.connect(masterGain);o.start(t);o.stop(t+15.5);activeNodes.push(o);});}
+  osc(432,0.025,audioCtx.currentTime);osc(433.4,0.020,audioCtx.currentTime);
+  strike(audioCtx.currentTime+0.3);
+  setTimeout(function L(){if(!isPlaying||currentTrack!==0)return;strike(audioCtx.currentTime+0.5);setTimeout(L,18000);},18000);
+}
+function playBowl528(){
+  const ps=[264,528,1056,1584,2640],as=[0.20,0.16,0.08,0.04,0.02];
+  const lo=audioCtx.createOscillator(),lg=audioCtx.createGain();lo.frequency.value=0.22;lg.gain.value=1.8;lo.connect(lg);lo.start();activeNodes.push(lo);
+  function strike(t){ps.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;lg.connect(o.frequency);g.gain.setValueAtTime(as[i],t);g.gain.exponentialRampToValueAtTime(0.0001,t+13);o.connect(g);g.connect(masterGain);o.start(t);o.stop(t+13.5);activeNodes.push(o);});}
+  strike(audioCtx.currentTime+0.2);
+  setTimeout(function L(){if(!isPlaying||currentTrack!==1)return;strike(audioCtx.currentTime+0.3);setTimeout(L,16000);},16000);
+}
+function playOM(){
+  const fs=[136.1,204.2,272.2,408.3,544.4],as=[0.22,0.12,0.07,0.04,0.02];
+  const lo=audioCtx.createOscillator(),lg=audioCtx.createGain();lo.frequency.value=0.08;lg.gain.value=0.10;lo.start();activeNodes.push(lo);
+  fs.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;g.gain.value=0;lo.connect(lg);lg.connect(g.gain);g.gain.linearRampToValueAtTime(as[i],audioCtx.currentTime+5);o.connect(g);g.connect(masterGain);o.start();activeNodes.push(o);});
+}
+function playGong(){
+  const df=[60,90,135,202,304],da=[0.25,0.15,0.10,0.06,0.03];
+  function strike(t){const s=audioCtx.createBufferSource(),lp=audioCtx.createBiquadFilter(),g=audioCtx.createGain();s.buffer=getNBuf();lp.type='lowpass';lp.frequency.value=700;g.gain.setValueAtTime(0.28,t);g.gain.exponentialRampToValueAtTime(0.0001,t+11);s.connect(lp);lp.connect(g);g.connect(masterGain);s.start(t);activeNodes.push(s);df.forEach((f,i)=>{const o=audioCtx.createOscillator(),og=audioCtx.createGain();o.type='sine';o.frequency.value=f;og.gain.setValueAtTime(da[i],t);og.gain.exponentialRampToValueAtTime(0.0001,t+13);o.connect(og);og.connect(masterGain);o.start(t);o.stop(t+13.5);activeNodes.push(o);});}
+  strike(audioCtx.currentTime+0.2);
+  setTimeout(function L(){if(!isPlaying||currentTrack!==3)return;strike(audioCtx.currentTime+0.5);setTimeout(L,15000);},15000);
+}
+function playDualBowl(){
+  const bA=[396,594,792,1188],bB=[400,598,796,1192],aA=[0.18,0.10,0.06,0.03],aB=[0.15,0.08,0.04,0.02];
+  function sA(t){bA.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(aA[i],t);g.gain.exponentialRampToValueAtTime(0.0001,t+14);o.connect(g);g.connect(masterGain);o.start(t);o.stop(t+14.5);activeNodes.push(o);});}
+  function sB(t){bB.forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(aB[i],t);g.gain.exponentialRampToValueAtTime(0.0001,t+14);o.connect(g);g.connect(masterGain);o.start(t);o.stop(t+14.5);activeNodes.push(o);});}
+  sA(audioCtx.currentTime+0.3);
+  setTimeout(()=>{if(isPlaying&&currentTrack===4)sB(audioCtx.currentTime+0.3);},7000);
+  setTimeout(function L(){if(!isPlaying||currentTrack!==4)return;sA(audioCtx.currentTime+0.3);setTimeout(()=>{if(isPlaying&&currentTrack===4)sB(audioCtx.currentTime+0.3);},7000);setTimeout(L,22000);},22000);
 }
 
-/* ─── Stop all active nodes ─── */
-function stopAll() {
-  activeNodes.forEach(n => { try { n.stop(); } catch(e){} });
-  activeNodes = [];
+/* CAT 1 NATURE */
+function playRain(){
+  fNoise('bandpass',1400,0.6,0.28);fNoise('lowpass',260,null,0.09);
+  function chirp(){if(!isPlaying||currentTrack!==5)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=2200+Math.random()*1400;o.frequency.setValueAtTime(f,audioCtx.currentTime);o.frequency.linearRampToValueAtTime(f*1.35,audioCtx.currentTime+0.08);o.frequency.linearRampToValueAtTime(f*0.82,audioCtx.currentTime+0.22);g.gain.setValueAtTime(0,audioCtx.currentTime);g.gain.linearRampToValueAtTime(0.07,audioCtx.currentTime+0.02);g.gain.linearRampToValueAtTime(0,audioCtx.currentTime+0.26);o.connect(g);g.connect(masterGain);o.start();o.stop(audioCtx.currentTime+0.30);activeNodes.push(o);setTimeout(chirp,2500+Math.random()*5500);}
+  setTimeout(chirp,1500);
+}
+function playOcean(){
+  fNoise('lowpass',110,null,0.26);fNoise('bandpass',750,0.4,0.16);
+  const sw=fNoise('lowpass',380,null,0.0),lo=audioCtx.createOscillator(),lg=audioCtx.createGain();
+  lo.frequency.value=0.11;lg.gain.value=0.13;lo.connect(lg);lg.connect(sw.gain);lo.start();activeNodes.push(lo);
+}
+function playStream(){
+  fNoise('bandpass',3400,1.2,0.18);fNoise('bandpass',820,0.5,0.14);fNoise('lowpass',180,null,0.08);
+  function ins(){if(!isPlaying||currentTrack!==7)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=3900+Math.random()*700;g.gain.setValueAtTime(0.04,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.55);o.connect(g);g.connect(masterGain);o.start();o.stop(audioCtx.currentTime+0.6);activeNodes.push(o);setTimeout(ins,350+Math.random()*1100);}
+  ins();
+}
+function playWind(){
+  fNoise('lowpass',560,null,0.18);fNoise('highpass',2200,null,0.07);
+  [0.04,0.20].forEach((f,i)=>{const lo=audioCtx.createOscillator(),lg=audioCtx.createGain();lo.frequency.value=f;lg.gain.value=[0.11,0.06][i];lo.start();activeNodes.push(lo);});
+}
+function playNight(){
+  fNoise('lowpass',280,null,0.07);
+  function cricket(){if(!isPlaying||currentTrack!==9)return;const n=3+Math.floor(Math.random()*4);for(let i=0;i<n;i++)setTimeout(()=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=4300+Math.random()*500;g.gain.setValueAtTime(0.05,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.08);o.connect(g);g.connect(masterGain);o.start();o.stop(audioCtx.currentTime+0.10);activeNodes.push(o);},i*80);setTimeout(cricket,550+Math.random()*1700);}
+  cricket();
+  function frog(){if(!isPlaying||currentTrack!==9)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=285+Math.random()*55;g.gain.setValueAtTime(0,audioCtx.currentTime);g.gain.linearRampToValueAtTime(0.09,audioCtx.currentTime+0.06);g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.5);o.connect(g);g.connect(masterGain);o.start();o.stop(audioCtx.currentTime+0.55);activeNodes.push(o);setTimeout(frog,4000+Math.random()*7000);}
+  setTimeout(frog,2000);
 }
 
-/* ────────────────────────────────────────
-   TRACK 0 · 自然雨林音景
-   Rain + wind + occasional bird chirp
-──────────────────────────────────────── */
-function playNature() {
-  const ctx = audioCtx;
+/* CAT 2 PIANO */
+let _rv=null,_rvg=null;
+function getRv(){if(_rv)return _rv;_rv=mkRv(3.5,2.0);_rvg=audioCtx.createGain();_rvg.gain.value=0.50;_rv.connect(_rvg);_rvg.connect(masterGain);return _rv;}
+function pn(freq,t,dur,vel){vel=vel||0.42;const rv=getRv();[1,2,3].forEach((h,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq*h;const ha=vel*[0.55,0.20,0.07][i];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(ha,t+0.007);g.gain.exponentialRampToValueAtTime(ha*0.55,t+0.14);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(masterGain);g.connect(rv);o.start(t);o.stop(t+dur+0.12);activeNodes.push(o);});}
+function pad(freqs,t,dur,vol){vol=vol||0.034;freqs.forEach(f=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;g.gain.value=0;g.gain.linearRampToValueAtTime(vol,t+2.5);g.gain.linearRampToValueAtTime(0,t+dur);o.connect(g);g.connect(masterGain);o.start(t);o.stop(t+dur+0.1);activeNodes.push(o);});}
 
-  // Rain: filtered white noise
-  const bufLen = ctx.sampleRate * 4;
-  const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
-  const data = buf.getChannelData(0);
-  for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
-
-  function makeRain() {
-    const src = ctx.createBufferSource();
-    src.buffer = buf; src.loop = true;
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'bandpass'; lp.frequency.value = 1400; lp.Q.value = 0.6;
-    const g = ctx.createGain(); g.gain.value = 0.35;
-    src.connect(lp); lp.connect(g); g.connect(masterGain);
-    src.start(); activeNodes.push(src);
-  }
-
-  // Wind: low-pass noise, slow volume LFO
-  function makeWind() {
-    const src = ctx.createBufferSource();
-    src.buffer = buf; src.loop = true;
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass'; lp.frequency.value = 320;
-    const g = ctx.createGain(); g.gain.value = 0;
-    const lfo = ctx.createOscillator();
-    lfo.frequency.value = 0.07;
-    const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.12;
-    lfo.connect(lfoGain); lfoGain.connect(g.gain);
-    g.gain.setValueAtTime(0.08, ctx.currentTime);
-    src.connect(lp); lp.connect(g); g.connect(masterGain);
-    lfo.start(); src.start();
-    activeNodes.push(src, lfo);
-  }
-
-  // Bird chirps: short sine bursts
-  function chirp() {
-    if (!isPlaying || currentTrack !== 1) return;
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    const freq = 2200 + Math.random() * 1200;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    osc.frequency.linearRampToValueAtTime(freq * 1.3, ctx.currentTime + 0.08);
-    osc.frequency.linearRampToValueAtTime(freq * 0.85, ctx.currentTime + 0.18);
-    g.gain.setValueAtTime(0, ctx.currentTime);
-    g.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.02);
-    g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.22);
-    osc.connect(g); g.connect(masterGain);
-    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.25);
-    setTimeout(chirp, 3000 + Math.random() * 6000);
-  }
-
-  makeRain(); makeWind();
-  setTimeout(chirp, 2000);
+function playMorning(){
+  const sc=[261.63,293.66,329.63,392,440,523.25,587.33,659.26];
+  const pt=[[0,3.8],[2,3.5],[4,4.2],[3,3.2],[1,3.6],[5,5.2],[4,3.1],[2,3.6],[0,4.2],[3,4.6],[5,5.2],[6,4.0],[4,3.6],[2,3.2],[0,5.8]];
+  const vs=[0.40,0.36,0.44,0.34,0.38,0.46,0.36,0.34,0.40,0.38,0.44,0.40,0.36,0.34,0.42];
+  pad([130.81,164.81,196],audioCtx.currentTime+1,52,0.030);
+  function phrase(st){if(!isPlaying||currentTrack!==10)return;let t=st;pt.forEach(([idx,dur],i)=>{pn(sc[idx],t,dur*0.86,vs[i]);if(i%4===0)pn(sc[0]/2,t,2.2,0.14);t+=dur*0.70;});const tot=pt.reduce((s,[,d])=>s+d*0.70,0);setTimeout(()=>phrase(audioCtx.currentTime+1.5),tot*1000+1500);}
+  phrase(audioCtx.currentTime+1.0);
+}
+function playNocturne(){
+  const Eb=311.13,F=349.23,G=392,Bb=466.16,C5=523.25,Eb5=622.25;
+  const mel=[[Eb,5.2],[G,4.6],[Bb,5.8],[C5,5.2],[G,4.2],[F,5.2],[Eb,5.8],[Bb,4.6],[G,5.2],[F,4.6],[Eb,7.5],[C5,5.8],[Eb5,5.2],[Bb,5.8],[G,5.2],[F,4.6],[Eb,8.5]];
+  pad([Eb/2,G/2,Bb/2],audioCtx.currentTime+0.5,55,0.036);
+  function phrase(st){if(!isPlaying||currentTrack!==11)return;let t=st;mel.forEach(([f,dur])=>{pn(f,t,dur*0.88,0.36+Math.random()*0.08);t+=dur*0.72;});const tot=mel.reduce((s,[,d])=>s+d*0.72,0);setTimeout(()=>phrase(audioCtx.currentTime+2.0),tot*1000+2000);}
+  phrase(audioCtx.currentTime+1.0);
+}
+function playAutumn(){
+  const F=349.23,G=392,A=440,Bb=466.16,C5=523.25,D5=587.33;
+  const mel=[[F,5.6],[A,5.1],[C5,6.2],[Bb,5.2],[G,5.6],[A,6.2],[F,5.6],[D5,5.2],[C5,6.8],[A,5.1],[F,7.8],[G,5.6],[Bb,5.2],[D5,6.2],[C5,5.6],[A,5.2],[F,8.5]];
+  pad([F/2,A/2,C5/2],audioCtx.currentTime+0.5,52,0.034);
+  function phrase(st){if(!isPlaying||currentTrack!==12)return;let t=st;mel.forEach(([f,dur])=>{pn(f,t,dur*0.88,0.34+Math.random()*0.07);t+=dur*0.73;});const tot=mel.reduce((s,[,d])=>s+d*0.73,0);setTimeout(()=>phrase(audioCtx.currentTime+2.0),tot*1000+2000);}
+  phrase(audioCtx.currentTime+1.2);
+}
+function playRaindrop(){
+  const A3=220,B3=246.94,C4=261.63,D4=293.66,E4=329.63,F4=349.23,G4=392,A4=440;
+  const mel=[[A4,2.6],[E4,2.6],[C4,2.6],[A4,2.6],[E4,2.6],[C4,2.6],[G4,2.6],[D4,2.6],[B3,2.6],[G4,2.6],[D4,2.6],[B3,2.6],[F4,2.6],[C4,2.6],[A3,2.6],[E4,2.6],[C4,2.6],[A3,2.6],[E4,4.2],[A4,5.5]];
+  pad([A3/2,C4/2,E4/2],audioCtx.currentTime+0.5,50,0.036);
+  function phrase(st){if(!isPlaying||currentTrack!==13)return;let t=st;mel.forEach(([f,dur])=>{pn(f,t,dur*0.80,0.32+Math.random()*0.07);t+=dur*0.68;});const tot=mel.reduce((s,[,d])=>s+d*0.68,0);setTimeout(()=>phrase(audioCtx.currentTime+1.5),tot*1000+1500);}
+  phrase(audioCtx.currentTime+0.8);
+}
+function playDawn(){
+  const G3=196,B3=246.94,D4=293.66,E4=329.63,G4=392,C4=261.63,A3=220;
+  const chords=[[G3,B3,D4,G4],[E4/2,G3,B3,E4],[C4/2,E4/2,G3,C4],[D4/2,A3,D4,G4]];
+  let ci=0;
+  function playChord(){if(!isPlaying||currentTrack!==14)return;const ch=chords[ci%chords.length];ch.forEach(f=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;g.gain.value=0;g.gain.linearRampToValueAtTime(0.050,audioCtx.currentTime+3.5);g.gain.linearRampToValueAtTime(0,audioCtx.currentTime+14);o.connect(g);g.connect(masterGain);o.start();o.stop(audioCtx.currentTime+14.5);activeNodes.push(o);});ci++;setTimeout(playChord,12500);}
+  playChord();
 }
 
-/* ────────────────────────────────────────
-   TRACK 1 · 颂钵冥想音乐
-   Tibetan bowl overtone series
-──────────────────────────────────────── */
-function playSingingBowl() {
-  const ctx = audioCtx;
-  // Fundamental + harmonics of a typical 432Hz bowl
-  const partials = [
-    { f: 216,  g: 0.30 },
-    { f: 432,  g: 0.22 },
-    { f: 648,  g: 0.10 },
-    { f: 1152, g: 0.06 },
-    { f: 2160, g: 0.03 },
-  ];
+const playerFns=[playBowl432,playBowl528,playOM,playGong,playDualBowl,playRain,playOcean,playStream,playWind,playNight,playMorning,playNocturne,playAutumn,playRaindrop,playDawn];
 
-  function strike(time) {
-    partials.forEach(({ f, g }) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = f;
-      // Long exponential decay (bowl sustain)
-      gain.gain.setValueAtTime(g, time);
-      gain.gain.exponentialRampToValueAtTime(0.0001, time + 12);
-      osc.connect(gain); gain.connect(masterGain);
-      osc.start(time); osc.stop(time + 12.5);
-      activeNodes.push(osc);
-    });
-  }
+function initCtx(){if(audioCtx)return;_rv=null;_rvg=null;_nb=null;audioCtx=new(window.AudioContext||window.webkitAudioContext)();masterGain=audioCtx.createGain();masterGain.gain.value=volumeLevel;masterGain.connect(audioCtx.destination);}
+function stopAll(){if(autoNextTimer){clearTimeout(autoNextTimer);autoNextTimer=null;}activeNodes.forEach(n=>{try{n.stop();}catch(e){}});activeNodes=[];_rv=null;_rvg=null;}
+function startTrack(idx){stopAll();initCtx();if(audioCtx.state==='suspended')audioCtx.resume();currentTrack=idx;currentCat=tracks[idx].cat;isPlaying=true;playerFns[idx]();const dur=tracks[idx].dur;if(dur<999)autoNextTimer=setTimeout(autoNext,(dur+1)*1000);updateUI();}
+function autoNext(){if(!isPlaying)return;const ct=tracks.map((t,i)=>({...t,i})).filter(t=>t.cat===currentCat);const p=ct.findIndex(t=>t.i===currentTrack);startTrack(ct[(p+1)%ct.length].i);}
+function togglePlay(){if(!audioCtx){startTrack(currentTrack);return;}if(isPlaying){isPlaying=false;stopAll();if(audioCtx.state==='running')audioCtx.suspend();}else{startTrack(currentTrack);}updateUI();}
+function switchCat(cat){currentCat=cat;const first=tracks.findIndex(t=>t.cat===cat);if(isPlaying)startTrack(first);else{currentTrack=first;renderTrackList(cat);updateUI();}}
+function switchTrackDirect(idx){currentTrack=idx;currentCat=tracks[idx].cat;if(isPlaying)startTrack(idx);else updateUI();}
+function nextTrack(){const ct=tracks.map((t,i)=>({...t,i})).filter(t=>t.cat===currentCat);const p=ct.findIndex(t=>t.i===currentTrack);startTrack(ct[(p+1)%ct.length].i);}
+function prevTrack(){const ct=tracks.map((t,i)=>({...t,i})).filter(t=>t.cat===currentCat);const p=ct.findIndex(t=>t.i===currentTrack);startTrack(ct[(p-1+ct.length)%ct.length].i);}
+function setVolume(v){volumeLevel=parseFloat(v);if(masterGain)masterGain.gain.value=volumeLevel;}
+function showAudioPanel(){document.getElementById('audio-player').classList.remove('hidden');document.getElementById('audio-toggle').classList.add('panel-open');if(!isPlaying)startTrack(currentTrack);}
+function hideAudioPanel(){document.getElementById('audio-player').classList.add('hidden');document.getElementById('audio-toggle').classList.remove('panel-open');}
+function renderTrackList(cat){const list=document.getElementById('ap-track-list');if(!list)return;list.innerHTML='';tracks.forEach((t,i)=>{if(t.cat!==cat)return;const btn=document.createElement('button');btn.className='ap-track-btn'+(i===currentTrack?' active':'');btn.id='track-btn-'+i;btn.onclick=()=>switchTrackDirect(i);btn.innerHTML=`<span class="ap-track-btn-icon">${t.icon}</span><span class="ap-track-btn-label">${t.name}<small style="display:block;font-size:.63rem;color:rgba(255,255,255,0.28);margin-top:.1rem">${t.sub}</small></span>`;list.appendChild(btn);});}
+function updateUI(){document.getElementById('play-btn').textContent=isPlaying?'⏸':'▶';const t=tracks[currentTrack];document.getElementById('ap-icon').textContent=t.icon;document.getElementById('ap-name').textContent=t.name;document.getElementById('audio-toggle-label').textContent=isPlaying?'正在播放':'疗愈音乐';[0,1,2].forEach(i=>document.getElementById('cat-btn-'+i)?.classList.toggle('active',i===t.cat));renderTrackList(t.cat);}
 
-  // Gentle drone: slow beating 432 Hz pair
-  function drone() {
-    [432, 434.5].forEach(f => {
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain(); g.gain.value = 0.04;
-      osc.type = 'sine'; osc.frequency.value = f;
-      osc.connect(g); g.connect(masterGain);
-      osc.start(); activeNodes.push(osc);
-    });
-  }
+renderTrackList(0);
 
-  drone();
-  // Strike every 14 seconds
-  let i = 0;
-  function scheduleStrike() {
-    if (!isPlaying || currentTrack !== 1) return;
-    strike(ctx.currentTime + 0.5);
-    i++;
-    setTimeout(scheduleStrike, 14000);
-  }
-  strike(ctx.currentTime + 0.2);
-  setTimeout(scheduleStrike, 14000);
-}
-
-/* ────────────────────────────────────────
-   TRACK 2 · 古典钢琴疗愈
-   Pentatonic + soft reverb pads
-──────────────────────────────────────── */
-function playPiano() {
-  const ctx = audioCtx;
-
-  // Convolver for fake reverb
-  function makeReverb(dur = 2.5, decay = 2.0) {
-    const len = ctx.sampleRate * dur;
-    const buf = ctx.createBuffer(2, len, ctx.sampleRate);
-    for (let ch = 0; ch < 2; ch++) {
-      const d = buf.getChannelData(ch);
-      for (let i = 0; i < len; i++) {
-        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
-      }
-    }
-    const cv = ctx.createConvolver(); cv.buffer = buf;
-    return cv;
-  }
-
-  const reverb = makeReverb();
-  const reverbGain = ctx.createGain(); reverbGain.gain.value = 0.55;
-  reverb.connect(reverbGain); reverbGain.connect(masterGain);
-
-  // Piano-like tone: sine + harmonics with quick attack, long release
-  function note(freq, startTime, dur, velocity = 0.5) {
-    const fundamental = ctx.createOscillator();
-    fundamental.type = 'sine';
-    fundamental.frequency.value = freq;
-
-    const h2 = ctx.createOscillator(); h2.type = 'sine'; h2.frequency.value = freq * 2;
-    const h3 = ctx.createOscillator(); h3.type = 'sine'; h3.frequency.value = freq * 3;
-
-    const gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(0, startTime);
-    gainNode.gain.linearRampToValueAtTime(velocity * 0.5, startTime + 0.008);
-    gainNode.gain.exponentialRampToValueAtTime(velocity * 0.3, startTime + 0.1);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
-
-    const h2g = ctx.createGain(); h2g.gain.value = 0.18;
-    const h3g = ctx.createGain(); h3g.gain.value = 0.06;
-
-    [fundamental, h2, h3].forEach(o => activeNodes.push(o));
-
-    fundamental.connect(gainNode);
-    h2.connect(h2g); h2g.connect(gainNode);
-    h3.connect(h3g); h3g.connect(gainNode);
-
-    gainNode.connect(masterGain);
-    gainNode.connect(reverb);
-
-    fundamental.start(startTime); fundamental.stop(startTime + dur + 0.1);
-    h2.start(startTime); h2.stop(startTime + dur + 0.1);
-    h3.start(startTime); h3.stop(startTime + dur + 0.1);
-  }
-
-  // Pentatonic melody in C: C4 D4 E4 G4 A4 C5
-  const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
-  // Slow arpeggiated pattern
-  const pattern = [
-    [0, 4.0], [2, 4.0], [4, 4.0], [3, 3.5],
-    [1, 3.5], [5, 5.0], [4, 3.0], [2, 3.0],
-    [0, 4.0], [3, 4.0], [5, 5.0], [4, 3.5],
-    [1, 3.5], [2, 4.0], [0, 6.0],
-  ];
-
-  function playPhrase(startT) {
-    if (!isPlaying || currentTrack !== 2) return;
-    let t = startT;
-    const velocities = [0.42, 0.38, 0.45, 0.35, 0.40, 0.48, 0.38, 0.36,
-                        0.42, 0.40, 0.46, 0.38, 0.35, 0.40, 0.44];
-    pattern.forEach(([idx, dur], i) => {
-      note(scale[idx], t, dur, velocities[i] || 0.4);
-      // Soft bass note
-      if (i % 4 === 0) note(scale[0] / 2, t, 2.5, 0.18);
-      t += dur * 0.72;
-    });
-    const phraseDur = pattern.reduce((s, [,d]) => s + d * 0.72, 0);
-    setTimeout(() => playPhrase(ctx.currentTime + 1.5), phraseDur * 1000 + 1500);
-  }
-
-  // Ambient pad: slow chord
-  function pad() {
-    [261.63, 329.63, 392.00].forEach(f => {
-      const osc = ctx.createOscillator();
-      osc.type = 'sine'; osc.frequency.value = f;
-      const g = ctx.createGain(); g.gain.value = 0;
-      g.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 3);
-      osc.connect(g); g.connect(masterGain);
-      osc.start(); activeNodes.push(osc);
-    });
-  }
-
-  pad();
-  playPhrase(ctx.currentTime + 1.0);
-}
-
-/* ─── Play / stop by track ─── */
-function startTrack(idx) {
-  stopAll();
-  initCtx();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  currentTrack = idx;
-  isPlaying = true;
-  if (idx === 0) playSingingBowl();
-  else if (idx === 1) playNature();
-  else if (idx === 2) playPiano();
-  updateUI();
-}
-
-function togglePlay() {
-  if (!audioCtx) { startTrack(currentTrack); return; }
-  if (isPlaying) {
-    isPlaying = false;
-    stopAll();
-    if (audioCtx.state === 'running') audioCtx.suspend();
-  } else {
-    startTrack(currentTrack);
-  }
-  updateUI();
-}
-
-function switchTrack(idx) {
-  currentTrack = idx;
-  if (isPlaying) startTrack(idx);
-  else updateUI();
-}
-
-function nextTrack() { switchTrack((currentTrack + 1) % 3); }
-function prevTrack() { switchTrack((currentTrack + 2) % 3); }
-
-function setVolume(v) {
-  volumeLevel = parseFloat(v);
-  if (masterGain) masterGain.gain.value = volumeLevel;
-}
-
-/* ─── Panel ─── */
-function showAudioPanel() {
-  document.getElementById('audio-player').classList.remove('hidden');
-  document.getElementById('audio-toggle').classList.add('panel-open');
-  // Auto-play on first open
-  if (!isPlaying) startTrack(currentTrack);
-}
-function hideAudioPanel() {
-  document.getElementById('audio-player').classList.add('hidden');
-  document.getElementById('audio-toggle').classList.remove('panel-open');
-}
-
-/* ─── Update UI state ─── */
-function updateUI() {
-  document.getElementById('play-btn').textContent = isPlaying ? '⏸' : '▶';
-  const t = tracks[currentTrack];
-  document.getElementById('ap-icon').textContent = t.icon;
-  document.getElementById('ap-name').textContent = t.name;
-  document.getElementById('audio-toggle-icon').textContent = isPlaying ? '🎵' : '🎵';
-  document.getElementById('audio-toggle-label').textContent = isPlaying ? '正在播放' : '疗愈音乐';
-  [0, 1, 2].forEach(i => {
-    document.getElementById('track-btn-' + i)
-      .classList.toggle('active', i === currentTrack);
-  });
-}
-
-/* ─── Auto-start on first user interaction anywhere ─── */
-let autoStarted = false;
-function autoStart() {
-  if (autoStarted) return;
-  autoStarted = true;
-  // Don't open audio panel yet — mood bubble takes priority
-  document.removeEventListener('click', autoStart);
-  document.removeEventListener('scroll', autoStart);
-  document.removeEventListener('touchstart', autoStart);
-}
-document.addEventListener('click', autoStart, { once: true });
-document.addEventListener('scroll', autoStart, { once: true });
-document.addEventListener('touchstart', autoStart, { once: true });
-
-/* ══════════════════════════════════════
-   MOOD BUBBLE
-══════════════════════════════════════ */
-let recommendedTrack = 0;
-
-const moodMap = [
-  // 平静 → 颂钵 (track 0)
-  {
-    trackIdx: 0,
-    emoji: '🔔',
-    text: '平静的时刻，颂钵的泛音最适合你。\n让这古老的振动带你轻轻放空，进入当下。',
-    icon: '🔔',
-    name: '颂钵冥想音乐',
-    sub: '432Hz 泛音系列 · 慢节奏冥想',
-  },
-  // 焦虑/压力 → 自然雨林 (track 1)
-  {
-    trackIdx: 1,
-    emoji: '🌿',
-    text: '感到紧绷时，自然的声音是最好的解药。\n雨声与鸟鸣会慢慢松开你肩膀的力气。',
-    icon: '🌿',
-    name: '自然雨林音景',
-    sub: '雨声 · 风声 · 鸟鸣 · 自然合成',
-  },
-  // 低落/疲惫 → 古典钢琴 (track 2)
-  {
-    trackIdx: 2,
-    emoji: '🎹',
-    text: '低落的时候，温柔的钢琴最懂你。\n五声音阶慢慢流淌，像一个轻声的拥抱。',
-    icon: '🎹',
-    name: '古典钢琴疗愈',
-    sub: '五声音阶 · 混响钢琴 · 温柔陪伴',
-  },
+/* MOOD BUBBLE */
+let recommendedTrack=0;
+const moodMap=[
+  {trackIdx:0, emoji:'🔔',text:'平静的时刻，西藏颂钵 432Hz 最适合你。\n古老的振动带你轻轻放空，进入当下。',   icon:'🔔',name:'西藏颂钵 · 432Hz',sub:'颂钵冥想 · 深沉泛音列'},
+  {trackIdx:5, emoji:'🌿',text:'感到紧绷时，自然的声音是最好的解药。\n雨声与鸟鸣会慢慢松开你肩膀的力气。', icon:'🌧',name:'夏日林中细雨',     sub:'自然音景 · 雨声·风声·鸟鸣'},
+  {trackIdx:10,emoji:'🎹',text:'低落的时候，温柔的钢琴最懂你。\n清晨五声调慢慢流淌，像一个轻声的拥抱。',icon:'🌅',name:'五声晨曲',          sub:'古典钢琴 · C五声 · 清晨感'},
 ];
-
-function chooseMood(idx) {
-  const m = moodMap[idx];
-  recommendedTrack = m.trackIdx;
-
-  document.getElementById('mb-res-emoji').textContent = m.emoji;
-  document.getElementById('mb-res-text').textContent = m.text;
-  document.getElementById('mb-res-icon').textContent = m.icon;
-  document.getElementById('mb-res-name').textContent = m.name;
-  document.getElementById('mb-res-sub').textContent = m.sub;
-
-  document.getElementById('mb-step1').style.display = 'none';
-  document.getElementById('mb-step2').style.display = 'block';
-}
-
-function playRecommended() {
-  closeMoodBubble();
-  // Need user gesture context — bubble click counts
-  showAudioPanel();
-  startTrack(recommendedTrack);
-}
-
-function closeMoodBubble() {
-  const el = document.getElementById('mood-bubble');
-  el.classList.add('hiding');
-  setTimeout(() => { el.style.display = 'none'; }, 320);
-}
-
-// Show mood bubble after 2s page load (no user gesture needed for display)
-setTimeout(() => {
-  const el = document.getElementById('mood-bubble');
-  if (el) el.style.display = 'block';
-}, 2000);
+function chooseMood(idx){const m=moodMap[idx];recommendedTrack=m.trackIdx;document.getElementById('mb-res-emoji').textContent=m.emoji;document.getElementById('mb-res-text').textContent=m.text;document.getElementById('mb-res-icon').textContent=m.icon;document.getElementById('mb-res-name').textContent=m.name;document.getElementById('mb-res-sub').textContent=m.sub;document.getElementById('mb-step1').style.display='none';document.getElementById('mb-step2').style.display='block';}
+function playRecommended(){closeMoodBubble();const cat=tracks[recommendedTrack].cat;currentCat=cat;[0,1,2].forEach(i=>document.getElementById('cat-btn-'+i)?.classList.toggle('active',i===cat));renderTrackList(cat);showAudioPanel();startTrack(recommendedTrack);}
+function closeMoodBubble(){const el=document.getElementById('mood-bubble');el.classList.add('hiding');setTimeout(()=>{el.style.display='none';},320);}
+setTimeout(()=>{const el=document.getElementById('mood-bubble');if(el)el.style.display='block';},2000);
 </script>
+
 
 <!-- FastGPT 悬浮气泡入口 -->
 <script
