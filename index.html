@@ -701,9 +701,170 @@ footer {
 }
 #audio-toggle:hover { background: rgba(26,18,18,0.95); transform: translateY(-1px); }
 #audio-toggle.panel-open { display: none; }
+/* ── MOOD BUBBLE ── */
+#mood-bubble {
+  position: fixed;
+  bottom: 90px; right: 24px;
+  z-index: 300;
+  width: 290px;
+  background: rgba(26,18,18,0.92);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 1.2rem;
+  padding: 1.2rem 1.3rem 1rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  animation: bubble-in .45s cubic-bezier(.34,1.56,.64,1) both;
+}
+#mood-bubble.hiding {
+  animation: bubble-out .3s ease forwards;
+}
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes bubble-out {
+  to { opacity: 0; transform: translateY(16px) scale(0.9); pointer-events: none; }
+}
+.mb-avatar {
+  display: flex; align-items: center; gap: .6rem;
+  margin-bottom: .85rem;
+}
+.mb-avatar-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--crimson), var(--crimson-deep));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(155,26,47,0.4);
+}
+.mb-avatar-name {
+  font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+  color: var(--gold-light);
+  line-height: 1.2;
+}
+.mb-avatar-sub {
+  font-size: .65rem; color: rgba(255,255,255,0.35);
+}
+.mb-question {
+  font-size: .84rem; color: rgba(255,255,255,0.85);
+  line-height: 1.65; margin-bottom: 1rem;
+}
+.mb-options {
+  display: flex; flex-direction: column; gap: .45rem;
+  margin-bottom: .8rem;
+}
+.mb-option {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: .7rem; padding: .55rem .9rem;
+  cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: .55rem;
+  transition: background .2s, border-color .2s, transform .15s;
+  width: 100%;
+}
+.mb-option:hover {
+  background: rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.35);
+  transform: translateX(3px);
+}
+.mb-option-emoji { font-size: 1.1rem; }
+.mb-option-text { font-size: .8rem; color: rgba(255,255,255,0.75); line-height: 1.35; }
+.mb-option-text strong { display: block; color: rgba(255,255,255,0.9); font-size: .82rem; }
+
+/* Result state */
+.mb-result {
+  display: none;
+  text-align: center;
+  padding: .4rem 0 .2rem;
+}
+.mb-result-emoji { font-size: 2rem; margin-bottom: .4rem; }
+.mb-result-text {
+  font-size: .8rem; color: rgba(255,255,255,0.7);
+  line-height: 1.6; margin-bottom: .9rem;
+}
+.mb-result-track {
+  display: flex; align-items: center; gap: .6rem;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: .7rem; padding: .6rem .9rem;
+  margin-bottom: .75rem;
+}
+.mb-result-track-icon { font-size: 1.3rem; }
+.mb-result-track-info { text-align: left; }
+.mb-result-track-name { font-size: .82rem; font-weight: 700; color: var(--gold-light); }
+.mb-result-track-sub { font-size: .7rem; color: rgba(255,255,255,0.4); }
+.mb-play-btn {
+  width: 100%; background: var(--crimson); color: white;
+  border: none; border-radius: .6rem; padding: .6rem;
+  font-size: .82rem; font-weight: 700; cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.mb-play-btn:hover { background: var(--crimson-light); transform: translateY(-1px); }
+.mb-skip {
+  background: none; border: none; cursor: pointer;
+  font-size: .68rem; color: rgba(255,255,255,0.25);
+  padding: 0; width: 100%; text-align: center;
+  transition: color .2s;
+}
+.mb-skip:hover { color: rgba(255,255,255,0.5); }
 </style>
 </head>
 <body>
+
+<!-- MOOD BUBBLE -->
+<div id="mood-bubble" style="display:none">
+  <div class="mb-avatar">
+    <div class="mb-avatar-icon">🎵</div>
+    <div>
+      <div class="mb-avatar-name">悦音小助手</div>
+      <div class="mb-avatar-sub">音乐疗愈 · AI 伴学</div>
+    </div>
+  </div>
+
+  <!-- Step 1: Question -->
+  <div id="mb-step1">
+    <div class="mb-question">你好～今天感觉怎么样？<br>我来为你推荐适合的疗愈音乐 🎶</div>
+    <div class="mb-options">
+      <button class="mb-option" onclick="chooseMood(0)">
+        <span class="mb-option-emoji">😌</span>
+        <span class="mb-option-text">
+          <strong>平静 · 想放空一下</strong>
+          需要一些安静的陪伴
+        </span>
+      </button>
+      <button class="mb-option" onclick="chooseMood(1)">
+        <span class="mb-option-emoji">😔</span>
+        <span class="mb-option-text">
+          <strong>有点焦虑 · 压力较大</strong>
+          心里有些紧绷，想放松
+        </span>
+      </button>
+      <button class="mb-option" onclick="chooseMood(2)">
+        <span class="mb-option-emoji">😶</span>
+        <span class="mb-option-text">
+          <strong>情绪低落 · 需要能量</strong>
+          有些疲惫，想被温柔接住
+        </span>
+      </button>
+    </div>
+    <button class="mb-skip" onclick="closeMoodBubble()">暂时跳过</button>
+  </div>
+
+  <!-- Step 2: Result -->
+  <div id="mb-step2" class="mb-result">
+    <div class="mb-result-emoji" id="mb-res-emoji">🔔</div>
+    <div class="mb-result-text" id="mb-res-text"></div>
+    <div class="mb-result-track">
+      <div class="mb-result-track-icon" id="mb-res-icon">🔔</div>
+      <div class="mb-result-track-info">
+        <div class="mb-result-track-name" id="mb-res-name"></div>
+        <div class="mb-result-track-sub" id="mb-res-sub"></div>
+      </div>
+    </div>
+    <button class="mb-play-btn" onclick="playRecommended()">▶ 立即播放</button>
+    <br><br>
+    <button class="mb-skip" onclick="closeMoodBubble()">稍后再听</button>
+  </div>
+</div>
 
 <!-- AUDIO PLAYER -->
 <button id="audio-toggle" onclick="showAudioPanel()">
@@ -718,7 +879,7 @@ footer {
   </div>
   <div class="ap-track-name">
     <span class="ap-track-icon" id="ap-icon">🌿</span>
-    <span id="ap-name">颂钵冥想音乐</span>
+    <span id="ap-name">自然雨林音景</span>
   </div>
   <div class="ap-controls">
     <button class="ap-btn" onclick="prevTrack()" title="上一曲">⏮</button>
@@ -731,11 +892,11 @@ footer {
     </div>
   </div>
   <div class="ap-tracks">
-    <button class="ap-track-btn" onclick="switchTrack(1)" id="track-btn-1">
+    <button class="ap-track-btn active" onclick="switchTrack(0)" id="track-btn-0">
       <span class="ap-track-btn-icon">🔔</span>
       <span class="ap-track-btn-label">颂钵冥想音乐</span>
     </button>
-    <button class="ap-track-btn active" onclick="switchTrack(0)" id="track-btn-0">
+    <button class="ap-track-btn" onclick="switchTrack(1)" id="track-btn-1">
       <span class="ap-track-btn-icon">🌿</span>
       <span class="ap-track-btn-label">自然雨林音景</span>
     </button>
@@ -1346,8 +1507,8 @@ let activeNodes = [];
 let volumeLevel = 0.45;
 
 const tracks = [
-  { icon: '🌿', name: '自然雨林音景' },
   { icon: '🔔', name: '颂钵冥想音乐' },
+  { icon: '🌿', name: '自然雨林音景' },
   { icon: '🎹', name: '古典钢琴疗愈' },
 ];
 
@@ -1408,7 +1569,7 @@ function playNature() {
 
   // Bird chirps: short sine bursts
   function chirp() {
-    if (!isPlaying || currentTrack !== 0) return;
+    if (!isPlaying || currentTrack !== 1) return;
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
     const freq = 2200 + Math.random() * 1200;
@@ -1586,8 +1747,8 @@ function startTrack(idx) {
   if (audioCtx.state === 'suspended') audioCtx.resume();
   currentTrack = idx;
   isPlaying = true;
-  if (idx === 0) playNature();
-  else if (idx === 1) playSingingBowl();
+  if (idx === 0) playSingingBowl();
+  else if (idx === 1) playNature();
   else if (idx === 2) playPiano();
   updateUI();
 }
@@ -1649,7 +1810,7 @@ let autoStarted = false;
 function autoStart() {
   if (autoStarted) return;
   autoStarted = true;
-  showAudioPanel();
+  // Don't open audio panel yet — mood bubble takes priority
   document.removeEventListener('click', autoStart);
   document.removeEventListener('scroll', autoStart);
   document.removeEventListener('touchstart', autoStart);
@@ -1657,6 +1818,74 @@ function autoStart() {
 document.addEventListener('click', autoStart, { once: true });
 document.addEventListener('scroll', autoStart, { once: true });
 document.addEventListener('touchstart', autoStart, { once: true });
+
+/* ══════════════════════════════════════
+   MOOD BUBBLE
+══════════════════════════════════════ */
+let recommendedTrack = 0;
+
+const moodMap = [
+  // 平静 → 颂钵 (track 0)
+  {
+    trackIdx: 0,
+    emoji: '🔔',
+    text: '平静的时刻，颂钵的泛音最适合你。\n让这古老的振动带你轻轻放空，进入当下。',
+    icon: '🔔',
+    name: '颂钵冥想音乐',
+    sub: '432Hz 泛音系列 · 慢节奏冥想',
+  },
+  // 焦虑/压力 → 自然雨林 (track 1)
+  {
+    trackIdx: 1,
+    emoji: '🌿',
+    text: '感到紧绷时，自然的声音是最好的解药。\n雨声与鸟鸣会慢慢松开你肩膀的力气。',
+    icon: '🌿',
+    name: '自然雨林音景',
+    sub: '雨声 · 风声 · 鸟鸣 · 自然合成',
+  },
+  // 低落/疲惫 → 古典钢琴 (track 2)
+  {
+    trackIdx: 2,
+    emoji: '🎹',
+    text: '低落的时候，温柔的钢琴最懂你。\n五声音阶慢慢流淌，像一个轻声的拥抱。',
+    icon: '🎹',
+    name: '古典钢琴疗愈',
+    sub: '五声音阶 · 混响钢琴 · 温柔陪伴',
+  },
+];
+
+function chooseMood(idx) {
+  const m = moodMap[idx];
+  recommendedTrack = m.trackIdx;
+
+  document.getElementById('mb-res-emoji').textContent = m.emoji;
+  document.getElementById('mb-res-text').textContent = m.text;
+  document.getElementById('mb-res-icon').textContent = m.icon;
+  document.getElementById('mb-res-name').textContent = m.name;
+  document.getElementById('mb-res-sub').textContent = m.sub;
+
+  document.getElementById('mb-step1').style.display = 'none';
+  document.getElementById('mb-step2').style.display = 'block';
+}
+
+function playRecommended() {
+  closeMoodBubble();
+  // Need user gesture context — bubble click counts
+  showAudioPanel();
+  startTrack(recommendedTrack);
+}
+
+function closeMoodBubble() {
+  const el = document.getElementById('mood-bubble');
+  el.classList.add('hiding');
+  setTimeout(() => { el.style.display = 'none'; }, 320);
+}
+
+// Show mood bubble after 2s page load (no user gesture needed for display)
+setTimeout(() => {
+  const el = document.getElementById('mood-bubble');
+  if (el) el.style.display = 'block';
+}, 2000);
 </script>
 
 <!-- FastGPT 悬浮气泡入口 -->
