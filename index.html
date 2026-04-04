@@ -827,6 +827,105 @@ footer {
   transition: color .2s;
 }
 .mb-skip:hover { color: rgba(255,255,255,0.5); }
+/* ── RESOURCES SECTION ── */
+.res-tabs {
+  display: flex; gap: .7rem; justify-content: center;
+  margin-bottom: 2.5rem; flex-wrap: wrap;
+}
+.res-tab {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.55); font-size: .85rem; font-weight: 600;
+  padding: .6rem 1.6rem; border-radius: 2em; cursor: pointer;
+  transition: all .25s; font-family: 'Noto Sans SC', sans-serif;
+}
+.res-tab:hover { background: rgba(201,168,76,0.1); color: var(--gold-light); border-color: rgba(201,168,76,0.3); }
+.res-tab.active { background: var(--crimson); color: white; border-color: transparent; box-shadow: 0 4px 16px rgba(155,26,47,0.4); }
+.res-panel { display: none; }
+.res-panel.active { display: block; }
+.res-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+}
+.res-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1rem; padding: 1.6rem;
+  transition: transform .25s, border-color .25s, background .25s;
+}
+.res-card:hover { transform: translateY(-3px); border-color: rgba(201,168,76,0.25); background: rgba(255,255,255,0.06); }
+.res-card-top { margin-bottom: .9rem; }
+.res-badge {
+  display: inline-block; font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+  background: rgba(155,26,47,0.15); color: var(--crimson-light);
+  border: 1px solid rgba(155,26,47,0.3); padding: .2em .7em; border-radius: 2em;
+  margin-bottom: .5rem;
+}
+.res-card-title { font-size: .95rem; font-weight: 700; color: rgba(255,255,255,0.9); line-height: 1.35; }
+.res-card-eng { font-size: .72rem; color: rgba(255,255,255,0.3); margin-top: .2rem; letter-spacing: .04em; }
+.res-card-body { font-size: .8rem; color: rgba(255,255,255,0.55); line-height: 1.75; margin: .8rem 0; }
+.res-card-meta { font-size: .68rem; color: rgba(255,255,255,0.28); margin-bottom: .8rem; }
+.res-score-guide {
+  display: flex; gap: .4rem; margin: .8rem 0; flex-wrap: wrap;
+}
+.res-score-item {
+  flex: 1; min-width: 48px; text-align: center;
+  padding: .4rem .3rem; border-radius: .5rem;
+  font-size: .75rem; font-weight: 700; line-height: 1.3;
+}
+.res-score-item small { display: block; font-size: .6rem; font-weight: 400; margin-top: .15rem; }
+.res-score-item.s0 { background: rgba(34,197,94,0.12); color: #4ADE80; }
+.res-score-item.s1 { background: rgba(250,204,21,0.12); color: #FACC15; }
+.res-score-item.s2 { background: rgba(251,146,60,0.12); color: #FB923C; }
+.res-score-item.s3 { background: rgba(239,68,68,0.12); color: #F87171; }
+.res-btn {
+  display: inline-block; background: rgba(201,168,76,0.12);
+  color: var(--gold-light); border: 1px solid rgba(201,168,76,0.25);
+  font-size: .78rem; font-weight: 600; padding: .45rem 1rem; border-radius: 2em;
+  text-decoration: none; transition: background .2s, border-color .2s;
+}
+.res-btn:hover { background: rgba(201,168,76,0.22); border-color: rgba(201,168,76,0.5); }
+.res-disclaimer {
+  margin-top: 2rem; padding: 1rem 1.5rem;
+  background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.15);
+  border-radius: .7rem; font-size: .78rem; color: rgba(255,255,255,0.45);
+  line-height: 1.7; text-align: center;
+}
+/* book cards */
+.book-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.book-cover {
+  height: 90px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.book-icon { font-size: 2.4rem; }
+.book-info { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; }
+.book-author { font-size: .72rem; color: rgba(255,255,255,0.4); margin: .25rem 0 .6rem; }
+.book-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: auto; padding-top: .8rem; }
+.book-tags span {
+  font-size: .65rem; background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.45); padding: .2em .6em; border-radius: 2em;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+/* link grid */
+.res-link-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.5rem; }
+.res-link-section { }
+.res-link-section-title {
+  font-size: .8rem; font-weight: 700; color: var(--gold-light);
+  letter-spacing: .1em; margin-bottom: 1rem; padding-bottom: .5rem;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.res-link-card {
+  display: flex; gap: .8rem; align-items: flex-start;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: .7rem; padding: .9rem 1rem; margin-bottom: .6rem;
+  text-decoration: none; transition: background .2s, border-color .2s, transform .15s;
+}
+.res-link-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(201,168,76,0.2); transform: translateX(3px); }
+.res-link-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: .1rem; }
+.res-link-name { font-size: .82rem; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: .2rem; }
+.res-link-desc { font-size: .72rem; color: rgba(255,255,255,0.4); line-height: 1.55; }
+@media(max-width:600px){
+  .res-grid { grid-template-columns: 1fr; }
+  .res-link-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -926,13 +1025,14 @@ footer {
 <nav>
   <div class="nav-brand">悦音智语</div>
   <ul class="nav-links">
-    <li><a href="javascript:void(0)" onclick="scrollTo('about')">项目简介</a></li>
-    <li><a href="javascript:void(0)" onclick="scrollTo('concept')">核心理念</a></li>
-    <li><a href="javascript:void(0)" onclick="scrollTo('system')">智能体系统</a></li>
-    <li><a href="javascript:void(0)" onclick="scrollTo('risk')">风险机制</a></li>
-    <li><a href="javascript:void(0)" onclick="scrollTo('activities')">活动体系</a></li>
-    <li><a href="javascript:void(0)" onclick="scrollTo('achievements')">成果荣誉</a></li>
-    <li><a href="javascript:void(0)" onclick="scrollTo('ai-entry')">进入平台</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('about')">项目简介</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('concept')">核心理念</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('system')">智能体系统</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('risk')">风险机制</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('activities')">活动体系</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('achievements')">成果荣誉</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('ai-entry')">进入平台</a></li>
+    <li><a href="javascript:void(0)" onclick="navScrollTo('resources')" style="color:var(--crimson);font-weight:700;">📚 心理资源</a></li>
   </ul>
 </nav>
 
@@ -951,8 +1051,8 @@ footer {
     <p class="hero-subtitle">AI 智能体融入高校心理健康教育实践探索</p>
     <p class="hero-tagline">以美育润心 · 以音乐疗愈 · 以 AI 赋能</p>
     <div class="hero-cta-row">
-      <a href="javascript:void(0)" onclick="scrollTo('ai-entry')" class="btn-primary">🎵 进入音乐疗愈伙伴</a>
-      <a href="javascript:void(0)" onclick="scrollTo('about')" class="btn-outline">了解项目详情 →</a>
+      <a href="javascript:void(0)" onclick="navScrollTo('ai-entry')" class="btn-primary">🎵 进入音乐疗愈伙伴</a>
+      <a href="javascript:void(0)" onclick="navScrollTo('about')" class="btn-outline">了解项目详情 →</a>
     </div>
   </div>
   <div class="hero-scroll">
@@ -1443,11 +1543,11 @@ footer {
     </div>
 
     <div class="ai-entry-card">
-      <div class="ai-entry-card-badge">教学</div>
-      <div class="ai-entry-card-icon">📝</div>
-      <div class="ai-entry-card-title">智能出题助手</div>
-      <div class="ai-entry-card-sub">一键生成各类题型，支持自定义难度与知识点，助力教师高效备课与学生自测</div>
-      <a href="https://cloud.fastgpt.io/chat/share?shareId=g3ZrevaEjSQluTlOswuhbdbF" target="_blank" class="ai-entry-card-btn">立即对话 →</a>
+      <div class="ai-entry-card-badge">创作</div>
+      <div class="ai-entry-card-icon">🎼</div>
+      <div class="ai-entry-card-title">歌曲创作助手</div>
+      <div class="ai-entry-card-sub">AI 辅助歌词创作与旋律构思，将情绪转化为音乐作品，激发音乐创造力</div>
+      <a href="https://cloud.fastgpt.io/chat/share?shareId=dStA9ijCqvfvqMPB7VCjxlFC" target="_blank" class="ai-entry-card-btn">立即对话 →</a>
     </div>
 
     <div class="ai-entry-card">
@@ -1465,6 +1565,340 @@ footer {
   </div>
 </section>
 
+<!-- RESOURCES -->
+<section id="resources" style="background:var(--ink);padding:5rem 5vw 6rem;">
+
+  <!-- Section header -->
+  <div class="reveal" style="text-align:center;margin-bottom:3.5rem;">
+    <div class="section-label" style="color:var(--gold);">心理健康资源库</div>
+    <h2 class="section-title" style="color:var(--white);">量表 · 书籍 · 资料<br>专业资源，开放共享</h2>
+    <p style="font-size:.9rem;color:rgba(255,255,255,0.45);max-width:600px;margin:1rem auto 0;line-height:1.8;">
+      以下资源均来自权威机构及临床心理学领域，供自我了解与学习参考。<br>
+      <strong style="color:rgba(255,255,255,0.6);">量表结果不构成临床诊断，如有需要请及时寻求专业心理援助。</strong>
+    </p>
+  </div>
+
+  <!-- Tab switcher -->
+  <div class="res-tabs reveal">
+    <button class="res-tab active" id="rtab-0" onclick="switchResTab(0)">📋 心理测量量表</button>
+    <button class="res-tab" id="rtab-1" onclick="switchResTab(1)">📖 书籍推荐</button>
+    <button class="res-tab" id="rtab-2" onclick="switchResTab(2)">🔗 资料与链接</button>
+  </div>
+
+  <!-- Panel 0: Scales -->
+  <div class="res-panel active" id="rpanel-0">
+    <div class="res-grid">
+
+      <div class="res-card scale-card">
+        <div class="res-card-top">
+          <div class="res-badge">抑郁筛查</div>
+          <div class="res-card-title">PHQ-9 患者健康问卷</div>
+          <div class="res-card-eng">Patient Health Questionnaire-9</div>
+        </div>
+        <div class="res-card-body">
+          国际通用抑郁筛查工具，基于 DSM-5 诊断标准编制，9 个条目，完成约 2 分钟。已在全球数百项研究中验证，信度（Cronbach α=0.857）与效度均优秀。
+        </div>
+        <div class="res-score-guide">
+          <div class="res-score-item s0">0–4<small>无抑郁</small></div>
+          <div class="res-score-item s1">5–9<small>轻度</small></div>
+          <div class="res-score-item s2">10–14<small>中度</small></div>
+          <div class="res-score-item s3">15–27<small>重度</small></div>
+        </div>
+        <div class="res-card-meta">来源：Spitzer et al., 1999 · Pfizer Inc. 免费授权使用</div>
+        <a href="https://www.chineseinhealthcare.com/phq-9-chinese" target="_blank" class="res-btn">查看量表 →</a>
+      </div>
+
+      <div class="res-card scale-card">
+        <div class="res-card-top">
+          <div class="res-badge" style="background:rgba(245,158,11,0.15);color:#F59E0B;border-color:rgba(245,158,11,0.3);">焦虑筛查</div>
+          <div class="res-card-title">GAD-7 广泛性焦虑量表</div>
+          <div class="res-card-eng">Generalized Anxiety Disorder-7</div>
+        </div>
+        <div class="res-card-body">
+          由 Spitzer 等人 2006 年编制，7 个条目，用于焦虑障碍的快速筛查与严重程度评估。切点值为 10 分时灵敏度 89%、特异度 82%，中文版信效度良好。
+        </div>
+        <div class="res-score-guide">
+          <div class="res-score-item s0">0–4<small>正常</small></div>
+          <div class="res-score-item s1">5–9<small>轻度</small></div>
+          <div class="res-score-item s2">10–14<small>中度</small></div>
+          <div class="res-score-item s3">15–21<small>重度</small></div>
+        </div>
+        <div class="res-card-meta">来源：Spitzer et al., 2006 · Pfizer Inc. 免费授权使用</div>
+        <a href="https://www.chineseinhealthcare.com/gad-7-chinese" target="_blank" class="res-btn">查看量表 →</a>
+      </div>
+
+      <div class="res-card scale-card">
+        <div class="res-card-top">
+          <div class="res-badge" style="background:rgba(90,122,106,0.2);color:#5A7A6A;border-color:rgba(90,122,106,0.4);">压力评估</div>
+          <div class="res-card-title">DASS-21 抑郁焦虑压力量表</div>
+          <div class="res-card-eng">Depression Anxiety Stress Scales-21</div>
+        </div>
+        <div class="res-card-body">
+          澳大利亚新南威尔士大学开发，同时测量抑郁、焦虑与压力三个维度，共 21 题。基于心理障碍的维度概念，适合大学生群体心理健康筛查，已被广泛用于高校研究。
+        </div>
+        <div class="res-score-guide">
+          <div class="res-score-item s0">正常<small>低分段</small></div>
+          <div class="res-score-item s1">轻度<small>中低分</small></div>
+          <div class="res-score-item s2">中度<small>中高分</small></div>
+          <div class="res-score-item s3">严重<small>高分段</small></div>
+        </div>
+        <div class="res-card-meta">来源：Lovibond & Lovibond, 1995 · 免费公开使用</div>
+        <a href="https://www.psytoolkit.org/survey-library/dass21.html" target="_blank" class="res-btn">查看量表 →</a>
+      </div>
+
+      <div class="res-card scale-card">
+        <div class="res-card-top">
+          <div class="res-badge" style="background:rgba(74,110,140,0.2);color:#4A6E8C;border-color:rgba(74,110,140,0.3);">睡眠评估</div>
+          <div class="res-card-title">AIS 阿森斯失眠量表</div>
+          <div class="res-card-eng">Athens Insomnia Scale</div>
+        </div>
+        <div class="res-card-body">
+          国际医学界公认的失眠评价标准量表，8 个条目，评估近 1 个月的睡眠状况。建议临界分数为 6 分，90% 的病例能正确区分失眠患者与正常人，适合日常睡眠健康自查。
+        </div>
+        <div class="res-score-guide">
+          <div class="res-score-item s0">0–5<small>无失眠</small></div>
+          <div class="res-score-item s2">6–9<small>疑似失眠</small></div>
+          <div class="res-score-item s3">≥10<small>失眠</small></div>
+        </div>
+        <div class="res-card-meta">来源：Soldatos et al., 2000 · 俄亥俄州立大学医学院</div>
+        <a href="https://mengte.online/medical_scales/14279" target="_blank" class="res-btn">查看量表 →</a>
+      </div>
+
+      <div class="res-card scale-card">
+        <div class="res-card-top">
+          <div class="res-badge" style="background:rgba(168,85,247,0.15);color:#A855F7;border-color:rgba(168,85,247,0.3);">综合评估</div>
+          <div class="res-card-title">SCL-90 症状自评量表</div>
+          <div class="res-card-eng">Symptom Checklist-90</div>
+        </div>
+        <div class="res-card-body">
+          心理测量领域使用最广泛的综合性症状量表，90 个条目，涵盖躯体化、强迫、人际敏感、抑郁、焦虑、敌对、恐怖、偏执、精神病性 9 个维度。适合全面了解心理健康状态。
+        </div>
+        <div class="res-score-guide">
+          <div class="res-score-item s0">均分&lt;1<small>正常范围</small></div>
+          <div class="res-score-item s2">均分1-2<small>需关注</small></div>
+          <div class="res-score-item s3">均分&gt;2<small>建议就诊</small></div>
+        </div>
+        <div class="res-card-meta">来源：Derogatis et al., 1973 · 临床研究标准工具</div>
+        <a href="https://minke8.cn/xl/" target="_blank" class="res-btn">查看量表 →</a>
+      </div>
+
+      <div class="res-card scale-card" style="border-color:rgba(201,168,76,0.2);background:rgba(201,168,76,0.04);">
+        <div class="res-card-top">
+          <div class="res-badge" style="background:rgba(201,168,76,0.15);color:var(--gold);border-color:rgba(201,168,76,0.3);">音乐疗愈</div>
+          <div class="res-card-title">情绪调节量表 · ERQ</div>
+          <div class="res-card-eng">Emotion Regulation Questionnaire</div>
+        </div>
+        <div class="res-card-body">
+          由 Gross & John 于 2003 年编制，专门测量两种情绪调节策略：认知重评（Cognitive Reappraisal）与表达抑制（Expressive Suppression），适合评估音乐疗愈前后的情绪调节能力变化。
+        </div>
+        <div class="res-score-guide">
+          <div class="res-score-item s0">认知重评<small>重塑诠释</small></div>
+          <div class="res-score-item s1">表达抑制<small>压制情绪</small></div>
+        </div>
+        <div class="res-card-meta">来源：Gross & John, 2003 · Journal of Personality and Social Psychology</div>
+        <a href="https://www.midss.org/content/emotion-regulation-questionnaire-erq" target="_blank" class="res-btn">了解更多 →</a>
+      </div>
+
+    </div>
+    <div class="res-disclaimer">
+      ⚠️ 以上量表均为自评工具，结果仅供参考，不构成临床诊断。如量表得分偏高或持续困扰，请及时联系辅导员或前往心理健康中心寻求专业帮助。
+    </div>
+  </div>
+
+  <!-- Panel 1: Books -->
+  <div class="res-panel" id="rpanel-1">
+    <div class="res-grid">
+
+      <div class="res-card book-card">
+        <div class="book-cover" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">
+          <div class="book-icon">🧠</div>
+        </div>
+        <div class="book-info">
+          <div class="res-badge">正念冥想</div>
+          <div class="res-card-title">《正念禅修：在喧嚣的世界中获取安宁》</div>
+          <div class="book-author">马克·威廉姆斯 著 · 豆瓣 8.8 分</div>
+          <div class="res-card-body">提供 8 周禅修训练指南，通过呼吸练习与身体觉察，打破焦虑、压力恶性循环。英国 NHS 推荐优先治疗方案，已帮助数百万人找到内心安宁。</div>
+          <div class="book-tags"><span>正念</span><span>减压</span><span>冥想</span><span>抑郁干预</span></div>
+        </div>
+      </div>
+
+      <div class="res-card book-card">
+        <div class="book-cover" style="background:linear-gradient(135deg,#2d1b69,#11022e);">
+          <div class="book-icon">💡</div>
+        </div>
+        <div class="book-info">
+          <div class="res-badge" style="background:rgba(245,158,11,0.15);color:#F59E0B;border-color:rgba(245,158,11,0.3);">认知行为</div>
+          <div class="res-card-title">《驾驭情绪的力量》</div>
+          <div class="book-author">美国临床心理学家 著</div>
+          <div class="res-card-body">融合辩证行为疗法（DBT）、接纳承诺疗法（ACT）和基于正念的认知疗法（MBCT），提供完整的情绪管理方法，强调接纳而非控制情绪。</div>
+          <div class="book-tags"><span>DBT</span><span>ACT</span><span>情绪管理</span><span>正念认知</span></div>
+        </div>
+      </div>
+
+      <div class="res-card book-card">
+        <div class="book-cover" style="background:linear-gradient(135deg,#0f3443,#34e89e11);">
+          <div class="book-icon">🌊</div>
+        </div>
+        <div class="book-info">
+          <div class="res-badge" style="background:rgba(90,122,106,0.2);color:#5A7A6A;border-color:rgba(90,122,106,0.4);">心理疗愈</div>
+          <div class="res-card-title">《当下的力量》</div>
+          <div class="book-author">埃克哈特·托利 著 · 全球销量 3000 万册</div>
+          <div class="res-card-body">从哲学与心理学双重视角，探讨活在当下的意义与方法。帮助读者从思维的束缚中解脱，与情绪和解，是心理疗愈领域最具影响力的经典著作之一。</div>
+          <div class="book-tags"><span>当下意识</span><span>灵性疗愈</span><span>情绪接纳</span></div>
+        </div>
+      </div>
+
+      <div class="res-card book-card">
+        <div class="book-cover" style="background:linear-gradient(135deg,#3a1c71,#d76d77);">
+          <div class="book-icon">🎵</div>
+        </div>
+        <div class="book-info">
+          <div class="res-badge" style="background:rgba(201,168,76,0.15);color:var(--gold);border-color:rgba(201,168,76,0.3);">音乐疗愈</div>
+          <div class="res-card-title">《音乐治疗学基础》</div>
+          <div class="book-author">高天 著 · 中国音乐治疗学奠基之作</div>
+          <div class="res-card-body">中国音乐治疗领域权威著作，系统介绍音乐治疗的理论基础、临床方法与实践应用。涵盖接受式、即兴式、再创造式与创作式四大音乐治疗方法。</div>
+          <div class="book-tags"><span>音乐治疗</span><span>临床实践</span><span>情绪干预</span></div>
+        </div>
+      </div>
+
+      <div class="res-card book-card">
+        <div class="book-cover" style="background:linear-gradient(135deg,#134e5e,#71b280);">
+          <div class="book-icon">🤝</div>
+        </div>
+        <div class="book-info">
+          <div class="res-badge" style="background:rgba(74,110,140,0.2);color:#4A6E8C;border-color:rgba(74,110,140,0.3);">人际关系</div>
+          <div class="res-card-title">《非暴力沟通》</div>
+          <div class="book-author">马歇尔·卢森堡 著 · 豆瓣 8.9 分</div>
+          <div class="res-card-body">教会我们用"观察、感受、需要、请求"四个步骤进行非暴力表达，改善人际关系，减少因沟通不畅引发的情绪困扰。适合大学生人际交往困境自我成长。</div>
+          <div class="book-tags"><span>沟通技巧</span><span>人际关系</span><span>情绪表达</span></div>
+        </div>
+      </div>
+
+      <div class="res-card book-card">
+        <div class="book-cover" style="background:linear-gradient(135deg,#4a0e0e,#8b2222);">
+          <div class="book-icon">💭</div>
+        </div>
+        <div class="book-info">
+          <div class="res-badge" style="background:rgba(155,26,47,0.15);color:var(--crimson-light);border-color:rgba(155,26,47,0.3);">认知疗法</div>
+          <div class="res-card-title">《我的情绪为何总被他人左右》</div>
+          <div class="book-author">阿尔伯特·埃利斯 著 · 理性情绪疗法之父</div>
+          <div class="res-card-body">理性情绪行为疗法（REBT）经典入门读本，教你识别"非理性信念"，从思维根源解决情绪被他人掌控的问题。提供具体可操作的认知改变技巧。</div>
+          <div class="book-tags"><span>REBT</span><span>理性思维</span><span>自我管理</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Panel 2: Links / Resources -->
+  <div class="res-panel" id="rpanel-2">
+    <div class="res-link-grid">
+
+      <div class="res-link-section">
+        <div class="res-link-section-title">🏛 权威机构</div>
+        <a class="res-link-card" href="https://www.nimh.nih.gov/health/topics/mental-health" target="_blank">
+          <div class="res-link-icon">🇺🇸</div>
+          <div>
+            <div class="res-link-name">美国国家心理健康研究所 NIMH</div>
+            <div class="res-link-desc">全球权威心理健康研究机构，提供大量免费科普与测评资源</div>
+          </div>
+        </a>
+        <a class="res-link-card" href="https://www.who.int/zh/news-room/fact-sheets/detail/mental-health-strengthening-our-response" target="_blank">
+          <div class="res-link-icon">🌍</div>
+          <div>
+            <div class="res-link-name">世界卫生组织 · 心理健康专区</div>
+            <div class="res-link-desc">WHO 官方心理健康事实清单与全球心理健康行动计划</div>
+          </div>
+        </a>
+        <a class="res-link-card" href="http://www.nhc.gov.cn/jkj/s5888/new_list.shtml" target="_blank">
+          <div class="res-link-icon">🇨🇳</div>
+          <div>
+            <div class="res-link-name">国家卫生健康委员会 · 心理健康</div>
+            <div class="res-link-desc">国内权威心理健康政策、科普文章与干预指南</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="res-link-section">
+        <div class="res-link-section-title">📊 量表工具</div>
+        <a class="res-link-card" href="https://mengte.online/medical_scales" target="_blank">
+          <div class="res-link-icon">📋</div>
+          <div>
+            <div class="res-link-name">梦特医数通 · 心理量表库</div>
+            <div class="res-link-desc">PHQ-9、GAD-7、DASS-21 等量表中文详解与评分说明</div>
+          </div>
+        </a>
+        <a class="res-link-card" href="https://minke8.cn/xl/" target="_blank">
+          <div class="res-link-icon">🔬</div>
+          <div>
+            <div class="res-link-name">心理测试综合平台</div>
+            <div class="res-link-desc">SCL-90、MMPI、艾森克等专业量表在线测评</div>
+          </div>
+        </a>
+        <a class="res-link-card" href="https://www.psytoolkit.org" target="_blank">
+          <div class="res-link-icon">🧪</div>
+          <div>
+            <div class="res-link-name">PsyToolkit（国际量表库）</div>
+            <div class="res-link-desc">免费国际心理学测量工具平台，收录数百个量表</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="res-link-section">
+        <div class="res-link-section-title">🎧 音乐疗愈</div>
+        <a class="res-link-card" href="https://www.musictherapy.org" target="_blank">
+          <div class="res-link-icon">🎵</div>
+          <div>
+            <div class="res-link-name">美国音乐治疗协会 AMTA</div>
+            <div class="res-link-desc">音乐治疗专业研究、临床案例与循证依据资源</div>
+          </div>
+        </a>
+        <a class="res-link-card" href="https://www.wfmt.info" target="_blank">
+          <div class="res-link-icon">🌐</div>
+          <div>
+            <div class="res-link-name">世界音乐治疗联合会 WFMT</div>
+            <div class="res-link-desc">全球音乐治疗组织，提供国际学术资源与研究进展</div>
+          </div>
+        </a>
+        <a class="res-link-card" href="https://cloud.fastgpt.io/chat/share?shareId=yxYBy0xzKReJQgoPY4iJhyQ7" target="_blank">
+          <div class="res-link-icon">🤖</div>
+          <div>
+            <div class="res-link-name">悦音智语 · 音乐疗愈伙伴</div>
+            <div class="res-link-desc">本项目 AI 智能体，个性化音乐推荐与情绪陪伴</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="res-link-section">
+        <div class="res-link-section-title">🆘 危机援助</div>
+        <a class="res-link-card" href="tel:400-161-9995" style="border-color:rgba(239,68,68,0.3);">
+          <div class="res-link-icon">📞</div>
+          <div>
+            <div class="res-link-name" style="color:#EF4444;">北京心理危机研究与干预中心</div>
+            <div class="res-link-desc">全国心理援助热线：<strong>010-82951332</strong></div>
+          </div>
+        </a>
+        <a class="res-link-card" href="tel:400-161-9995" style="border-color:rgba(239,68,68,0.3);">
+          <div class="res-link-icon">🆘</div>
+          <div>
+            <div class="res-link-name" style="color:#EF4444;">全国心理援助热线</div>
+            <div class="res-link-desc"><strong>400-161-9995</strong> · 24小时免费 · 保密服务</div>
+          </div>
+        </a>
+        <a class="res-link-card" href="tel:400-820-1200" style="border-color:rgba(239,68,68,0.3);">
+          <div class="res-link-icon">💬</div>
+          <div>
+            <div class="res-link-name" style="color:#EF4444;">希望24热线</div>
+            <div class="res-link-desc"><strong>400-820-1200</strong> · 情感危机与自杀预防</div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div>
@@ -1472,20 +1906,28 @@ footer {
     <div class="footer-sub">广东第二师范学院音乐学院 · 2023—2025 年度高校思想政治工作案例</div>
   </div>
   <div class="footer-links">
-    <a href="javascript:void(0)" onclick="scrollTo('about')">项目简介</a>
-    <a href="javascript:void(0)" onclick="scrollTo('system')">系统架构</a>
-    <a href="javascript:void(0)" onclick="scrollTo('activities')">活动体系</a>
-    <a href="javascript:void(0)" onclick="scrollTo('ai-entry')">进入平台</a>
+    <a href="javascript:void(0)" onclick="navScrollTo('about')">项目简介</a>
+    <a href="javascript:void(0)" onclick="navScrollTo('system')">系统架构</a>
+    <a href="javascript:void(0)" onclick="navScrollTo('activities')">活动体系</a>
+    <a href="javascript:void(0)" onclick="navScrollTo('ai-entry')">进入平台</a>
+    <a href="javascript:void(0)" onclick="navScrollTo('resources')">心理资源</a>
   </div>
 </footer>
 
 <script>
 // Smooth scroll helper (bypasses sandbox anchor redirect)
-function scrollTo(id) {
+function navScrollTo(id) {
   const el = document.getElementById(id);
   if (!el) return;
   const top = el.getBoundingClientRect().top + window.pageYOffset - 64;
   window.scrollTo({ top, behavior: 'smooth' });
+}
+
+function switchResTab(idx) {
+  [0,1,2].forEach(i => {
+    document.getElementById('rtab-'+i).classList.toggle('active', i===idx);
+    document.getElementById('rpanel-'+i).classList.toggle('active', i===idx);
+  });
 }
 
 // Scroll reveal
