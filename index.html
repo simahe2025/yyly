@@ -600,9 +600,151 @@ footer {
 /* scroll reveal */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.visible { opacity: 1; transform: none; }
+
+/* ── AUDIO PLAYER ── */
+#audio-player {
+  position: fixed;
+  bottom: 90px; left: 24px;
+  z-index: 200;
+  background: rgba(26,18,18,0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 1rem;
+  padding: 1rem 1.2rem;
+  width: 260px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transition: transform .35s ease, opacity .35s ease;
+}
+#audio-player.hidden {
+  transform: translateY(12px);
+  opacity: 0;
+  pointer-events: none;
+}
+.ap-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .7rem;
+}
+.ap-title {
+  font-size: .75rem; font-weight: 700; letter-spacing: .08em;
+  color: var(--gold-light);
+}
+.ap-close {
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,0.35); font-size: .9rem; line-height: 1;
+  padding: 0; transition: color .2s;
+}
+.ap-close:hover { color: rgba(255,255,255,0.8); }
+.ap-track-name {
+  font-size: .78rem; color: rgba(255,255,255,0.7);
+  margin-bottom: .6rem; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.ap-track-name .ap-track-icon { margin-right: .35rem; }
+.ap-controls {
+  display: flex; align-items: center; gap: .6rem;
+  margin-bottom: .75rem;
+}
+.ap-btn {
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,0.55); font-size: 1rem;
+  padding: .3rem; border-radius: .3rem;
+  transition: color .2s, background .2s;
+  line-height: 1;
+}
+.ap-btn:hover { color: var(--gold-light); background: rgba(201,168,76,0.1); }
+.ap-btn.play-btn {
+  width: 34px; height: 34px;
+  background: var(--crimson); color: white;
+  border-radius: 50%; font-size: .85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .15s;
+}
+.ap-btn.play-btn:hover { background: var(--crimson-light); transform: scale(1.08); }
+.ap-volume { display: flex; align-items: center; gap: .4rem; flex: 1; }
+.ap-volume input[type=range] {
+  flex: 1; height: 3px;
+  -webkit-appearance: none; appearance: none;
+  background: rgba(255,255,255,0.15); border-radius: 2px; cursor: pointer;
+}
+.ap-volume input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--gold);
+}
+.ap-tracks {
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.ap-track-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: .5rem; padding: .4rem .7rem;
+  cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: .5rem;
+  transition: background .2s, border-color .2s;
+}
+.ap-track-btn:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.2); }
+.ap-track-btn.active { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.35); }
+.ap-track-btn-icon { font-size: .9rem; }
+.ap-track-btn-label { font-size: .75rem; color: rgba(255,255,255,0.65); }
+.ap-track-btn.active .ap-track-btn-label { color: var(--gold-light); }
+
+/* toggle pill */
+#audio-toggle {
+  position: fixed; bottom: 90px; left: 24px; z-index: 201;
+  background: rgba(26,18,18,0.85);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 2em; padding: .45rem 1rem;
+  cursor: pointer; display: flex; align-items: center; gap: .5rem;
+  color: var(--gold-light); font-size: .78rem; font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  transition: background .2s, transform .2s;
+  backdrop-filter: blur(12px);
+}
+#audio-toggle:hover { background: rgba(26,18,18,0.95); transform: translateY(-1px); }
+#audio-toggle.panel-open { display: none; }
 </style>
 </head>
 <body>
+
+<!-- AUDIO PLAYER -->
+<button id="audio-toggle" onclick="showAudioPanel()">
+  <span id="audio-toggle-icon">🎵</span>
+  <span id="audio-toggle-label">疗愈音乐</span>
+</button>
+
+<div id="audio-player" class="hidden">
+  <div class="ap-header">
+    <div class="ap-title">🎵 疗愈音乐</div>
+    <button class="ap-close" onclick="hideAudioPanel()" title="收起">✕</button>
+  </div>
+  <div class="ap-track-name">
+    <span class="ap-track-icon" id="ap-icon">🌿</span>
+    <span id="ap-name">自然雨林音景</span>
+  </div>
+  <div class="ap-controls">
+    <button class="ap-btn" onclick="prevTrack()" title="上一曲">⏮</button>
+    <button class="ap-btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+    <button class="ap-btn" onclick="nextTrack()" title="下一曲">⏭</button>
+    <div class="ap-volume">
+      <span style="font-size:.8rem;color:rgba(255,255,255,0.35)">🔊</span>
+      <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.45"
+        oninput="setVolume(this.value)">
+    </div>
+  </div>
+  <div class="ap-tracks">
+    <button class="ap-track-btn active" onclick="switchTrack(0)" id="track-btn-0">
+      <span class="ap-track-btn-icon">🌿</span>
+      <span class="ap-track-btn-label">自然雨林音景</span>
+    </button>
+    <button class="ap-track-btn" onclick="switchTrack(1)" id="track-btn-1">
+      <span class="ap-track-btn-icon">🔔</span>
+      <span class="ap-track-btn-label">颂钵冥想音乐</span>
+    </button>
+    <button class="ap-track-btn" onclick="switchTrack(2)" id="track-btn-2">
+      <span class="ap-track-btn-icon">🎹</span>
+      <span class="ap-track-btn-label">古典钢琴疗愈</span>
+    </button>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -626,17 +768,16 @@ footer {
   <div class="hero-circle"></div>
   <div class="hero-circle"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">2026高校思想政治工作精品案例</div>
+    <div class="hero-eyebrow">高校思想政治工作精品案例</div>
     <h1 class="hero-title">
       从"心理关怀"<br>到<span>"音乐疗愈"</span>
     </h1>
-<p class="hero-subtitle">AI 智能体融入高校心理健康教育实践探索</p>
-<p class="hero-tagline">以美育润心 · 以音乐疗愈 · 以 AI 赋能</p>
-<div class="hero-cta-row">
-  <a href="https://cloud.fastgpt.io/chat/share?shareId=yxYBy0xzKReJQgoPY4iJhyQ7" target="_blank" class="btn-primary">🎵 进入音乐疗愈伙伴</a>
-  
-  <a href="javascript:void(0)" onclick="scrollTo('about')" class="btn-outline">了解项目详情 →</a>
-</div>
+    <p class="hero-subtitle">AI 智能体融入高校心理健康教育实践探索</p>
+    <p class="hero-tagline">以美育润心 · 以音乐疗愈 · 以 AI 赋能</p>
+    <div class="hero-cta-row">
+      <a href="javascript:void(0)" onclick="scrollTo('ai-entry')" class="btn-primary">🎵 进入音乐疗愈伙伴</a>
+      <a href="javascript:void(0)" onclick="scrollTo('about')" class="btn-outline">了解项目详情 →</a>
+    </div>
   </div>
   <div class="hero-scroll">
     <div class="scroll-line"></div>
@@ -951,31 +1092,31 @@ footer {
   <div class="timeline reveal">
     <div class="tl-item">
       <div class="tl-dot"></div>
-      <div class="tl-year">2023 · 项目准备</div>
+      <div class="tl-year">2023 · 项目立项</div>
       <div class="tl-title">打造一体化心理育人平台的愿景启航</div>
       <div class="tl-body">旨在打造集音乐疗愈、美育实践、思政教育、创新创业、心理人才交流于一体的心理育人平台。立足音乐学院专业优势，融合跨学科资源，通过数字化、智能化方式为师生提供个性化、专业化的音乐疗愈服务。</div>
     </div>
     <div class="tl-item">
       <div class="tl-dot"></div>
-      <div class="tl-year">2024 · 行动计划</div>
+      <div class="tl-year">2023 · 行动计划</div>
       <div class="tl-title">组建团队，制定计划，树立典范</div>
       <div class="tl-body">组建由学生、音乐学院等组成的指导小组，制定项目工作计划表，明确各阶段具体任务和时限，举办活动展示工作坊、音乐疗愈优秀学生骨干评选等活动，初步形成"以老带新"人才传承机制。</div>
     </div>
     <div class="tl-item">
       <div class="tl-dot"></div>
-      <div class="tl-year">2025 · 具体要求</div>
+      <div class="tl-year">2024 · 具体要求</div>
       <div class="tl-title">资源建设、品牌打造、骨干培养全面推进</div>
       <div class="tl-body">编写音乐疗愈实践指导手册，申报省级科研课题（2023WQNCX055），打造校园音乐疗愈特色品牌活动，培养音乐疗愈学生骨干 ≥30 人，提升参与师生音乐疗愈能力和数字素养。</div>
     </div>
     <div class="tl-item">
       <div class="tl-dot"></div>
-      <div class="tl-year"> 2025 · 总体目标</div>
+      <div class="tl-year">2024—2025 · 总体目标</div>
       <div class="tl-title">AI 音乐疗愈平台上线，课程体系落地</div>
       <div class="tl-body">"悦音智语" AI 智能体平台完成搭建并稳定运行，涵盖知识库构建、工作流调试、风险预警和对话日志监控全链路，支持情绪识别、疗愈推荐和引导式对话四项核心功能，师生骨干梯队成型。</div>
     </div>
     <div class="tl-item">
       <div class="tl-dot"></div>
-      <div class="tl-year">2026 · 精品项目</div>
+      <div class="tl-year">2025 · 精品项目</div>
       <div class="tl-title">凝练成果，打造广东省思政精品项目</div>
       <div class="tl-body">获广东省高校思想政治工作优秀案例奖、"新师范"建设优秀案例等省级荣誉 5 项，发表相关论文 9 篇，获省级及校院级科研课题 8 项，形成可向同类高校展示和迁移的推广方案。</div>
     </div>
@@ -1152,7 +1293,7 @@ footer {
 <footer>
   <div>
     <div class="footer-brand">悦音智语 · AI 智能体融入高校心理健康教育</div>
-    <div class="footer-sub">广东第二师范学院音乐学院 · 2026年度高校思想政治工作案例</div>
+    <div class="footer-sub">广东第二师范学院音乐学院 · 2023—2025 年度高校思想政治工作案例</div>
   </div>
   <div class="footer-links">
     <a href="javascript:void(0)" onclick="scrollTo('about')">项目简介</a>
@@ -1192,6 +1333,330 @@ window.addEventListener('scroll', () => {
     nav.style.boxShadow = 'none';
   }
 });
+</script>
+
+<!-- ══ AUDIO ENGINE ══ -->
+<script>
+/* ─── State ─── */
+let audioCtx = null;
+let masterGain = null;
+let currentTrack = 0;
+let isPlaying = false;
+let activeNodes = [];
+let volumeLevel = 0.45;
+
+const tracks = [
+  { icon: '🌿', name: '自然雨林音景' },
+  { icon: '🔔', name: '颂钵冥想音乐' },
+  { icon: '🎹', name: '古典钢琴疗愈' },
+];
+
+/* ─── Init AudioContext (must be after user gesture) ─── */
+function initCtx() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = volumeLevel;
+  masterGain.connect(audioCtx.destination);
+}
+
+/* ─── Stop all active nodes ─── */
+function stopAll() {
+  activeNodes.forEach(n => { try { n.stop(); } catch(e){} });
+  activeNodes = [];
+}
+
+/* ────────────────────────────────────────
+   TRACK 0 · 自然雨林音景
+   Rain + wind + occasional bird chirp
+──────────────────────────────────────── */
+function playNature() {
+  const ctx = audioCtx;
+
+  // Rain: filtered white noise
+  const bufLen = ctx.sampleRate * 4;
+  const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+
+  function makeRain() {
+    const src = ctx.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'bandpass'; lp.frequency.value = 1400; lp.Q.value = 0.6;
+    const g = ctx.createGain(); g.gain.value = 0.35;
+    src.connect(lp); lp.connect(g); g.connect(masterGain);
+    src.start(); activeNodes.push(src);
+  }
+
+  // Wind: low-pass noise, slow volume LFO
+  function makeWind() {
+    const src = ctx.createBufferSource();
+    src.buffer = buf; src.loop = true;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 320;
+    const g = ctx.createGain(); g.gain.value = 0;
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = 0.07;
+    const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.12;
+    lfo.connect(lfoGain); lfoGain.connect(g.gain);
+    g.gain.setValueAtTime(0.08, ctx.currentTime);
+    src.connect(lp); lp.connect(g); g.connect(masterGain);
+    lfo.start(); src.start();
+    activeNodes.push(src, lfo);
+  }
+
+  // Bird chirps: short sine bursts
+  function chirp() {
+    if (!isPlaying || currentTrack !== 0) return;
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    const freq = 2200 + Math.random() * 1200;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(freq * 1.3, ctx.currentTime + 0.08);
+    osc.frequency.linearRampToValueAtTime(freq * 0.85, ctx.currentTime + 0.18);
+    g.gain.setValueAtTime(0, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.02);
+    g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.22);
+    osc.connect(g); g.connect(masterGain);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.25);
+    setTimeout(chirp, 3000 + Math.random() * 6000);
+  }
+
+  makeRain(); makeWind();
+  setTimeout(chirp, 2000);
+}
+
+/* ────────────────────────────────────────
+   TRACK 1 · 颂钵冥想音乐
+   Tibetan bowl overtone series
+──────────────────────────────────────── */
+function playSingingBowl() {
+  const ctx = audioCtx;
+  // Fundamental + harmonics of a typical 432Hz bowl
+  const partials = [
+    { f: 216,  g: 0.30 },
+    { f: 432,  g: 0.22 },
+    { f: 648,  g: 0.10 },
+    { f: 1152, g: 0.06 },
+    { f: 2160, g: 0.03 },
+  ];
+
+  function strike(time) {
+    partials.forEach(({ f, g }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = f;
+      // Long exponential decay (bowl sustain)
+      gain.gain.setValueAtTime(g, time);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 12);
+      osc.connect(gain); gain.connect(masterGain);
+      osc.start(time); osc.stop(time + 12.5);
+      activeNodes.push(osc);
+    });
+  }
+
+  // Gentle drone: slow beating 432 Hz pair
+  function drone() {
+    [432, 434.5].forEach(f => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain(); g.gain.value = 0.04;
+      osc.type = 'sine'; osc.frequency.value = f;
+      osc.connect(g); g.connect(masterGain);
+      osc.start(); activeNodes.push(osc);
+    });
+  }
+
+  drone();
+  // Strike every 14 seconds
+  let i = 0;
+  function scheduleStrike() {
+    if (!isPlaying || currentTrack !== 1) return;
+    strike(ctx.currentTime + 0.5);
+    i++;
+    setTimeout(scheduleStrike, 14000);
+  }
+  strike(ctx.currentTime + 0.2);
+  setTimeout(scheduleStrike, 14000);
+}
+
+/* ────────────────────────────────────────
+   TRACK 2 · 古典钢琴疗愈
+   Pentatonic + soft reverb pads
+──────────────────────────────────────── */
+function playPiano() {
+  const ctx = audioCtx;
+
+  // Convolver for fake reverb
+  function makeReverb(dur = 2.5, decay = 2.0) {
+    const len = ctx.sampleRate * dur;
+    const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = buf.getChannelData(ch);
+      for (let i = 0; i < len; i++) {
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+      }
+    }
+    const cv = ctx.createConvolver(); cv.buffer = buf;
+    return cv;
+  }
+
+  const reverb = makeReverb();
+  const reverbGain = ctx.createGain(); reverbGain.gain.value = 0.55;
+  reverb.connect(reverbGain); reverbGain.connect(masterGain);
+
+  // Piano-like tone: sine + harmonics with quick attack, long release
+  function note(freq, startTime, dur, velocity = 0.5) {
+    const fundamental = ctx.createOscillator();
+    fundamental.type = 'sine';
+    fundamental.frequency.value = freq;
+
+    const h2 = ctx.createOscillator(); h2.type = 'sine'; h2.frequency.value = freq * 2;
+    const h3 = ctx.createOscillator(); h3.type = 'sine'; h3.frequency.value = freq * 3;
+
+    const gainNode = ctx.createGain();
+    gainNode.gain.setValueAtTime(0, startTime);
+    gainNode.gain.linearRampToValueAtTime(velocity * 0.5, startTime + 0.008);
+    gainNode.gain.exponentialRampToValueAtTime(velocity * 0.3, startTime + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
+
+    const h2g = ctx.createGain(); h2g.gain.value = 0.18;
+    const h3g = ctx.createGain(); h3g.gain.value = 0.06;
+
+    [fundamental, h2, h3].forEach(o => activeNodes.push(o));
+
+    fundamental.connect(gainNode);
+    h2.connect(h2g); h2g.connect(gainNode);
+    h3.connect(h3g); h3g.connect(gainNode);
+
+    gainNode.connect(masterGain);
+    gainNode.connect(reverb);
+
+    fundamental.start(startTime); fundamental.stop(startTime + dur + 0.1);
+    h2.start(startTime); h2.stop(startTime + dur + 0.1);
+    h3.start(startTime); h3.stop(startTime + dur + 0.1);
+  }
+
+  // Pentatonic melody in C: C4 D4 E4 G4 A4 C5
+  const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+  // Slow arpeggiated pattern
+  const pattern = [
+    [0, 4.0], [2, 4.0], [4, 4.0], [3, 3.5],
+    [1, 3.5], [5, 5.0], [4, 3.0], [2, 3.0],
+    [0, 4.0], [3, 4.0], [5, 5.0], [4, 3.5],
+    [1, 3.5], [2, 4.0], [0, 6.0],
+  ];
+
+  function playPhrase(startT) {
+    if (!isPlaying || currentTrack !== 2) return;
+    let t = startT;
+    const velocities = [0.42, 0.38, 0.45, 0.35, 0.40, 0.48, 0.38, 0.36,
+                        0.42, 0.40, 0.46, 0.38, 0.35, 0.40, 0.44];
+    pattern.forEach(([idx, dur], i) => {
+      note(scale[idx], t, dur, velocities[i] || 0.4);
+      // Soft bass note
+      if (i % 4 === 0) note(scale[0] / 2, t, 2.5, 0.18);
+      t += dur * 0.72;
+    });
+    const phraseDur = pattern.reduce((s, [,d]) => s + d * 0.72, 0);
+    setTimeout(() => playPhrase(ctx.currentTime + 1.5), phraseDur * 1000 + 1500);
+  }
+
+  // Ambient pad: slow chord
+  function pad() {
+    [261.63, 329.63, 392.00].forEach(f => {
+      const osc = ctx.createOscillator();
+      osc.type = 'sine'; osc.frequency.value = f;
+      const g = ctx.createGain(); g.gain.value = 0;
+      g.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 3);
+      osc.connect(g); g.connect(masterGain);
+      osc.start(); activeNodes.push(osc);
+    });
+  }
+
+  pad();
+  playPhrase(ctx.currentTime + 1.0);
+}
+
+/* ─── Play / stop by track ─── */
+function startTrack(idx) {
+  stopAll();
+  initCtx();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  currentTrack = idx;
+  isPlaying = true;
+  if (idx === 0) playNature();
+  else if (idx === 1) playSingingBowl();
+  else if (idx === 2) playPiano();
+  updateUI();
+}
+
+function togglePlay() {
+  if (!audioCtx) { startTrack(currentTrack); return; }
+  if (isPlaying) {
+    isPlaying = false;
+    stopAll();
+    if (audioCtx.state === 'running') audioCtx.suspend();
+  } else {
+    startTrack(currentTrack);
+  }
+  updateUI();
+}
+
+function switchTrack(idx) {
+  currentTrack = idx;
+  if (isPlaying) startTrack(idx);
+  else updateUI();
+}
+
+function nextTrack() { switchTrack((currentTrack + 1) % 3); }
+function prevTrack() { switchTrack((currentTrack + 2) % 3); }
+
+function setVolume(v) {
+  volumeLevel = parseFloat(v);
+  if (masterGain) masterGain.gain.value = volumeLevel;
+}
+
+/* ─── Panel ─── */
+function showAudioPanel() {
+  document.getElementById('audio-player').classList.remove('hidden');
+  document.getElementById('audio-toggle').classList.add('panel-open');
+  // Auto-play on first open
+  if (!isPlaying) startTrack(currentTrack);
+}
+function hideAudioPanel() {
+  document.getElementById('audio-player').classList.add('hidden');
+  document.getElementById('audio-toggle').classList.remove('panel-open');
+}
+
+/* ─── Update UI state ─── */
+function updateUI() {
+  document.getElementById('play-btn').textContent = isPlaying ? '⏸' : '▶';
+  const t = tracks[currentTrack];
+  document.getElementById('ap-icon').textContent = t.icon;
+  document.getElementById('ap-name').textContent = t.name;
+  document.getElementById('audio-toggle-icon').textContent = isPlaying ? '🎵' : '🎵';
+  document.getElementById('audio-toggle-label').textContent = isPlaying ? '正在播放' : '疗愈音乐';
+  [0, 1, 2].forEach(i => {
+    document.getElementById('track-btn-' + i)
+      .classList.toggle('active', i === currentTrack);
+  });
+}
+
+/* ─── Auto-start on first user interaction anywhere ─── */
+let autoStarted = false;
+function autoStart() {
+  if (autoStarted) return;
+  autoStarted = true;
+  showAudioPanel();
+  document.removeEventListener('click', autoStart);
+  document.removeEventListener('scroll', autoStart);
+  document.removeEventListener('touchstart', autoStart);
+}
+document.addEventListener('click', autoStart, { once: true });
+document.addEventListener('scroll', autoStart, { once: true });
+document.addEventListener('touchstart', autoStart, { once: true });
 </script>
 
 <!-- FastGPT 悬浮气泡入口 -->
