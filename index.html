@@ -601,6 +601,233 @@ footer {
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
 .reveal.visible { opacity: 1; transform: none; }
 
+/* ══════════════════════════════════════
+   ASSESSMENT OVERLAY  (前测 / 后测)
+══════════════════════════════════════ */
+#assess-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(10,6,6,0.96);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: flex-start; justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem 1rem;
+  animation: ao-in .4s ease;
+}
+#assess-overlay.hidden { display: none; }
+@keyframes ao-in {
+  from { opacity: 0; } to { opacity: 1; }
+}
+.ao-card {
+  background: #1A1212;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 1.2rem;
+  width: 100%; max-width: 680px;
+  padding: 2.5rem 2.8rem;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  position: relative;
+  margin: auto;
+}
+/* step indicator */
+.ao-steps {
+  display: flex; gap: .5rem; margin-bottom: 2rem;
+}
+.ao-step-dot {
+  height: 4px; flex: 1; border-radius: 2px;
+  background: rgba(255,255,255,0.1);
+  transition: background .35s;
+}
+.ao-step-dot.done { background: var(--crimson); }
+.ao-step-dot.active { background: var(--gold); }
+
+/* welcome screen */
+.ao-welcome-icon { font-size: 3rem; text-align: center; margin-bottom: 1rem; }
+.ao-welcome-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.5rem; font-weight: 800;
+  color: var(--white); text-align: center; margin-bottom: .6rem;
+}
+.ao-welcome-sub {
+  font-size: .88rem; color: rgba(255,255,255,0.5);
+  text-align: center; line-height: 1.8; margin-bottom: 1.5rem;
+}
+.ao-notice {
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: .7rem; padding: 1rem 1.2rem;
+  font-size: .78rem; color: rgba(255,255,255,0.55);
+  line-height: 1.8; margin-bottom: 2rem;
+}
+.ao-notice strong { color: var(--gold-light); }
+
+/* section title */
+.ao-section-label {
+  font-size: .7rem; font-weight: 700; letter-spacing: .2em;
+  color: var(--crimson-light); text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.ao-section-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.15rem; font-weight: 800; color: var(--white);
+  margin-bottom: .4rem;
+}
+.ao-instr {
+  font-size: .78rem; color: rgba(255,255,255,0.4);
+  line-height: 1.7; margin-bottom: 1.5rem;
+}
+
+/* question rows */
+.ao-questions { display: flex; flex-direction: column; gap: 1rem; }
+.ao-q {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: .7rem; padding: 1rem 1.2rem;
+  transition: border-color .2s;
+}
+.ao-q.answered { border-color: rgba(201,168,76,0.25); }
+.ao-q-text {
+  font-size: .85rem; color: rgba(255,255,255,0.8);
+  line-height: 1.6; margin-bottom: .75rem;
+  display: flex; gap: .6rem; align-items: flex-start;
+}
+.ao-q-num {
+  background: var(--crimson); color: white;
+  border-radius: 50%; width: 20px; height: 20px; min-width: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .65rem; font-weight: 700; margin-top: .1rem;
+}
+.ao-options {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: .5rem;
+}
+.ao-opt {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: .5rem; padding: .6rem .3rem;
+  cursor: pointer; text-align: center;
+  transition: background .18s, border-color .18s, transform .15s;
+  display: flex; flex-direction: column; align-items: center; gap: .25rem;
+}
+.ao-opt:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.25); transform: translateY(-1px); }
+.ao-opt.selected { background: rgba(155,26,47,0.2); border-color: rgba(155,26,47,0.5); }
+.ao-opt-score { font-size: 1rem; font-weight: 800; color: var(--gold-light); }
+.ao-opt-label { font-size: .6rem; color: rgba(255,255,255,0.4); line-height: 1.3; }
+
+/* progress bar */
+.ao-progress-wrap {
+  height: 4px; background: rgba(255,255,255,0.08);
+  border-radius: 2px; margin-bottom: 1.5rem; overflow: hidden;
+}
+.ao-progress-bar {
+  height: 100%; background: linear-gradient(90deg, var(--crimson), var(--gold));
+  border-radius: 2px; transition: width .4s ease;
+}
+
+/* result screen */
+.ao-result-scores {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; margin: 1.5rem 0;
+}
+.ao-score-box {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: .8rem; padding: 1.2rem; text-align: center;
+}
+.ao-score-box-label { font-size: .72rem; color: rgba(255,255,255,0.4); margin-bottom: .4rem; letter-spacing: .06em; }
+.ao-score-box-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 2.4rem; font-weight: 900; line-height: 1;
+}
+.ao-score-box-level { font-size: .78rem; font-weight: 600; margin-top: .35rem; }
+.ao-score-box.phq .ao-score-box-num { color: var(--crimson-light); }
+.ao-score-box.gad .ao-score-box-num { color: #F59E0B; }
+.ao-interp {
+  font-size: .82rem; color: rgba(255,255,255,0.55);
+  line-height: 1.85; background: rgba(255,255,255,0.03);
+  border-radius: .6rem; padding: 1rem 1.2rem; margin-bottom: 1.2rem;
+}
+.ao-interp-item {
+  display: flex; gap: .6rem; margin-bottom: .4rem; align-items: flex-start;
+}
+.ao-interp-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: .35rem;
+}
+
+/* compare screen */
+.ao-compare {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;
+}
+.ao-compare-col { }
+.ao-compare-title {
+  font-size: .72rem; color: rgba(255,255,255,0.4);
+  text-align: center; margin-bottom: .8rem; letter-spacing: .08em;
+}
+.ao-bar-wrap { margin-bottom: .8rem; }
+.ao-bar-label {
+  display: flex; justify-content: space-between;
+  font-size: .72rem; color: rgba(255,255,255,0.5); margin-bottom: .3rem;
+}
+.ao-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.ao-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+.ao-bar-fill.phq { background: var(--crimson); }
+.ao-bar-fill.gad { background: #F59E0B; }
+.ao-diff-row {
+  display: flex; justify-content: center; gap: 2rem; margin: 1rem 0;
+}
+.ao-diff-item { text-align: center; }
+.ao-diff-num {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.8rem; font-weight: 900;
+}
+.ao-diff-num.better { color: #4ADE80; }
+.ao-diff-num.worse  { color: #F87171; }
+.ao-diff-num.same   { color: rgba(255,255,255,0.4); }
+.ao-diff-sub { font-size: .7rem; color: rgba(255,255,255,0.4); margin-top: .2rem; }
+
+/* buttons */
+.ao-btn-row { display: flex; gap: .8rem; margin-top: 1.8rem; flex-wrap: wrap; }
+.ao-btn-primary {
+  flex: 1; min-width: 120px; background: var(--crimson); color: white;
+  border: none; border-radius: .6rem; padding: .8rem 1.5rem;
+  font-size: .9rem; font-weight: 700; cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  transition: background .2s, transform .15s;
+}
+.ao-btn-primary:hover { background: var(--crimson-light); transform: translateY(-1px); }
+.ao-btn-secondary {
+  background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: .6rem;
+  padding: .8rem 1.2rem; font-size: .85rem; cursor: pointer;
+  font-family: 'Noto Sans SC', sans-serif;
+  transition: background .2s;
+}
+.ao-btn-secondary:hover { background: rgba(255,255,255,0.1); }
+.ao-skip { display: block; text-align: center; margin-top: 1rem; font-size: .72rem; color: rgba(255,255,255,0.2); cursor: pointer; }
+.ao-skip:hover { color: rgba(255,255,255,0.4); }
+
+/* post-test trigger button */
+#post-test-btn {
+  position: fixed; bottom: 156px; left: 24px; z-index: 202;
+  background: rgba(90,122,106,0.9);
+  border: 1px solid rgba(90,122,106,0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 2em; padding: .45rem 1rem;
+  cursor: pointer; display: none;
+  color: white; font-size: .75rem; font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transition: background .2s, transform .2s;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+#post-test-btn:hover { background: rgba(90,122,106,1); transform: translateY(-1px); }
+#post-test-btn.visible { display: flex; align-items: center; gap: .5rem; }
+
+@media(max-width:600px){
+  .ao-card { padding: 1.6rem 1.2rem; }
+  .ao-options { grid-template-columns: repeat(4,1fr); gap: .3rem; }
+  .ao-opt-label { font-size: .55rem; }
+  .ao-result-scores { grid-template-columns: 1fr 1fr; }
+  .ao-compare { grid-template-columns: 1fr; }
+}
+
 /* ── AUDIO PLAYER ── */
 #audio-player {
   position: fixed;
@@ -929,6 +1156,80 @@ footer {
 </style>
 </head>
 <body>
+
+<!-- ══ ASSESSMENT OVERLAY ══ -->
+<div id="assess-overlay">
+  <div class="ao-card" id="ao-card">
+
+    <!-- Step indicators: welcome / PHQ-9 / GAD-7 / result -->
+    <div class="ao-steps">
+      <div class="ao-step-dot active" id="ao-dot-0"></div>
+      <div class="ao-step-dot" id="ao-dot-1"></div>
+      <div class="ao-step-dot" id="ao-dot-2"></div>
+      <div class="ao-step-dot" id="ao-dot-3"></div>
+    </div>
+
+    <!-- SCREEN 0: Welcome -->
+    <div id="ao-screen-0">
+      <div class="ao-welcome-icon">🎵</div>
+      <div class="ao-welcome-title">欢迎来到悦音智语</div>
+      <div class="ao-welcome-sub">在开始体验之前，请花 3 分钟完成一份简短的情绪自评<br>帮助我们了解你此刻的心理状态</div>
+      <div class="ao-notice">
+        <strong>⚠️ 温馨提示</strong><br>
+        本量表为专业心理筛查工具，仅用于近两周情绪状态评估，<strong>不作为疾病最终诊断依据</strong>，结果仅供参考。若情绪持续不适，请及时寻求专业心理 / 医疗帮助。你的填写结果仅保存在本设备，不会上传至任何服务器。
+      </div>
+      <div class="ao-btn-row">
+        <button class="ao-btn-primary" onclick="aoGoTo(1)">开始填写 → PHQ-9 抑郁自评</button>
+      </div>
+      <span class="ao-skip" onclick="aoSkip()">暂时跳过，直接进入网站</span>
+    </div>
+
+    <!-- SCREEN 1: PHQ-9 -->
+    <div id="ao-screen-1" style="display:none">
+      <div class="ao-section-label">第一部分</div>
+      <div class="ao-section-title">PHQ-9 抑郁自评量表</div>
+      <div class="ao-instr">在过去两周内，您有多少时间受到以下问题困扰？<br>0=完全不会 &nbsp;1=几天 &nbsp;2=一半以上的日子 &nbsp;3=几乎每天</div>
+      <div class="ao-progress-wrap"><div class="ao-progress-bar" id="ao-prog-1" style="width:0%"></div></div>
+      <div class="ao-questions" id="ao-phq-qs"></div>
+      <div class="ao-btn-row" style="margin-top:1.5rem">
+        <button class="ao-btn-secondary" onclick="aoGoTo(0)">← 返回</button>
+        <button class="ao-btn-primary" onclick="aoSubmitPHQ()">下一步 → GAD-7 焦虑自评</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: GAD-7 -->
+    <div id="ao-screen-2" style="display:none">
+      <div class="ao-section-label">第二部分</div>
+      <div class="ao-section-title">GAD-7 广泛性焦虑自评量表</div>
+      <div class="ao-instr">在过去两周内，您有多少时间受到以下问题困扰？<br>0=完全不会 &nbsp;1=几天 &nbsp;2=一半以上的日子 &nbsp;3=几乎每天</div>
+      <div class="ao-progress-wrap"><div class="ao-progress-bar" id="ao-prog-2" style="width:0%"></div></div>
+      <div class="ao-questions" id="ao-gad-qs"></div>
+      <div class="ao-btn-row" style="margin-top:1.5rem">
+        <button class="ao-btn-secondary" onclick="aoGoTo(1)">← 返回</button>
+        <button class="ao-btn-primary" onclick="aoSubmitGAD()">查看评估结果</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Result -->
+    <div id="ao-screen-3" style="display:none">
+      <div class="ao-section-label" id="ao-res-label">评估结果</div>
+      <div class="ao-section-title" id="ao-res-title">你的情绪状态报告</div>
+      <div class="ao-result-scores" id="ao-res-scores"></div>
+      <div class="ao-interp" id="ao-res-interp"></div>
+      <div class="ao-compare" id="ao-compare-section" style="display:none"></div>
+      <div class="ao-btn-row">
+        <button class="ao-btn-primary" id="ao-enter-btn" onclick="aoEnterSite()">进入悦音智语 →</button>
+      </div>
+      <div style="font-size:.7rem;color:rgba(255,255,255,0.2);text-align:center;margin-top:.8rem;">
+        结果已保存在本设备 · 完成后测后可查看前后对比
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Post-test trigger button -->
+<button id="post-test-btn" onclick="aoStartPostTest()">📋 完成后测 · 查看变化</button>
 
 <!-- MOOD BUBBLE -->
 <div id="mood-bubble" style="display:none">
@@ -1605,7 +1906,7 @@ footer {
           <div class="res-score-item s3">15–27<small>重度</small></div>
         </div>
         <div class="res-card-meta">来源：Spitzer et al., 1999 · Pfizer Inc. 免费授权使用</div>
-        <a href="https://www.chineseinhealthcare.com/phq-9-chinese" target="_blank" class="res-btn">查看量表 →</a>
+        <a href="https://www.xmcs.cn/x/phq9" target="_blank" class="res-btn">查看量表 →</a>
       </div>
 
       <div class="res-card scale-card">
@@ -1624,7 +1925,7 @@ footer {
           <div class="res-score-item s3">15–21<small>重度</small></div>
         </div>
         <div class="res-card-meta">来源：Spitzer et al., 2006 · Pfizer Inc. 免费授权使用</div>
-        <a href="https://www.chineseinhealthcare.com/gad-7-chinese" target="_blank" class="res-btn">查看量表 →</a>
+        <a href="https://minke8.cn/jl5.html" target="_blank" class="res-btn">查看量表 →</a>
       </div>
 
       <div class="res-card scale-card">
@@ -1643,7 +1944,7 @@ footer {
           <div class="res-score-item s3">严重<small>高分段</small></div>
         </div>
         <div class="res-card-meta">来源：Lovibond & Lovibond, 1995 · 免费公开使用</div>
-        <a href="https://www.psytoolkit.org/survey-library/dass21.html" target="_blank" class="res-btn">查看量表 →</a>
+        <a href="https://www.xmcs.cn/x/dass" target="_blank" class="res-btn">查看量表 →</a>
       </div>
 
       <div class="res-card scale-card">
@@ -1661,7 +1962,7 @@ footer {
           <div class="res-score-item s3">≥10<small>失眠</small></div>
         </div>
         <div class="res-card-meta">来源：Soldatos et al., 2000 · 俄亥俄州立大学医学院</div>
-        <a href="https://mengte.online/medical_scales/14279" target="_blank" class="res-btn">查看量表 →</a>
+        <a href="https://www.xmcs.cn/x/ais" target="_blank" class="res-btn">查看量表 →</a>
       </div>
 
       <div class="res-card scale-card">
@@ -1679,7 +1980,7 @@ footer {
           <div class="res-score-item s3">均分&gt;2<small>建议就诊</small></div>
         </div>
         <div class="res-card-meta">来源：Derogatis et al., 1973 · 临床研究标准工具</div>
-        <a href="https://minke8.cn/xl/" target="_blank" class="res-btn">查看量表 →</a>
+        <a href="https://www.xmcs.cn/x/scl90" target="_blank" class="res-btn">查看量表 →</a>
       </div>
 
       <div class="res-card scale-card" style="border-color:rgba(201,168,76,0.2);background:rgba(201,168,76,0.04);">
@@ -1696,7 +1997,7 @@ footer {
           <div class="res-score-item s1">表达抑制<small>压制情绪</small></div>
         </div>
         <div class="res-card-meta">来源：Gross & John, 2003 · Journal of Personality and Social Psychology</div>
-        <a href="https://www.midss.org/content/emotion-regulation-questionnaire-erq" target="_blank" class="res-btn">了解更多 →</a>
+        <a href="https://www.xinlixue.cn/web/xinliliangbiao/jiankangliangbiao/2020-03-07/834.html" target="_blank" class="res-btn">了解更多 →</a>
       </div>
 
     </div>
@@ -1828,14 +2129,14 @@ footer {
             <div class="res-link-desc">PHQ-9、GAD-7、DASS-21 等量表中文详解与评分说明</div>
           </div>
         </a>
-        <a class="res-link-card" href="https://minke8.cn/xl/" target="_blank">
+        <a class="res-link-card" href="https://www.xmcs.cn/x/scl90" target="_blank">
           <div class="res-link-icon">🔬</div>
           <div>
             <div class="res-link-name">心理测试综合平台</div>
             <div class="res-link-desc">SCL-90、MMPI、艾森克等专业量表在线测评</div>
           </div>
         </a>
-        <a class="res-link-card" href="https://www.psytoolkit.org" target="_blank">
+        <a class="res-link-card" href="https://m.psyctest.cn" target="_blank">
           <div class="res-link-icon">🧪</div>
           <div>
             <div class="res-link-name">PsyToolkit（国际量表库）</div>
@@ -1915,7 +2216,299 @@ footer {
 </footer>
 
 <script>
-// Smooth scroll helper (bypasses sandbox anchor redirect)
+/* ══════════════════════════════════════
+   ASSESSMENT ENGINE  前测 / 后测
+══════════════════════════════════════ */
+const PHQ9 = [
+  '做事时提不起劲或没有兴趣',
+  '感到心情低落、沮丧或绝望',
+  '入睡困难、睡不安稳或睡眠过多',
+  '感觉疲倦或没有活力',
+  '食欲不振或吃太多',
+  '觉得自己很糟，或觉得自己很失败，或让自己、家人失望',
+  '对事物专注有困难，例如阅读报纸或看电视时',
+  '动作或说话速度缓慢到别人察觉；或相反，烦躁、坐立不安、动来动去',
+  '有不如死掉，或用某种方式伤害自己的念头',
+];
+const GAD7 = [
+  '感觉紧张、焦虑或急切',
+  '不能够停止或控制担忧',
+  '对各种各样的事情担忧过多',
+  '很难放松下来',
+  '由于不安而无法静坐',
+  '变得容易烦恼或急躁',
+  '感到似乎将有可怕的事情发生而害怕',
+];
+const OPTS = [
+  { score: 0, label: '完全\n不会' },
+  { score: 1, label: '几天' },
+  { score: 2, label: '一半以上\n日子' },
+  { score: 3, label: '几乎\n每天' },
+];
+
+let aoAnswersPHQ = new Array(9).fill(null);
+let aoAnswersGAD = new Array(7).fill(null);
+let aoIsPostTest = false;
+let aoCurrentScreen = 0;
+
+/* ── render questions ── */
+function aoRenderQuestions(containerId, questions, answers, prefix, totalQuestions) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.className = 'ao-q' + (answers[qi] !== null ? ' answered' : '');
+    div.id = `${prefix}-q${qi}`;
+    div.innerHTML = `
+      <div class="ao-q-text">
+        <div class="ao-q-num">${qi+1}</div>
+        <span>${q}</span>
+      </div>
+      <div class="ao-options">
+        ${OPTS.map((o,oi)=>`
+          <div class="ao-opt${answers[qi]===o.score?' selected':''}"
+               onclick="aoSelect('${prefix}',${qi},${o.score})">
+            <div class="ao-opt-score">${o.score}</div>
+            <div class="ao-opt-label">${o.label.replace('\n','<br>')}</div>
+          </div>`).join('')}
+      </div>`;
+    el.appendChild(div);
+  });
+  aoUpdateProgress(prefix, answers, totalQuestions);
+}
+
+function aoSelect(prefix, qi, score) {
+  if (prefix === 'phq') {
+    aoAnswersPHQ[qi] = score;
+    aoRenderQuestions('ao-phq-qs', PHQ9, aoAnswersPHQ, 'phq', 9);
+  } else {
+    aoAnswersGAD[qi] = score;
+    aoRenderQuestions('ao-gad-qs', GAD7, aoAnswersGAD, 'gad', 7);
+  }
+}
+
+function aoUpdateProgress(prefix, answers, total) {
+  const done = answers.filter(a => a !== null).length;
+  const pct = Math.round(done / total * 100);
+  const bar = document.getElementById(`ao-prog-${prefix === 'phq' ? 1 : 2}`);
+  if (bar) bar.style.width = pct + '%';
+}
+
+/* ── navigation ── */
+function aoGoTo(screen) {
+  [0,1,2,3].forEach(i => {
+    document.getElementById(`ao-screen-${i}`).style.display = i === screen ? 'block' : 'none';
+    const dot = document.getElementById(`ao-dot-${i}`);
+    dot.classList.remove('active','done');
+    if (i < screen) dot.classList.add('done');
+    else if (i === screen) dot.classList.add('active');
+  });
+  document.getElementById('assess-overlay').scrollTo({ top: 0, behavior: 'smooth' });
+  aoCurrentScreen = screen;
+  if (screen === 1) aoRenderQuestions('ao-phq-qs', PHQ9, aoAnswersPHQ, 'phq', 9);
+  if (screen === 2) aoRenderQuestions('ao-gad-qs', GAD7, aoAnswersGAD, 'gad', 7);
+}
+
+/* ── submit ── */
+function aoSubmitPHQ() {
+  const unanswered = aoAnswersPHQ.map((a,i)=>a===null?i:-1).filter(i=>i>=0);
+  if (unanswered.length > 0) {
+    const first = document.getElementById(`phq-q${unanswered[0]}`);
+    first?.scrollIntoView({ behavior:'smooth', block:'center' });
+    first?.classList.add('answered');
+    first?.style.setProperty('border-color','rgba(239,68,68,0.5)');
+    setTimeout(()=>{ first?.style.removeProperty('border-color'); },1500);
+    alert(`请完成第 ${unanswered.map(i=>i+1).join('、')} 题后继续`);
+    return;
+  }
+  aoGoTo(2);
+}
+
+function aoSubmitGAD() {
+  const unanswered = aoAnswersGAD.map((a,i)=>a===null?i:-1).filter(i=>i>=0);
+  if (unanswered.length > 0) {
+    const first = document.getElementById(`gad-q${unanswered[0]}`);
+    first?.scrollIntoView({ behavior:'smooth', block:'center' });
+    alert(`请完成第 ${unanswered.map(i=>i+1).join('、')} 题后继续`);
+    return;
+  }
+  const phqScore = aoAnswersPHQ.reduce((s,a)=>s+a, 0);
+  const gadScore = aoAnswersGAD.reduce((s,a)=>s+a, 0);
+  aoShowResult(phqScore, gadScore);
+}
+
+/* ── result ── */
+function phqLevel(s) {
+  if (s <= 4)  return { text:'无抑郁症状', color:'#4ADE80', desc:'情绪状态良好，继续保持' };
+  if (s <= 9)  return { text:'轻度抑郁',   color:'#FACC15', desc:'可通过调整作息、倾诉、放松练习缓解' };
+  if (s <= 14) return { text:'中度抑郁',   color:'#FB923C', desc:'建议关注情绪变化，必要时寻求心理疏导' };
+  if (s <= 19) return { text:'中重度抑郁', color:'#F87171', desc:'需重视，建议前往专业机构咨询' };
+  return              { text:'重度抑郁',   color:'#EF4444', desc:'请立即寻求专业医疗/心理干预' };
+}
+function gadLevel(s) {
+  if (s <= 4)  return { text:'无明显焦虑', color:'#4ADE80', desc:'身心状态平稳，情绪稳定' };
+  if (s <= 9)  return { text:'轻度焦虑',   color:'#FACC15', desc:'属于正常情绪波动，可自我调节' };
+  if (s <= 14) return { text:'中度焦虑',   color:'#FB923C', desc:'焦虑情绪影响生活，建议主动调节' };
+  return              { text:'重度焦虑',   color:'#EF4444', desc:'严重影响日常，需及时寻求专业帮助' };
+}
+
+function aoShowResult(phq, gad) {
+  const pl = phqLevel(phq), gl = gadLevel(gad);
+  const isPost = aoIsPostTest;
+
+  // Save to localStorage
+  const key = isPost ? 'yuyin_post' : 'yuyin_pre';
+  const data = { phq, gad, time: Date.now() };
+  localStorage.setItem(key, JSON.stringify(data));
+
+  // Update screen label
+  document.getElementById('ao-res-label').textContent = isPost ? '后测结果' : '前测结果';
+  document.getElementById('ao-res-title').textContent = isPost ? '你的情绪变化报告' : '你的情绪基线报告';
+
+  // Score boxes
+  document.getElementById('ao-res-scores').innerHTML = `
+    <div class="ao-score-box phq">
+      <div class="ao-score-box-label">PHQ-9 抑郁得分</div>
+      <div class="ao-score-box-num" style="color:${pl.color}">${phq}</div>
+      <div class="ao-score-box-level" style="color:${pl.color}">${pl.text}</div>
+    </div>
+    <div class="ao-score-box gad">
+      <div class="ao-score-box-label">GAD-7 焦虑得分</div>
+      <div class="ao-score-box-num" style="color:${gl.color}">${gad}</div>
+      <div class="ao-score-box-level" style="color:${gl.color}">${gl.text}</div>
+    </div>`;
+
+  // Interpretation
+  document.getElementById('ao-res-interp').innerHTML = `
+    <div class="ao-interp-item">
+      <div class="ao-interp-dot" style="background:${pl.color}"></div>
+      <div><strong style="color:rgba(255,255,255,0.8)">抑郁评估 · ${pl.text}（${phq}分）</strong><br>${pl.desc}</div>
+    </div>
+    <div class="ao-interp-item" style="margin-top:.6rem">
+      <div class="ao-interp-dot" style="background:${gl.color}"></div>
+      <div><strong style="color:rgba(255,255,255,0.8)">焦虑评估 · ${gl.text}（${gad}分）</strong><br>${gl.desc}</div>
+    </div>
+    <div style="margin-top:.8rem;font-size:.74rem;color:rgba(255,255,255,0.3);">
+      ⚠️ 量表结果仅供参考，不构成临床诊断。
+    </div>`;
+
+  // Compare section (post-test only)
+  const compareEl = document.getElementById('ao-compare-section');
+  const pre = JSON.parse(localStorage.getItem('yuyin_pre') || 'null');
+  if (isPost && pre) {
+    compareEl.style.display = 'grid';
+    const phqDiff = phq - pre.phq, gadDiff = gad - pre.gad;
+    const phqClass = phqDiff < 0 ? 'better' : phqDiff > 0 ? 'worse' : 'same';
+    const gadClass = gadDiff < 0 ? 'better' : gadDiff > 0 ? 'worse' : 'same';
+    const sign = d => d > 0 ? `+${d}` : `${d}`;
+    compareEl.innerHTML = `
+      <div class="ao-compare-col">
+        <div class="ao-compare-title">前测</div>
+        <div class="ao-bar-wrap">
+          <div class="ao-bar-label"><span>PHQ-9</span><span>${pre.phq}分</span></div>
+          <div class="ao-bar-track"><div class="ao-bar-fill phq" style="width:${pre.phq/27*100}%"></div></div>
+        </div>
+        <div class="ao-bar-wrap">
+          <div class="ao-bar-label"><span>GAD-7</span><span>${pre.gad}分</span></div>
+          <div class="ao-bar-track"><div class="ao-bar-fill gad" style="width:${pre.gad/21*100}%"></div></div>
+        </div>
+      </div>
+      <div class="ao-compare-col">
+        <div class="ao-compare-title">后测</div>
+        <div class="ao-bar-wrap">
+          <div class="ao-bar-label"><span>PHQ-9</span><span>${phq}分</span></div>
+          <div class="ao-bar-track"><div class="ao-bar-fill phq" style="width:${phq/27*100}%"></div></div>
+        </div>
+        <div class="ao-bar-wrap">
+          <div class="ao-bar-label"><span>GAD-7</span><span>${gad}分</span></div>
+          <div class="ao-bar-track"><div class="ao-bar-fill gad" style="width:${gad/21*100}%"></div></div>
+        </div>
+      </div>
+      <div style="grid-column:1/-1">
+        <div class="ao-diff-row">
+          <div class="ao-diff-item">
+            <div class="ao-diff-num ${phqClass}">${sign(phqDiff)}</div>
+            <div class="ao-diff-sub">PHQ-9 变化</div>
+          </div>
+          <div class="ao-diff-item">
+            <div class="ao-diff-num ${gadClass}">${sign(gadDiff)}</div>
+            <div class="ao-diff-sub">GAD-7 变化</div>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:.78rem;color:rgba(255,255,255,0.45);line-height:1.7">
+          ${phqDiff < 0 || gadDiff < 0 ? '🎵 情绪有所改善！音乐疗愈正在发挥作用。' :
+            phqDiff === 0 && gadDiff === 0 ? '情绪状态保持稳定。' :
+            '情绪波动属于正常现象，继续保持音乐疗愈练习。'}
+        </div>
+      </div>`;
+  } else {
+    compareEl.style.display = 'none';
+  }
+
+  // Button
+  const btn = document.getElementById('ao-enter-btn');
+  btn.textContent = isPost ? '关闭报告' : '进入悦音智语 →';
+
+  aoGoTo(3);
+}
+
+/* ── enter site / post test ── */
+function aoEnterSite() {
+  document.getElementById('assess-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+  // Show post-test button after 3 minutes
+  if (!aoIsPostTest) {
+    setTimeout(() => {
+      const btn = document.getElementById('post-test-btn');
+      if (btn) btn.classList.add('visible');
+    }, 3 * 60 * 1000); // 3 minutes
+  }
+}
+
+function aoSkip() {
+  localStorage.setItem('yuyin_skipped', '1');
+  document.getElementById('assess-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function aoStartPostTest() {
+  aoIsPostTest = true;
+  aoAnswersPHQ = new Array(9).fill(null);
+  aoAnswersGAD = new Array(7).fill(null);
+  document.getElementById('assess-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  aoGoTo(0);
+  // Update welcome text for post-test
+  document.querySelector('#ao-screen-0 .ao-welcome-title').textContent = '后测：再次记录你的状态';
+  document.querySelector('#ao-screen-0 .ao-welcome-sub').textContent = '体验结束后，再填写一次量表\n我们将对比你前后的情绪变化';
+  document.getElementById('post-test-btn').classList.remove('visible');
+}
+
+/* ── init: show overlay on page load ── */
+(function() {
+  const skipped = localStorage.getItem('yuyin_skipped');
+  const pre = localStorage.getItem('yuyin_pre');
+  // Show overlay unless skipped in last 24h or already has pre-test today
+  const now = Date.now();
+  const preData = pre ? JSON.parse(pre) : null;
+  const todayPre = preData && (now - preData.time) < 24 * 60 * 60 * 1000;
+  if (!todayPre) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.getElementById('assess-overlay').classList.add('hidden');
+    // Show post-test btn if pre exists but no post yet
+    const post = localStorage.getItem('yuyin_post');
+    const postData = post ? JSON.parse(post) : null;
+    const todayPost = postData && (now - postData.time) < 24 * 60 * 60 * 1000;
+    if (!todayPost) {
+      setTimeout(() => {
+        document.getElementById('post-test-btn').classList.add('visible');
+      }, 5000);
+    }
+  }
+})();
+
+/* ── Page scripts ── */
 function navScrollTo(id) {
   const el = document.getElementById(id);
   if (!el) return;
