@@ -963,15 +963,15 @@ footer {
 /* ── MOOD BUBBLE ── */
 #mood-bubble {
   position: fixed;
-  bottom: 90px; right: 24px;
+  bottom: 80px; right: 16px;
   z-index: 300;
   width: 290px;
-  background: rgba(26,18,18,0.92);
+  background: rgba(26,18,18,0.97);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(201,168,76,0.3);
   border-radius: 1.2rem;
-  padding: 1.2rem 1.3rem 1rem;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  padding: 1rem 1.1rem .85rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   animation: bubble-in .45s cubic-bezier(.34,1.56,.64,1) both;
 }
 #mood-bubble.hiding {
@@ -984,87 +984,134 @@ footer {
 @keyframes bubble-out {
   to { opacity: 0; transform: translateY(16px) scale(0.9); pointer-events: none; }
 }
+/* 关闭按钮 */
+.mb-close {
+  position: absolute; top: .7rem; right: .75rem;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: rgba(255,255,255,0.8);
+  font-size: 1rem; line-height: 1;
+  transition: background .2s, color .2s;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  z-index: 10;
+}
+.mb-close:hover, .mb-close:active {
+  background: rgba(239,68,68,0.3);
+  border-color: rgba(239,68,68,0.5);
+  color: #FCA5A5;
+}
+@media (max-width: 600px) {
+  .mb-close {
+    width: 36px; height: 36px;
+    font-size: 1.1rem;
+    top: .6rem; right: .6rem;
+    background: rgba(255,255,255,0.15);
+  }
+}
 .mb-avatar {
-  display: flex; align-items: center; gap: .6rem;
-  margin-bottom: .85rem;
+  display: flex; align-items: center; gap: .5rem;
+  margin-bottom: .7rem;
+  padding-right: 2.2rem;
 }
 .mb-avatar-icon {
-  width: 36px; height: 36px; border-radius: 50%;
+  width: 30px; height: 30px; border-radius: 50%;
   background: linear-gradient(135deg, var(--crimson), var(--crimson-deep));
   display: flex; align-items: center; justify-content: center;
-  font-size: 1rem; flex-shrink: 0;
+  font-size: .85rem; flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(155,26,47,0.4);
 }
 .mb-avatar-name {
-  font-size: .72rem; font-weight: 700; letter-spacing: .06em;
-  color: var(--gold-light);
-  line-height: 1.2;
+  font-size: .7rem; font-weight: 700; letter-spacing: .06em;
+  color: var(--gold-light); line-height: 1.2;
 }
 .mb-avatar-sub {
-  font-size: .65rem; color: rgba(255,255,255,0.35);
+  font-size: .62rem; color: rgba(255,255,255,0.35);
 }
 .mb-question {
-  font-size: .84rem; color: rgba(255,255,255,0.85);
-  line-height: 1.65; margin-bottom: 1rem;
+  font-size: .8rem; color: rgba(255,255,255,0.85);
+  line-height: 1.55; margin-bottom: .75rem;
 }
 .mb-options {
-  display: flex; flex-direction: column; gap: .45rem;
-  margin-bottom: .8rem;
+  display: flex; flex-direction: column; gap: .35rem;
+  margin-bottom: .65rem;
 }
 .mb-option {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: .7rem; padding: .55rem .9rem;
+  border-radius: .6rem; padding: .45rem .75rem;
   cursor: pointer; text-align: left;
-  display: flex; align-items: center; gap: .55rem;
-  transition: background .2s, border-color .2s, transform .15s;
+  display: flex; align-items: center; gap: .45rem;
+  transition: background .2s, border-color .2s;
   width: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
-.mb-option:hover {
+.mb-option:hover, .mb-option:active {
   background: rgba(201,168,76,0.1);
   border-color: rgba(201,168,76,0.35);
-  transform: translateX(3px);
 }
-.mb-option-emoji { font-size: 1.1rem; }
-.mb-option-text { font-size: .8rem; color: rgba(255,255,255,0.75); line-height: 1.35; }
-.mb-option-text strong { display: block; color: rgba(255,255,255,0.9); font-size: .82rem; }
+.mb-option-emoji { font-size: 1rem; flex-shrink: 0; }
+.mb-option-text { font-size: .76rem; color: rgba(255,255,255,0.75); line-height: 1.3; }
+.mb-option-text strong { display: block; color: rgba(255,255,255,0.9); font-size: .78rem; }
 
 /* Result state */
 .mb-result {
   display: none;
   text-align: center;
-  padding: .4rem 0 .2rem;
+  padding: .2rem 0;
 }
-.mb-result-emoji { font-size: 2rem; margin-bottom: .4rem; }
+.mb-result-emoji { font-size: 1.8rem; margin-bottom: .35rem; }
 .mb-result-text {
-  font-size: .8rem; color: rgba(255,255,255,0.7);
-  line-height: 1.6; margin-bottom: .9rem;
+  font-size: .76rem; color: rgba(255,255,255,0.7);
+  line-height: 1.55; margin-bottom: .75rem;
+  white-space: pre-line;
 }
 .mb-result-track {
-  display: flex; align-items: center; gap: .6rem;
+  display: flex; align-items: center; gap: .5rem;
   background: rgba(201,168,76,0.1);
   border: 1px solid rgba(201,168,76,0.25);
-  border-radius: .7rem; padding: .6rem .9rem;
-  margin-bottom: .75rem;
+  border-radius: .6rem; padding: .5rem .75rem;
+  margin-bottom: .6rem; text-align: left;
 }
-.mb-result-track-icon { font-size: 1.3rem; }
-.mb-result-track-info { text-align: left; }
-.mb-result-track-name { font-size: .82rem; font-weight: 700; color: var(--gold-light); }
-.mb-result-track-sub { font-size: .7rem; color: rgba(255,255,255,0.4); }
+.mb-result-track-icon { font-size: 1.2rem; flex-shrink: 0; }
+.mb-result-track-info { min-width: 0; }
+.mb-result-track-name { font-size: .78rem; font-weight: 700; color: var(--gold-light); }
+.mb-result-track-sub { font-size: .66rem; color: rgba(255,255,255,0.4); }
 .mb-play-btn {
   width: 100%; background: var(--crimson); color: white;
-  border: none; border-radius: .6rem; padding: .6rem;
-  font-size: .82rem; font-weight: 700; cursor: pointer;
-  transition: background .2s, transform .15s;
+  border: none; border-radius: .55rem; padding: .55rem;
+  font-size: .8rem; font-weight: 700; cursor: pointer;
+  transition: background .2s;
+  font-family: 'Noto Sans SC', sans-serif;
 }
-.mb-play-btn:hover { background: var(--crimson-light); transform: translateY(-1px); }
+.mb-play-btn:hover { background: var(--crimson-light); }
 .mb-skip {
   background: none; border: none; cursor: pointer;
-  font-size: .68rem; color: rgba(255,255,255,0.25);
-  padding: 0; width: 100%; text-align: center;
-  transition: color .2s;
+  font-size: .66rem; color: rgba(255,255,255,0.28);
+  padding: .4rem 0 0; width: 100%; text-align: center;
+  transition: color .2s; display: block;
+  font-family: 'Noto Sans SC', sans-serif;
 }
 .mb-skip:hover { color: rgba(255,255,255,0.5); }
+
+/* 手机端：紧凑右下角小卡片，不再全宽 */
+@media (max-width: 600px) {
+  #mood-bubble {
+    bottom: 72px; right: 12px; left: 12px;
+    width: auto;
+    border-radius: 1rem;
+    padding: .9rem 1rem .75rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mb-option { padding: .5rem .75rem; }
+  .mb-question { font-size: .78rem; }
+}
 /* ── RESOURCES SECTION ── */
 .res-tabs {
   display: flex; gap: .7rem; justify-content: center;
@@ -1196,20 +1243,45 @@ footer {
     <!-- SCREEN 1: Feishu form -->
     <div id="ao-screen-1" style="display:none">
       <div class="ao-section-label" id="ao-form-label">前测 · 情绪自评</div>
-      <div class="ao-section-title" id="ao-form-title">PHQ-9 + GAD-7 心理健康自评</div>
-      <div class="ao-instr">请如实填写近两周的情绪状态，填写完成后点击表单内的提交按钮。</div>
-      <div class="ao-feishu-wrap">
-        <iframe
-          id="ao-feishu-iframe"
-          src="https://my.feishu.cn/share/base/form/shrcnP0mokDA05OxnqfaPNuQQOb"
-          frameborder="0"
-          allow="*"
-          title="情绪自评问卷"
-        ></iframe>
+      <div class="ao-section-title" id="ao-form-title">PHQ-9 + GAD-7 情绪状态自评</div>
+      <div class="ao-instr" id="ao-form-instr">请点击下方按钮，在新页面完成问卷填写并提交。<br>填写完毕后回到此页面，点击「已填写完成」进入网站。</div>
+
+      <div style="text-align:center;padding:1.5rem 0 1rem;">
+        <div style="font-size:3rem;margin-bottom:.8rem;" id="ao-form-icon">📋</div>
+        <div style="font-size:.85rem;color:rgba(255,255,255,0.55);line-height:1.9;margin-bottom:1.5rem;" id="ao-form-desc">
+          包含 <strong style="color:rgba(255,255,255,0.8)">PHQ-9 抑郁自评（9题）</strong><br>
+          和 <strong style="color:rgba(255,255,255,0.8)">GAD-7 焦虑自评（7题）</strong><br>
+          <span style="color:rgba(255,255,255,0.35)">约需 3 分钟 · 数据汇总至飞书后台</span>
+        </div>
+        <a href="https://my.feishu.cn/share/base/form/shrcnP0mokDA05OxnqfaPNuQQOb"
+           target="_blank"
+           id="ao-feishu-link"
+           onclick="aoMarkOpened()"
+           style="display:inline-flex;align-items:center;gap:.6rem;
+                  background:var(--crimson);color:white;
+                  font-size:.95rem;font-weight:700;
+                  padding:.85rem 2.2rem;border-radius:.6rem;
+                  text-decoration:none;
+                  box-shadow:0 4px 20px rgba(155,26,47,0.4);
+                  transition:background .2s,transform .15s;"
+           onmouseover="this.style.background='#C73A52';this.style.transform='translateY(-2px)'"
+           onmouseout="this.style.background='var(--crimson)';this.style.transform='none'">
+          🔗 <span id="ao-link-text">打开情绪自评问卷</span>
+        </a>
+        <div id="ao-opened-hint" style="display:none;margin-top:1rem;
+             font-size:.78rem;color:#4ADE80;letter-spacing:.04em;">
+          ✅ 已打开问卷 · 填写完成后点击下方按钮
+        </div>
+        <div id="ao-not-opened-hint" style="font-size:.72rem;color:rgba(255,255,255,0.22);margin-top:.7rem;">
+          将在新标签页打开 · 填写完毕后回到此页面
+        </div>
       </div>
-      <div class="ao-btn-row" style="margin-top:1.2rem">
+
+      <div class="ao-btn-row">
         <button class="ao-btn-secondary" onclick="aoGoTo(0)">← 返回</button>
-        <button class="ao-btn-primary" onclick="aoEnterSite()">已填写完成，进入网站 →</button>
+        <button class="ao-btn-primary" id="ao-done-btn" onclick="aoEnterSite()" style="opacity:.5;cursor:default;" disabled>
+          ✅ 已填写完成，进入网站
+        </button>
       </div>
       <span class="ao-skip" onclick="aoSkip()">暂时跳过，直接进入网站</span>
     </div>
@@ -1222,6 +1294,9 @@ footer {
 
 <!-- MOOD BUBBLE -->
 <div id="mood-bubble" style="display:none">
+  <!-- 关闭按钮 -->
+  <button class="mb-close" onclick="closeMoodBubble()" aria-label="关闭">✕</button>
+
   <div class="mb-avatar">
     <div class="mb-avatar-icon">🎵</div>
     <div>
@@ -2212,11 +2287,13 @@ footer {
 ══════════════════════════════════════ */
 
 const FEISHU_FORM = 'https://my.feishu.cn/share/base/form/shrcnP0mokDA05OxnqfaPNuQQOb';
+let aoFormOpened = false;
 
 /* ── Step 指示点 ── */
 function aoUpdateDots(step) {
   [0, 1].forEach(i => {
     const dot = document.getElementById('ao-dot-' + i);
+    if (!dot) return;
     dot.classList.remove('active', 'done');
     if (i < step) dot.classList.add('done');
     else if (i === step) dot.classList.add('active');
@@ -2226,15 +2303,33 @@ function aoUpdateDots(step) {
 /* ── 切换屏幕 ── */
 function aoGoTo(screen) {
   [0, 1].forEach(i => {
-    document.getElementById('ao-screen-' + i).style.display = i === screen ? 'block' : 'none';
+    const el = document.getElementById('ao-screen-' + i);
+    if (el) el.style.display = i === screen ? 'block' : 'none';
   });
   aoUpdateDots(screen);
-  document.getElementById('assess-overlay').scrollTo({ top: 0, behavior: 'smooth' });
+  const overlay = document.getElementById('assess-overlay');
+  if (overlay) overlay.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── 用户点击了问卷链接 → 解锁完成按钮 ── */
+function aoMarkOpened() {
+  aoFormOpened = true;
+  // 显示已打开提示
+  const hint = document.getElementById('ao-opened-hint');
+  const notHint = document.getElementById('ao-not-opened-hint');
+  if (hint) hint.style.display = 'block';
+  if (notHint) notHint.style.display = 'none';
+  // 解锁完成按钮
+  const btn = document.getElementById('ao-done-btn');
+  if (btn) {
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    btn.disabled = false;
+  }
 }
 
 /* ── 进入网站 ── */
 function aoEnterSite() {
-  // 记录已完成，24小时内不再弹出
   localStorage.setItem('yuyin_pre', JSON.stringify({ time: Date.now() }));
   document.getElementById('assess-overlay').classList.add('hidden');
   document.body.style.overflow = '';
@@ -2252,44 +2347,65 @@ function aoSkip() {
   document.body.style.overflow = '';
 }
 
-/* ── 后测：重新打开问卷 ── */
+/* ── 后测：重新打开弹窗 ── */
 function aoStartPostTest() {
-  // 更新标题为后测
-  document.getElementById('ao-form-label').textContent = '后测 · 情绪自评';
-  document.getElementById('ao-form-title').textContent = 'PHQ-9 + GAD-7 后测（体验后）';
-  // 刷新 iframe 加载新的填写
-  const iframe = document.getElementById('ao-feishu-iframe');
-  iframe.src = FEISHU_FORM + '?t=' + Date.now();
-  // 直接跳到问卷屏
+  aoFormOpened = false;
+  // 更新为后测标题
+  const label = document.getElementById('ao-form-label');
+  const title = document.getElementById('ao-form-title');
+  const instr = document.getElementById('ao-form-instr');
+  const icon  = document.getElementById('ao-form-icon');
+  const desc  = document.getElementById('ao-form-desc');
+  const linkEl = document.getElementById('ao-feishu-link');
+  const linkTxt = document.getElementById('ao-link-text');
+  const doneBtn = document.getElementById('ao-done-btn');
+  const hint    = document.getElementById('ao-opened-hint');
+  const notHint = document.getElementById('ao-not-opened-hint');
+
+  if (label)   label.textContent = '后测 · 体验后情绪自评';
+  if (title)   title.textContent = 'PHQ-9 + GAD-7 后测（音乐疗愈体验后）';
+  if (instr)   instr.textContent = '完成体验后，再次填写同一问卷。填写完毕回到此页面点击「已填写完成」。';
+  if (icon)    icon.textContent = '🎵';
+  if (desc)    desc.innerHTML = '这是您的 <strong style="color:rgba(255,255,255,0.8)">后测问卷</strong>，与前测相同的量表<br>帮助我们对比音乐疗愈前后的情绪变化<br><span style="color:rgba(255,255,255,0.35)">约需 3 分钟 · 数据汇总至飞书后台</span>';
+  if (linkTxt) linkTxt.textContent = '打开后测问卷';
+  if (hint)    hint.style.display = 'none';
+  if (notHint) notHint.style.display = 'block';
+  // 重置完成按钮为锁定
+  if (doneBtn) { doneBtn.style.opacity = '0.5'; doneBtn.style.cursor = 'default'; doneBtn.disabled = true; }
+  // 更新欢迎页文字
+  const welcomeTitle = document.querySelector('#ao-screen-0 .ao-welcome-title');
+  const welcomeSub   = document.querySelector('#ao-screen-0 .ao-welcome-sub');
+  if (welcomeTitle) welcomeTitle.textContent = '完成体验了吗？进行后测';
+  if (welcomeSub)   welcomeSub.innerHTML = '请再花 3 分钟完成同一份情绪自评<br>我们将统计音乐疗愈前后的情绪变化';
+
   document.getElementById('assess-overlay').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
-  aoGoTo(1);
+  aoGoTo(0);
   document.getElementById('post-test-btn').classList.remove('visible');
 }
 
-/* ── 页面加载时判断是否弹出 ── */
+/* ── 页面加载：判断是否弹出 ── */
 (function () {
-  const pre = localStorage.getItem('yuyin_pre');
+  const pre     = localStorage.getItem('yuyin_pre');
   const skipped = localStorage.getItem('yuyin_skipped');
-  const now = Date.now();
+  const now     = Date.now();
   const ONE_DAY = 24 * 60 * 60 * 1000;
 
-  // 今天已填过前测 → 不弹，显示后测按钮
   if (pre && (now - JSON.parse(pre).time) < ONE_DAY) {
+    // 今天已做前测 → 不弹，5秒后显示后测按钮
     document.getElementById('assess-overlay').classList.add('hidden');
     setTimeout(() => {
-      document.getElementById('post-test-btn').classList.add('visible');
+      const btn = document.getElementById('post-test-btn');
+      if (btn) btn.classList.add('visible');
     }, 5000);
     return;
   }
-
-  // 今天跳过过 → 不弹
   if (skipped && (now - parseInt(skipped)) < ONE_DAY) {
+    // 今天跳过过 → 不弹
     document.getElementById('assess-overlay').classList.add('hidden');
     return;
   }
-
-  // 正常弹出
+  // 正常弹出前测
   document.body.style.overflow = 'hidden';
   aoGoTo(0);
 })();
